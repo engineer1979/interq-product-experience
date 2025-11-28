@@ -64,11 +64,17 @@ export type Database = {
           assessment_id: string
           completed_at: string
           id: string
+          ip_address: string | null
           passed: boolean
           percentage: number
+          proctoring_flags: Json | null
           score: number
+          started_at: string | null
+          tab_switches_count: number | null
           time_taken_minutes: number | null
+          timezone: string | null
           total_points: number
+          user_agent: string | null
           user_id: string
         }
         Insert: {
@@ -76,11 +82,17 @@ export type Database = {
           assessment_id: string
           completed_at?: string
           id?: string
+          ip_address?: string | null
           passed: boolean
           percentage: number
+          proctoring_flags?: Json | null
           score: number
+          started_at?: string | null
+          tab_switches_count?: number | null
           time_taken_minutes?: number | null
+          timezone?: string | null
           total_points: number
+          user_agent?: string | null
           user_id: string
         }
         Update: {
@@ -88,11 +100,17 @@ export type Database = {
           assessment_id?: string
           completed_at?: string
           id?: string
+          ip_address?: string | null
           passed?: boolean
           percentage?: number
+          proctoring_flags?: Json | null
           score?: number
+          started_at?: string | null
+          tab_switches_count?: number | null
           time_taken_minutes?: number | null
+          timezone?: string | null
           total_points?: number
+          user_agent?: string | null
           user_id?: string
         }
         Relationships: [
@@ -105,43 +123,132 @@ export type Database = {
           },
         ]
       }
+      assessment_sessions: {
+        Row: {
+          assessment_id: string
+          completed: boolean | null
+          current_question_index: number | null
+          id: string
+          is_paused: boolean | null
+          last_activity_at: string | null
+          pause_reason: string | null
+          paused_at: string | null
+          proctoring_violations: Json | null
+          started_at: string | null
+          submitted_at: string | null
+          tab_switches: number | null
+          time_remaining_seconds: number
+          user_id: string
+        }
+        Insert: {
+          assessment_id: string
+          completed?: boolean | null
+          current_question_index?: number | null
+          id?: string
+          is_paused?: boolean | null
+          last_activity_at?: string | null
+          pause_reason?: string | null
+          paused_at?: string | null
+          proctoring_violations?: Json | null
+          started_at?: string | null
+          submitted_at?: string | null
+          tab_switches?: number | null
+          time_remaining_seconds: number
+          user_id: string
+        }
+        Update: {
+          assessment_id?: string
+          completed?: boolean | null
+          current_question_index?: number | null
+          id?: string
+          is_paused?: boolean | null
+          last_activity_at?: string | null
+          pause_reason?: string | null
+          paused_at?: string | null
+          proctoring_violations?: Json | null
+          started_at?: string | null
+          submitted_at?: string | null
+          tab_switches?: number | null
+          time_remaining_seconds?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_sessions_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assessments: {
         Row: {
+          allow_pause: boolean | null
+          auto_submit_on_timeout: boolean | null
           category: string
           created_at: string
           created_by: string
           description: string | null
           difficulty: string
           duration_minutes: number
+          face_detection_enabled: boolean | null
+          grace_period_minutes: number | null
           id: string
           is_published: boolean | null
+          max_tab_switches: number | null
           passing_score: number
+          proctoring_enabled: boolean | null
+          question_randomization: boolean | null
+          show_results_immediately: boolean | null
+          tab_switch_detection: boolean | null
+          timer_enabled: boolean | null
           title: string
           updated_at: string
         }
         Insert: {
+          allow_pause?: boolean | null
+          auto_submit_on_timeout?: boolean | null
           category: string
           created_at?: string
           created_by: string
           description?: string | null
           difficulty: string
           duration_minutes?: number
+          face_detection_enabled?: boolean | null
+          grace_period_minutes?: number | null
           id?: string
           is_published?: boolean | null
+          max_tab_switches?: number | null
           passing_score?: number
+          proctoring_enabled?: boolean | null
+          question_randomization?: boolean | null
+          show_results_immediately?: boolean | null
+          tab_switch_detection?: boolean | null
+          timer_enabled?: boolean | null
           title: string
           updated_at?: string
         }
         Update: {
+          allow_pause?: boolean | null
+          auto_submit_on_timeout?: boolean | null
           category?: string
           created_at?: string
           created_by?: string
           description?: string | null
           difficulty?: string
           duration_minutes?: number
+          face_detection_enabled?: boolean | null
+          grace_period_minutes?: number | null
           id?: string
           is_published?: boolean | null
+          max_tab_switches?: number | null
           passing_score?: number
+          proctoring_enabled?: boolean | null
+          question_randomization?: boolean | null
+          show_results_immediately?: boolean | null
+          tab_switch_detection?: boolean | null
+          timer_enabled?: boolean | null
           title?: string
           updated_at?: string
         }
