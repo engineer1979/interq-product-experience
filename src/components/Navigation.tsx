@@ -16,7 +16,7 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = ["Product", "Assessments", "AI Interviewing", "Solutions", "Pricing", "About"];
+  const navLinks = ["Product", "Assessments", "AI Interviewing", "Solutions", "Pricing", "About", "Get Started"];
 
   return (
     <motion.nav
@@ -38,7 +38,7 @@ const Navigation = () => {
             {navLinks.map((link) => (
               <a
                 key={link}
-                href={`#${link.toLowerCase().replace(/ /g, "-")}`}
+                href={link === "Get Started" ? "/get-started" : `#${link.toLowerCase().replace(/ /g, "-")}`}
                 className="text-sm font-medium text-foreground/80 hover:text-primary transition-smooth"
               >
                 {link}
@@ -82,7 +82,7 @@ const Navigation = () => {
               {navLinks.map((link) => (
                 <a
                   key={link}
-                  href={`#${link.toLowerCase().replace(/ /g, "-")}`}
+                  href={link === "Get Started" ? "/get-started" : `#${link.toLowerCase().replace(/ /g, "-")}`}
                   className="block text-sm font-medium text-foreground/80 hover:text-primary transition-smooth"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
