@@ -9,6 +9,7 @@ import Auth from "./pages/Auth";
 import GetStarted from "./pages/GetStarted";
 import Product from "./pages/Product";
 import Assessments from "./pages/Assessments";
+import TakeAssessment from "./pages/TakeAssessment";
 import AIInterview from "./pages/AIInterview";
 import InterviewBrowser from "./pages/InterviewBrowser";
 import CreateInterview from "./pages/CreateInterview";
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/get-started" element={<GetStarted />} />
             <Route path="/product" element={<Product />} />
             <Route path="/assessments" element={<Assessments />} />
+            <Route path="/assessment/:id" element={<TakeAssessment />} />
             <Route path="/ai-interview" element={<AIInterview />} />
             <Route path="/interviews" element={<InterviewBrowser />} />
             <Route path="/create-interview" element={<CreateInterview />} />
