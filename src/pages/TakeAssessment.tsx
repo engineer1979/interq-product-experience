@@ -12,6 +12,7 @@ import { AssessmentTimer } from "@/components/assessment/AssessmentTimer";
 import { AssessmentQuestion } from "@/components/assessment/AssessmentQuestion";
 import { AssessmentProgress } from "@/components/assessment/AssessmentProgress";
 import { ProctoringWarning } from "@/components/assessment/ProctoringWarning";
+import { FaceDetection } from "@/components/assessment/FaceDetection";
 import { useAuth } from "@/contexts/AuthContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -54,12 +55,76 @@ export default function TakeAssessment() {
   const [proctoringViolations, setProctoringViolations] = useState<string[]>([]);
   const autoSaveInterval = useRef<NodeJS.Timeout>();
   const lastActivityRef = useRef<number>(Date.now());
+  const [copyPasteAttempts, setCopyPasteAttempts] = useState(0);
 
   useEffect(() => {
     if (id && user) {
       fetchAssessmentData();
     }
   }, [id, user]);
+
+  // Copy-paste prevention
+  useEffect(() => {
+    if (!assessment) return;
+
+    const preventCopy = (e: ClipboardEvent) => {
+      e.preventDefault();
+      setCopyPasteAttempts(prev => {
+        const newCount = prev + 1;
+        setProctoringViolations(prev => [...prev, `Copy attempt detected at ${new Date().toLocaleTimeString()}`]);
+        toast({
+          title: "Action Blocked",
+          description: "Copy-paste is disabled during the assessment",
+          variant: "destructive",
+        });
+        return newCount;
+      });
+    };
+
+    const preventPaste = (e: ClipboardEvent) => {
+      e.preventDefault();
+      setCopyPasteAttempts(prev => {
+        const newCount = prev + 1;
+        setProctoringViolations(prev => [...prev, `Paste attempt detected at ${new Date().toLocaleTimeString()}`]);
+        toast({
+          title: "Action Blocked",
+          description: "Copy-paste is disabled during the assessment",
+          variant: "destructive",
+        });
+        return newCount;
+      });
+    };
+
+    const preventCut = (e: ClipboardEvent) => {
+      e.preventDefault();
+      toast({
+        title: "Action Blocked",
+        description: "Cut operation is disabled during the assessment",
+        variant: "destructive",
+      });
+    };
+
+    const preventContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+      toast({
+        title: "Action Blocked",
+        description: "Right-click is disabled during the assessment",
+        variant: "destructive",
+      });
+    };
+
+    document.addEventListener('copy', preventCopy);
+    document.addEventListener('paste', preventPaste);
+    document.addEventListener('cut', preventCut);
+    document.addEventListener('contextmenu', preventContextMenu);
+
+    return () => {
+      document.removeEventListener('copy', preventCopy);
+      document.removeEventListener('paste', preventPaste);
+      document.removeEventListener('cut', preventCut);
+      document.removeEventListener('contextmenu', preventContextMenu);
+    };
+  }, [assessment, toast]);
 
   // Tab switch detection
   useEffect(() => {
@@ -325,6 +390,16 @@ export default function TakeAssessment() {
         <Navigation />
         
         <main className="flex-grow container mx-auto px-4 py-8 max-w-5xl">
+          {/* Face Detection */}
+          {assessment.face_detection_enabled && (
+            <FaceDetection
+              enabled={assessment.face_detection_enabled}
+              onViolation={(message) => {
+                setProctoringViolations(prev => [...prev, message]);
+              }}
+            />
+          )}
+
           {/* Header with Timer */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-4">
@@ -348,6 +423,15 @@ export default function TakeAssessment() {
                 <AlertDescription>
                   Tab switches detected: {tabSwitches}/{assessment.max_tab_switches}
                   {tabSwitches >= assessment.max_tab_switches && " - Maximum limit reached!"}
+                </AlertDescription>
+              </Alert>
+            )}
+
+            {copyPasteAttempts > 0 && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription>
+                  Copy-paste attempts detected: {copyPasteAttempts} - This activity is being logged
                 </AlertDescription>
               </Alert>
             )}
