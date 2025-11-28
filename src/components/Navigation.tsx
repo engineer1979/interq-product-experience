@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import interqLogo from "@/assets/interq-logo.png";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -29,9 +30,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <span className="text-2xl font-bold text-foreground">
-              Inter<span className="text-primary">Q</span>
-            </span>
+            <img src={interqLogo} alt="InterQ Logo" className="h-12 w-auto" />
           </div>
 
           {/* Desktop Navigation */}
