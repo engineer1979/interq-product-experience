@@ -145,8 +145,11 @@ const Navigation = () => {
                 <Link
                   key={link.label}
                   to={link.href}
-                  className="block text-sm font-medium text-foreground/80 hover:text-primary transition-smooth"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block text-sm font-medium transition-smooth ${
+                    location.pathname === link.href
+                      ? "text-primary font-semibold"
+                      : "text-foreground/80 hover:text-primary"
+                  }`}
                 >
                   {link.label}
                 </Link>
