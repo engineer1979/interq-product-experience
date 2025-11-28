@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
@@ -21,6 +22,7 @@ interface Assessment {
 }
 
 const Assessments = () => {
+  const navigate = useNavigate();
   const [assessments, setAssessments] = useState<Assessment[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -108,15 +110,15 @@ const Assessments = () => {
               ) : filteredAssessments.length > 0 ? (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredAssessments.map((assessment) => (
-                    <Card key={assessment.id} className="p-6 hover:shadow-elegant transition-smooth cursor-pointer">
+                    <Card key={assessment.id} className="p-6 hover:shadow-elegant transition-smooth">
                       <div className="flex items-start justify-between mb-4">
                         <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                           <FileQuestion className="w-6 h-6 text-primary" />
                         </div>
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          assessment.difficulty === 'easy' ? 'bg-green-100 text-green-700' :
-                          assessment.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                          'bg-red-100 text-red-700'
+                          assessment.difficulty === 'easy' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' :
+                          assessment.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' :
+                          'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
                         }`}>
                           {assessment.difficulty}
                         </span>
@@ -125,14 +127,19 @@ const Assessments = () => {
                       <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
                         {assessment.description}
                       </p>
-                      <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center justify-between text-sm mb-4">
                         <span className="flex items-center gap-2 text-muted-foreground">
                           <Clock className="w-4 h-4" />
                           {assessment.duration_minutes} min
                         </span>
                         <span className="text-primary font-medium">{assessment.category}</span>
                       </div>
-                      <Button className="w-full mt-4">Start Assessment</Button>
+                      <Button 
+                        className="w-full" 
+                        onClick={() => navigate(`/assessment/${assessment.id}`)}
+                      >
+                        Start Assessment
+                      </Button>
                     </Card>
                   ))}
                 </div>
