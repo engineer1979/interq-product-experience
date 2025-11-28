@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import interqLogo from "@/assets/interq-logo.png";
 
 const Navigation = () => {
@@ -27,8 +28,27 @@ const Navigation = () => {
     { label: "Solutions", href: "/solutions" },
     { label: "Pricing", href: "/pricing" },
     { label: "About", href: "/about" },
-    { label: "Get Started", href: "/get-started" },
   ];
+
+  // Check if user is admin
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (user) {
+        const { data } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id)
+          .eq("role", "admin")
+          .single();
+        setIsAdmin(!!data);
+      } else {
+        setIsAdmin(false);
+      }
+    };
+    checkAdmin();
+  }, [user]);
 
   return (
     <motion.nav
@@ -60,6 +80,18 @@ const Navigation = () => {
                 {link.label}
               </Link>
             ))}
+            {isAdmin && (
+              <Link
+                to="/settings"
+                className={`text-sm font-medium transition-smooth ${
+                  location.pathname === "/settings"
+                    ? "text-primary"
+                    : "text-foreground/80 hover:text-primary"
+                }`}
+              >
+                Settings
+              </Link>
+            )}
           </div>
 
           {/* CTA Buttons */}
