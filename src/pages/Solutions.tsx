@@ -111,21 +111,21 @@ const Solutions = () => {
           </motion.div>
 
           {/* Solution Selector */}
-          <div className="grid md:grid-cols-4 gap-4 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-12 md:mb-16">
             {Object.entries(solutions).map(([key, solution]) => (
               <button
                 key={key}
                 onClick={() => setSelectedSolution(key)}
-                className={`p-6 rounded-xl border transition-smooth text-left ${
+                className={`p-4 md:p-6 rounded-xl border transition-smooth text-left ${
                   selectedSolution === key
-                    ? "border-primary bg-primary/5"
-                    : "border-border bg-card hover:border-primary/50"
+                    ? "border-primary bg-primary/5 shadow-elegant"
+                    : "border-border bg-card hover:border-primary/50 hover:shadow-soft"
                 }`}
               >
-                <solution.icon className={`w-8 h-8 mb-3 ${
+                <solution.icon className={`w-6 h-6 md:w-8 md:h-8 mb-2 md:mb-3 ${
                   selectedSolution === key ? "text-primary" : "text-muted-foreground"
                 }`} />
-                <h3 className="font-semibold mb-1">{solution.title.replace(/^For |^Enterprise /, "")}</h3>
+                <h3 className="font-semibold text-sm md:text-base mb-1">{solution.title.replace(/^For |^Enterprise /, "")}</h3>
               </button>
             ))}
           </div>
@@ -136,82 +136,109 @@ const Solutions = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="grid md:grid-cols-2 gap-12 items-start"
+            className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start"
           >
             <div>
-              <div className="mb-8">
-                <currentSolution.icon className="w-16 h-16 text-primary mb-4" />
-                <h2 className="text-4xl font-bold mb-2">{currentSolution.title}</h2>
-                <p className="text-xl text-muted-foreground">{currentSolution.subtitle}</p>
+              <div className="mb-6 md:mb-8">
+                <currentSolution.icon className="w-12 h-12 md:w-16 md:h-16 text-primary mb-3 md:mb-4" />
+                <h2 className="text-3xl md:text-4xl font-bold mb-2">{currentSolution.title}</h2>
+                <p className="text-lg md:text-xl text-muted-foreground">{currentSolution.subtitle}</p>
               </div>
 
-              <div className="mb-8">
-                <h3 className="text-2xl font-semibold mb-4">Key Benefits</h3>
-                <ul className="space-y-3">
-                  {currentSolution.benefits.map((benefit) => (
-                    <li key={benefit} className="flex items-center gap-3">
-                      <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                        <div className="w-2 h-2 rounded-full bg-primary" />
+              <div className="mb-6 md:mb-8">
+                <h3 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6">Key Benefits</h3>
+                <ul className="space-y-3 md:space-y-4">
+                  {currentSolution.benefits.map((benefit, index) => (
+                    <motion.li 
+                      key={benefit} 
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-start gap-3"
+                    >
+                      <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-white" />
                       </div>
-                      <span>{benefit}</span>
-                    </li>
+                      <span className="text-base md:text-lg leading-relaxed">{benefit}</span>
+                    </motion.li>
                   ))}
                 </ul>
               </div>
 
-              <div className="flex gap-4">
-                <Button size="lg">Book Demo</Button>
-                <Button size="lg" variant="outline">Learn More</Button>
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
+                <Button size="lg" className="w-full sm:w-auto">Book Demo</Button>
+                <Button size="lg" variant="outline" className="w-full sm:w-auto">Learn More</Button>
               </div>
             </div>
 
-            <div>
-              <div className="bg-card border border-border rounded-2xl p-8 shadow-soft">
-                <h3 className="text-2xl font-semibold mb-6">Perfect For</h3>
-                <div className="space-y-4">
-                  {currentSolution.useCases.map((useCase) => (
-                    <div key={useCase} className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
-                      <div className="w-2 h-2 rounded-full bg-primary mt-2" />
-                      <span className="font-medium">{useCase}</span>
-                    </div>
+            <div className="mt-8 lg:mt-0">
+              <div className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-soft">
+                <h3 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6">Perfect For</h3>
+                <div className="space-y-3 md:space-y-4">
+                  {currentSolution.useCases.map((useCase, index) => (
+                    <motion.div 
+                      key={useCase} 
+                      initial={{ opacity: 0, x: 10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-start gap-3 p-3 md:p-4 bg-muted/50 rounded-lg hover:bg-muted transition-smooth"
+                    >
+                      <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
+                      <span className="font-medium text-sm md:text-base">{useCase}</span>
+                    </motion.div>
                   ))}
                 </div>
               </div>
 
-              <div className="mt-8 bg-primary/10 border border-primary/20 rounded-2xl p-6">
-                <h4 className="font-semibold mb-2">Need a custom solution?</h4>
-                <p className="text-sm text-muted-foreground mb-4">
+              <div className="mt-6 md:mt-8 bg-primary/10 border border-primary/20 rounded-2xl p-5 md:p-6">
+                <h4 className="font-semibold mb-2 text-base md:text-lg">Need a custom solution?</h4>
+                <p className="text-sm md:text-base text-muted-foreground mb-4">
                   Our team can create a tailored package that meets your specific requirements.
                 </p>
-                <Button variant="outline" size="sm">Contact Sales</Button>
+                <Button variant="outline" size="sm" className="w-full sm:w-auto">Contact Sales</Button>
               </div>
             </div>
           </motion.div>
 
           {/* ROI Calculator */}
-          <div className="mt-20 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-12">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mt-16 md:mt-20 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-6 md:p-12"
+          >
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-4">Calculate Your ROI</h2>
-              <p className="text-muted-foreground mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Calculate Your ROI</h2>
+              <p className="text-sm md:text-base text-muted-foreground mb-6 md:mb-8">
                 See how much time and money you can save with InterQ
               </p>
-              <div className="grid md:grid-cols-3 gap-6 mb-8">
-                <div className="bg-card rounded-xl p-6">
-                  <div className="text-4xl font-bold text-primary mb-2">70%</div>
-                  <div className="text-sm text-muted-foreground">Time Saved</div>
-                </div>
-                <div className="bg-card rounded-xl p-6">
-                  <div className="text-4xl font-bold text-primary mb-2">$50K+</div>
-                  <div className="text-sm text-muted-foreground">Annual Savings</div>
-                </div>
-                <div className="bg-card rounded-xl p-6">
-                  <div className="text-4xl font-bold text-primary mb-2">5x</div>
-                  <div className="text-sm text-muted-foreground">Faster Hiring</div>
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-card rounded-xl p-5 md:p-6 shadow-soft"
+                >
+                  <div className="text-3xl md:text-4xl font-bold text-primary mb-2">70%</div>
+                  <div className="text-xs md:text-sm text-muted-foreground">Time Saved</div>
+                </motion.div>
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-card rounded-xl p-5 md:p-6 shadow-soft"
+                >
+                  <div className="text-3xl md:text-4xl font-bold text-primary mb-2">$50K+</div>
+                  <div className="text-xs md:text-sm text-muted-foreground">Annual Savings</div>
+                </motion.div>
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-card rounded-xl p-5 md:p-6 shadow-soft"
+                >
+                  <div className="text-3xl md:text-4xl font-bold text-primary mb-2">5x</div>
+                  <div className="text-xs md:text-sm text-muted-foreground">Faster Hiring</div>
+                </motion.div>
               </div>
-              <Button size="lg">Get Detailed ROI Report</Button>
+              <Button size="lg" className="w-full sm:w-auto">Get Detailed ROI Report</Button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
