@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
 import interqLogo from "@/assets/interq-logo.png";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,7 +20,15 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = ["Product", "Assessments", "AI Interviewing", "Solutions", "Pricing", "About", "Get Started"];
+  const navLinks = [
+    { label: "Product", href: "/product" },
+    { label: "Assessments", href: "/assessments" },
+    { label: "AI Interviewing", href: "/ai-interview" },
+    { label: "Solutions", href: "/solutions" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "About", href: "/about" },
+    { label: "Get Started", href: "/get-started" },
+  ];
 
   return (
     <motion.nav
@@ -29,34 +41,52 @@ const Navigation = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img src={interqLogo} alt="InterQ Logo" className="h-12 w-auto" />
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <a
-                key={link}
-                href={link === "Get Started" ? "/get-started" : `#${link.toLowerCase().replace(/ /g, "-")}`}
-                className="text-sm font-medium text-foreground/80 hover:text-primary transition-smooth"
+              <Link
+                key={link.label}
+                to={link.href}
+                className={`text-sm font-medium transition-smooth ${
+                  location.pathname === link.href
+                    ? "text-primary"
+                    : "text-foreground/80 hover:text-primary"
+                }`}
               >
-                {link}
-              </a>
+                {link.label}
+              </Link>
             ))}
           </div>
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center space-x-3">
-            <Button variant="ghost" size="sm" className="text-sm">
-              Sign in as Recruiter
-            </Button>
-            <Button variant="ghost" size="sm" className="text-sm">
-              Sign in as Enterprise
-            </Button>
-            <Button variant="default" size="sm" className="gradient-primary text-sm">
-              Start Free Trial
-            </Button>
+            {user ? (
+              <>
+                <span className="text-sm text-muted-foreground">
+                  Welcome back!
+                </span>
+                <Button variant="ghost" size="sm" onClick={signOut}>
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link to="/auth">
+                  <Button variant="ghost" size="sm" className="text-sm">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/get-started">
+                  <Button variant="default" size="sm" className="gradient-primary text-sm">
+                    Start Free Trial
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -80,25 +110,34 @@ const Navigation = () => {
           >
             <div className="container mx-auto px-4 py-6 space-y-4">
               {navLinks.map((link) => (
-                <a
-                  key={link}
-                  href={link === "Get Started" ? "/get-started" : `#${link.toLowerCase().replace(/ /g, "-")}`}
+                <Link
+                  key={link.label}
+                  to={link.href}
                   className="block text-sm font-medium text-foreground/80 hover:text-primary transition-smooth"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {link}
-                </a>
+                  {link.label}
+                </Link>
               ))}
               <div className="pt-4 space-y-2">
-                <Button variant="ghost" size="sm" className="w-full">
-                  Sign in as Recruiter
-                </Button>
-                <Button variant="ghost" size="sm" className="w-full">
-                  Sign in as Enterprise
-                </Button>
-                <Button variant="default" size="sm" className="w-full gradient-primary">
-                  Start Free Trial
-                </Button>
+                {user ? (
+                  <Button variant="ghost" size="sm" className="w-full" onClick={signOut}>
+                    Sign Out
+                  </Button>
+                ) : (
+                  <>
+                    <Link to="/auth" className="block">
+                      <Button variant="ghost" size="sm" className="w-full">
+                        Sign In
+                      </Button>
+                    </Link>
+                    <Link to="/get-started" className="block">
+                      <Button variant="default" size="sm" className="w-full gradient-primary">
+                        Start Free Trial
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>
