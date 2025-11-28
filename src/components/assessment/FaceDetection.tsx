@@ -14,33 +14,37 @@ export function FaceDetection({ enabled, onViolation }: FaceDetectionProps) {
   const [cameraActive, setCameraActive] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [faceDetected, setFaceDetected] = useState(true);
+  const [requesting, setRequesting] = useState(false);
   const checkIntervalRef = useRef<NodeJS.Timeout>();
+
+  const startCamera = async () => {
+    setRequesting(true);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: 320, height: 240 }
+      });
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        setCameraActive(true);
+        setCameraError(null);
+        
+        // Start face detection checks
+        checkIntervalRef.current = setInterval(() => {
+          checkFacePresence();
+        }, 5000); // Check every 5 seconds
+      }
+    } catch (error) {
+      console.error('Camera access denied:', error);
+      setCameraError('Camera access is required for this assessment');
+      onViolation('Camera access denied');
+    } finally {
+      setRequesting(false);
+    }
+  };
 
   useEffect(() => {
     if (!enabled) return;
-
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { width: 320, height: 240 }
-        });
-        
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          setCameraActive(true);
-          setCameraError(null);
-          
-          // Start face detection checks
-          checkIntervalRef.current = setInterval(() => {
-            checkFacePresence();
-          }, 5000); // Check every 5 seconds
-        }
-      } catch (error) {
-        console.error('Camera access denied:', error);
-        setCameraError('Camera access is required for this assessment');
-        onViolation('Camera access denied');
-      }
-    };
 
     startCamera();
 
@@ -107,7 +111,27 @@ export function FaceDetection({ enabled, onViolation }: FaceDetectionProps) {
           {cameraError ? (
             <Alert variant="destructive" className="mt-2">
               <AlertTriangle className="h-4 w-4" />
-              <AlertDescription>{cameraError}</AlertDescription>
+              <AlertDescription className="flex items-center justify-between">
+                <span>{cameraError}</span>
+                <Button 
+                  size="sm" 
+                  onClick={startCamera}
+                  disabled={requesting}
+                  className="ml-4"
+                >
+                  {requesting ? (
+                    <>
+                      <Camera className="w-4 h-4 mr-2 animate-pulse" />
+                      Requesting...
+                    </>
+                  ) : (
+                    <>
+                      <Camera className="w-4 h-4 mr-2" />
+                      Enable Camera
+                    </>
+                  )}
+                </Button>
+              </AlertDescription>
             </Alert>
           ) : (
             <p className="text-sm text-muted-foreground">
