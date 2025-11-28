@@ -147,6 +147,131 @@ export type Database = {
         }
         Relationships: []
       }
+      interview_questions: {
+        Row: {
+          correct_answer: string | null
+          created_at: string
+          difficulty: string
+          id: string
+          interview_id: string
+          language_options: string[] | null
+          options: Json | null
+          order_index: number
+          points: number
+          question_text: string
+          question_type: string
+          starter_code: string | null
+          test_cases: Json | null
+          time_limit_minutes: number | null
+          updated_at: string
+        }
+        Insert: {
+          correct_answer?: string | null
+          created_at?: string
+          difficulty: string
+          id?: string
+          interview_id: string
+          language_options?: string[] | null
+          options?: Json | null
+          order_index: number
+          points?: number
+          question_text: string
+          question_type: string
+          starter_code?: string | null
+          test_cases?: Json | null
+          time_limit_minutes?: number | null
+          updated_at?: string
+        }
+        Update: {
+          correct_answer?: string | null
+          created_at?: string
+          difficulty?: string
+          id?: string
+          interview_id?: string
+          language_options?: string[] | null
+          options?: Json | null
+          order_index?: number
+          points?: number
+          question_text?: string
+          question_type?: string
+          starter_code?: string | null
+          test_cases?: Json | null
+          time_limit_minutes?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_questions_interview_id_fkey"
+            columns: ["interview_id"]
+            isOneToOne: false
+            referencedRelation: "interviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interview_responses: {
+        Row: {
+          ai_feedback: Json | null
+          answer_text: string | null
+          code_submission: string | null
+          evaluated_at: string | null
+          id: string
+          interview_id: string
+          is_correct: boolean | null
+          language_used: string | null
+          points_earned: number | null
+          question_id: string
+          submitted_at: string
+          time_taken_seconds: number | null
+          user_id: string
+        }
+        Insert: {
+          ai_feedback?: Json | null
+          answer_text?: string | null
+          code_submission?: string | null
+          evaluated_at?: string | null
+          id?: string
+          interview_id: string
+          is_correct?: boolean | null
+          language_used?: string | null
+          points_earned?: number | null
+          question_id: string
+          submitted_at?: string
+          time_taken_seconds?: number | null
+          user_id: string
+        }
+        Update: {
+          ai_feedback?: Json | null
+          answer_text?: string | null
+          code_submission?: string | null
+          evaluated_at?: string | null
+          id?: string
+          interview_id?: string
+          is_correct?: boolean | null
+          language_used?: string | null
+          points_earned?: number | null
+          question_id?: string
+          submitted_at?: string
+          time_taken_seconds?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_responses_interview_id_fkey"
+            columns: ["interview_id"]
+            isOneToOne: false
+            referencedRelation: "interviews"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_responses_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "interview_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interview_results: {
         Row: {
           ai_feedback: Json

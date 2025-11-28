@@ -6,9 +6,10 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Video, Play, Shield, Brain, TrendingUp, AlertTriangle } from "lucide-react";
+import { Video, Play, Shield, Brain, TrendingUp, AlertTriangle, Plus, List } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface InterviewResult {
   id: string;
@@ -24,6 +25,7 @@ const AIInterview = () => {
   const [results, setResults] = useState<InterviewResult[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchResults();
@@ -98,9 +100,19 @@ const AIInterview = () => {
                 <h1 className="text-5xl md:text-6xl font-bold mb-6">
                   AI-Powered <span className="gradient-primary bg-clip-text text-transparent">Interviews</span>
                 </h1>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
                   Conduct intelligent video interviews with real-time AI analysis, fraud detection, and comprehensive scoring
                 </p>
+                <div className="flex gap-4 justify-center flex-wrap">
+                  <Button size="lg" onClick={() => navigate('/interviews')} className="gap-2">
+                    <List className="h-5 w-5" />
+                    Browse Interviews
+                  </Button>
+                  <Button size="lg" variant="outline" onClick={() => navigate('/create-interview')} className="gap-2">
+                    <Plus className="h-5 w-5" />
+                    Create Interview
+                  </Button>
+                </div>
               </div>
 
               {/* Features Grid */}

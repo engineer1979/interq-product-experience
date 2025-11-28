@@ -10,6 +10,9 @@ import GetStarted from "./pages/GetStarted";
 import Product from "./pages/Product";
 import Assessments from "./pages/Assessments";
 import AIInterview from "./pages/AIInterview";
+import InterviewBrowser from "./pages/InterviewBrowser";
+import CreateInterview from "./pages/CreateInterview";
+import TakeInterview from "./pages/TakeInterview";
 import Solutions from "./pages/Solutions";
 import Pricing from "./pages/Pricing";
 import About from "./pages/About";
@@ -32,6 +35,9 @@ const App = () => (
             <Route path="/product" element={<Product />} />
             <Route path="/assessments" element={<Assessments />} />
             <Route path="/ai-interview" element={<AIInterview />} />
+            <Route path="/interviews" element={<InterviewBrowser />} />
+            <Route path="/create-interview" element={<CreateInterview />} />
+            <Route path="/interview/:id" element={<TakeInterview />} />
             <Route path="/solutions" element={<Solutions />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/about" element={<About />} />
