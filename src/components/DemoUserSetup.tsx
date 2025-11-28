@@ -80,19 +80,30 @@ export function DemoUserSetup() {
       <div className="text-center mb-6">
         <h3 className="text-xl font-semibold mb-2">Demo User Accounts</h3>
         <p className="text-sm text-muted-foreground">
-          Use these pre-configured accounts to explore different user roles
+          First, create the demo users. Then copy credentials to sign in.
         </p>
       </div>
 
-      <Button 
-        onClick={createDemoUsers} 
-        disabled={creating}
-        className="w-full mb-6"
-        size="lg"
-      >
-        <Users className="w-5 h-5 mr-2" />
-        {creating ? "Creating Demo Users..." : "Create All Demo Users"}
-      </Button>
+      <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 mb-4">
+        <p className="text-sm font-medium text-center mb-2">
+          ⚠️ Step 1: Click this button first!
+        </p>
+        <Button 
+          onClick={createDemoUsers} 
+          disabled={creating}
+          className="w-full"
+          size="lg"
+        >
+          <Users className="w-5 h-5 mr-2" />
+          {creating ? "Creating Demo Users..." : "Create All Demo Users"}
+        </Button>
+      </div>
+
+      <div className="bg-muted/50 rounded-lg p-4 mb-4">
+        <p className="text-sm text-center">
+          Step 2: After creation succeeds, copy any credentials below and sign in on the left →
+        </p>
+      </div>
 
       <div className="grid gap-4">
         {demoUsers.map((user) => (
@@ -151,9 +162,6 @@ export function DemoUserSetup() {
         ))}
       </div>
 
-      <div className="text-xs text-muted-foreground text-center mt-4">
-        <p>💡 Tip: Click "Create All Demo Users" button first, then use any account to sign in</p>
-      </div>
     </div>
   );
 }
