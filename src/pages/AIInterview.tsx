@@ -6,10 +6,12 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Video, Play, Shield, Brain, TrendingUp, AlertTriangle, Plus, List } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Video, Play, Shield, Brain, TrendingUp, AlertTriangle, Plus, List, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { InteractiveInterview } from "@/components/interview/InteractiveInterview";
 
 interface InterviewResult {
   id: string;
@@ -101,22 +103,42 @@ const AIInterview = () => {
                   AI-Powered <span className="gradient-primary bg-clip-text text-transparent">Interviews</span>
                 </h1>
                 <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-                  Conduct intelligent video interviews with real-time AI analysis, fraud detection, and comprehensive scoring
+                  Practice with our intelligent AI interviewer or conduct structured interviews with real-time analysis
                 </p>
-                <div className="flex gap-4 justify-center flex-wrap">
-                  <Button size="lg" onClick={() => navigate('/interviews')} className="gap-2">
-                    <List className="h-5 w-5" />
-                    Browse Interviews
-                  </Button>
-                  <Button size="lg" variant="outline" onClick={() => navigate('/create-interview')} className="gap-2">
-                    <Plus className="h-5 w-5" />
-                    Create Interview
-                  </Button>
-                </div>
               </div>
 
-              {/* Features Grid */}
-              <div className="grid md:grid-cols-4 gap-6 mb-16">
+              {/* Interactive Tabs */}
+              <Tabs defaultValue="practice" className="mb-16">
+                <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
+                  <TabsTrigger value="practice" className="gap-2">
+                    <Sparkles className="w-4 h-4" />
+                    Practice Interview
+                  </TabsTrigger>
+                  <TabsTrigger value="overview" className="gap-2">
+                    <Brain className="w-4 h-4" />
+                    Overview
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="practice">
+                  <InteractiveInterview />
+                </TabsContent>
+
+                <TabsContent value="overview">
+                  <div className="space-y-16">
+                    <div className="flex gap-4 justify-center flex-wrap">
+                      <Button size="lg" onClick={() => navigate('/interviews')} className="gap-2">
+                        <List className="h-5 w-5" />
+                        Browse Interviews
+                      </Button>
+                      <Button size="lg" variant="outline" onClick={() => navigate('/create-interview')} className="gap-2">
+                        <Plus className="h-5 w-5" />
+                        Create Interview
+                      </Button>
+                    </div>
+
+                    {/* Features Grid */}
+                    <div className="grid md:grid-cols-4 gap-6 mb-16">
                 {features.map((feature, index) => (
                   <motion.div
                     key={feature.title}
@@ -129,11 +151,11 @@ const AIInterview = () => {
                     <h3 className="font-semibold mb-2">{feature.title}</h3>
                     <p className="text-sm text-muted-foreground">{feature.description}</p>
                   </motion.div>
-                ))}
-              </div>
+                  ))}
+                    </div>
 
-              {/* Demo Interview */}
-              <div className="grid md:grid-cols-2 gap-12 mb-16">
+                    {/* Demo Interview */}
+                    <div className="grid md:grid-cols-2 gap-12 mb-16">
                 <Card className="p-8">
                   <h2 className="text-2xl font-bold mb-6">Try Interview Demo</h2>
                   <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-6">
@@ -160,12 +182,12 @@ const AIInterview = () => {
                       <Shield className="w-5 h-5" />
                       <span className="font-medium">No fraud detected</span>
                     </div>
-                  </div>
-                </Card>
-              </div>
+                      </div>
+                    </Card>
+                    </div>
 
-              {/* Recent Results */}
-              {!loading && results.length > 0 && (
+                    {/* Recent Results */}
+                    {!loading && results.length > 0 && (
                 <div>
                   <h2 className="text-3xl font-bold mb-8">Your Interview Results</h2>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -188,12 +210,12 @@ const AIInterview = () => {
                         </div>
                       </Card>
                     ))}
-                  </div>
-                </div>
-              )}
+                      </div>
+                    </div>
+                    )}
 
-              {/* How It Works */}
-              <div className="mt-20 bg-muted/30 rounded-2xl p-12">
+                    {/* How It Works */}
+                    <div className="bg-muted/30 rounded-2xl p-12">
                 <h2 className="text-3xl font-bold text-center mb-12">How AI Interviews Work</h2>
                 <div className="grid md:grid-cols-4 gap-8">
                   {[
@@ -209,9 +231,12 @@ const AIInterview = () => {
                       <h3 className="font-semibold mb-2">{item.title}</h3>
                       <p className="text-sm text-muted-foreground">{item.description}</p>
                     </div>
-                  ))}
-                </div>
-              </div>
+                      ))}
+                    </div>
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
             </motion.div>
           </div>
         </section>

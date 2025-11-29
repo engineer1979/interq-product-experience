@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.evaluate-code]
 verify_jwt = false
+
+[functions.ai-interview-chat]
+verify_jwt = false
