@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+  TURQUOISE WAVE THEME 
+  Palette: Ethereal White, Turquoise, Dark Blue, Sky Blue
+*/
+
+@layer base {
+  :root {
+    color-scheme: light;
+
+    /* Light Mode - Turquoise Wave */
+    --background: 210 40% 98%;
+    /* Very light blue tint */
+    --foreground: 215 60% 15%;
+    /* Dark Blue text */
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 60% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 60% 15%;
+
+    --primary: 188 90% 45%;
+    /* Vibrant Turquoise (Logo Primary) */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 195 85% 90%;
+    /* Light Blue (Secondary) */
+    --secondary-foreground: 215 60% 15%;
+
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 30% 50%;
+
+    --accent: 215 80% 30%;
+    /* Dark Blue (Accent) */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 210 20% 90%;
+    --input: 210 20% 90%;
+    --ring: 188 90% 45%;
+
+    --radius: 1rem;
+
+    /* Gradients - Turquoise Theme */
+    --gradient-primary: linear-gradient(135deg, hsl(188 90% 45%) 0%, hsl(215 80% 30%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(188 90% 45% / 0.08) 0%, hsl(210 40% 98%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(215 80% 30%) 0%, hsl(188 90% 45%) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+    --gradient-aurora: radial-gradient(circle at 15% 50%, hsl(188 90% 45% / 0.15), transparent 40%),
+      radial-gradient(circle at 85% 30%, hsl(215 80% 30% / 0.15), transparent 40%),
+      radial-gradient(circle at 50% 80%, hsl(195 85% 85% / 0.3), transparent 40%);
+
+    /* Shadows (Tinted Turquoise) */
+    --shadow-elegant: 0 20px 40px -10px rgba(34, 211, 238, 0.15);
+    --shadow-soft: 0 10px 30px -5px rgba(15, 23, 42, 0.03);
+    --shadow-glow: 0 0 25px rgba(34, 211, 238, 0.4);
+
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    --sidebar-background: 210 40% 98%;
+    --sidebar-foreground: 215 60% 15%;
+    --sidebar-primary: 215 60% 15%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 195 85% 90%;
+    --sidebar-accent-foreground: 215 60% 15%;
+    --sidebar-border: 210 20% 90%;
+    --sidebar-ring: 188 90% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground min-h-screen;
+    background-color: hsl(210 40% 98%) !important;
+    font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+    background-image: var(--gradient-aurora);
+    background-attachment: scroll;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer components {
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  /* Glassmorphism Utilities */
+  .glass {
+    background: var(--gradient-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .glass-card {
+    @apply glass rounded-2xl shadow-soft hover:shadow-elegant transition-smooth hover:-translate-y-1;
+  }
+
+  .glass-button {
+    @apply glass px-6 py-3 rounded-xl font-semibold hover:bg-white/80 transition-smooth active:scale-95 text-foreground;
+  }
+
+  /* Animations */
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Aurora animated orbs (Turquoise/Blue versions) */
+  @keyframes orbMove {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 0.35;
+    }
+
+    50% {
+      transform: translate(40px, -30px) scale(1.2);
+      opacity: 0.6;
+    }
+
+    100% {
+      transform: translate(0, 0) scale(1);
+      opacity: 0.35;
+    }
+  }
+
+  .aurora-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    mix-blend-mode: multiply;
+    /* Better for light mode blending */
+    will-change: transform, opacity;
+    animation: orbMove 14s ease-in-out infinite;
+  }
+
+  .aurora-orb.violet {
+    background: radial-gradient(circle, hsl(215 80% 30% / 0.4), transparent 60%);
+    /* Dark Blue */
+  }
+
+  .aurora-orb.cyan {
+    background: radial-gradient(circle, hsl(188 90% 45% / 0.4), transparent 60%);
+    /* Turquoise */
+  }
+
+  .aurora-orb.pink {
+    background: radial-gradient(circle, hsl(195 85% 85% / 0.6), transparent 60%);
+    /* Light Blue */
+  }
+}
