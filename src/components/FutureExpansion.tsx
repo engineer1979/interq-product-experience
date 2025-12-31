@@ -45,7 +45,7 @@ const FutureExpansion = () => {
                 </div>
 
                 <div className="mt-12 inline-flex items-center gap-2 text-muted-foreground text-sm bg-background/50 px-4 py-2 rounded-full border border-border">
-                    <span>Roadmap 2025-2026</span>
+                    <span>Roadmap 2025-2030</span>
                     <ChevronRight className="w-4 h-4" />
                 </div>
             </div>

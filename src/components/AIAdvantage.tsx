@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Brain, Calendar, ShieldCheck, UserCheck, FileText } from "lucide-react";
+import { Brain, Calendar, ShieldCheck, UserCheck, FileText, Layers } from "lucide-react";
 
 const advantages = [
     {
@@ -36,12 +36,19 @@ const advantages = [
         description: "View skills, communication, and culture fit together in one report.",
         color: "text-amber-500",
         bg: "bg-amber-500/10"
+    },
+    {
+        icon: Layers,
+        title: "Seamless Integration",
+        description: "Connect easily with your existing ATS and HR tools for a unified workflow.",
+        color: "text-cyan-500",
+        bg: "bg-cyan-500/10"
     }
 ];
 
 const AIAdvantage = () => {
     return (
-        <section className="py-20 bg-background relative overflow-hidden">
+        <section className="py-24 bg-background relative overflow-hidden">
             {/* Background Decoration */}
             <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10" />
 

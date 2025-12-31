@@ -29,7 +29,7 @@ const products = [
 
 const ServiceOverview: React.FC = () => {
     return (
-        <section className="container mx-auto px-4 py-20">
+        <section className="container mx-auto px-4 py-24">
             <div className="text-center mb-16">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">InterQ Products</h2>
                 <p className="text-muted-foreground text-lg max-w-2xl mx-auto">

@@ -74,9 +74,13 @@ const Assessments = () => {
     }
   };
 
+  /* Filter out HR Manager and Executive assessments as requested */
+  const hiddenTitles = ["HR Manager - Generalist", "HR Executive - Recruitment"];
+
   const filteredAssessments = assessments.filter((assessment) =>
-    assessment.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    assessment.category.toLowerCase().includes(searchQuery.toLowerCase())
+    !hiddenTitles.includes(assessment.title) &&
+    (assessment.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      assessment.category.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   return (

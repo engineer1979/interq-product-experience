@@ -3,7 +3,7 @@ import { Briefcase, UserCheck, Users, Calendar, Video, FileText, Lock, Award, Co
 
 const WhoWeServe = () => {
     return (
-        <section className="py-20 bg-secondary/20">
+        <section className="py-24 bg-secondary/20">
             <div className="container mx-auto px-4 lg:px-8">
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">Who We Serve</h2>

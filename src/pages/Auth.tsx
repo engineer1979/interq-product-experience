@@ -7,8 +7,6 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { DemoUserSetup } from "@/components/DemoUserSetup";
-import interqLogo from "@/assets/interq-logo.png";
-
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
@@ -49,7 +47,7 @@ const Auth = () => {
           transition={{ duration: 0.6 }}
         >
           <div className="text-center mb-8">
-            <img src={interqLogo} alt="InterQ Logo" className="h-16 mx-auto mb-4" />
+            <img src="/interq-logo.png" alt="InterQ Logo" className="h-16 mx-auto mb-4" />
             <h1 className="text-3xl font-bold mb-2">Welcome to InterQ</h1>
             <p className="text-muted-foreground">
               {isLogin ? "Sign in to your account" : "Create your account"}
