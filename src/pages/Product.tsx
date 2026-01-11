@@ -37,18 +37,18 @@ const Product = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 gradient-hero">
-        <div className="container mx-auto max-w-7xl">
+      <section className="pt-32 pb-20 gradient-hero">
+        <div className="container-premium">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-slate-900">
+            <h1 className="text-display text-5xl md:text-6xl font-bold mb-6 text-slate-900 leading-tight">
               The Complete <span className="text-primary">AI Recruitment</span> Platform
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
               From assessments to interviews to analytics - everything you need to hire the best talent, powered by AI
             </p>
           </motion.div>
@@ -67,13 +67,13 @@ const Product = () => {
                   if (feature.tab === "interviews") navigate('/ai-interview');
                   if (feature.tab === "analytics") navigate('/interviews');
                 }}
-                className="bg-card border border-border rounded-xl p-6 shadow-soft hover:shadow-elegant transition-smooth cursor-pointer group"
+                className="glass-card hover:bg-white p-8 rounded-2xl cursor-pointer group transition-all duration-300"
               >
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-smooth">
-                  <feature.icon className="w-6 h-6 text-primary" />
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <feature.icon className="w-7 h-7 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
+                <p className="text-slate-600 leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -81,19 +81,19 @@ const Product = () => {
       </section>
 
       {/* Detailed Features */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-7xl">
+      <section className="py-24">
+        <div className="container-premium">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-3 mb-12">
-              <TabsTrigger value="assessments">Assessments</TabsTrigger>
-              <TabsTrigger value="interviews">AI Interviews</TabsTrigger>
-              <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 mb-16 bg-slate-100/50 p-1 rounded-xl">
+              <TabsTrigger value="assessments" className="rounded-lg text-base py-3">Assessments</TabsTrigger>
+              <TabsTrigger value="interviews" className="rounded-lg text-base py-3">AI Interviews</TabsTrigger>
+              <TabsTrigger value="analytics" className="rounded-lg text-base py-3">Analytics</TabsTrigger>
             </TabsList>
 
             <TabsContent value="assessments">
-              <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="grid md:grid-cols-2 gap-16 items-center">
                 <div>
-                  <h2 className="text-4xl font-bold mb-6">Smart MCQ Assessments</h2>
+                  <h2 className="text-display text-4xl font-bold mb-8 text-slate-900">Smart MCQ Assessments</h2>
                   <ul className="space-y-4">
                     {[
                       "3,400+ pre-built skills assessments",
@@ -103,19 +103,19 @@ const Product = () => {
                       "Mobile-friendly test interface",
                       "Real-time progress tracking",
                     ].map((item) => (
-                      <li key={item} className="flex items-center gap-3">
-                        <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                          <div className="w-2 h-2 rounded-full bg-primary" />
+                      <li key={item} className="flex items-center gap-4 text-slate-700 font-medium">
+                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-primary">
+                          <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
                         <span>{item}</span>
                       </li>
                     ))}
                   </ul>
-                  <Button className="mt-8 w-full sm:w-auto" size="lg" onClick={() => navigate('/assessments')}>
+                  <Button className="mt-10 btn-premium py-6 px-8 text-lg" onClick={() => navigate('/assessments')}>
                     Try Assessment Demo
                   </Button>
                 </div>
-                <div className="rounded-2xl h-96 overflow-hidden shadow-elegant group">
+                <div className="rounded-3xl h-[500px] overflow-hidden shadow-premium group border-4 border-white">
                   <img
                     src="/assessment-visual.jpg"
                     alt="Team discussing assessment results"
@@ -126,12 +126,12 @@ const Product = () => {
             </TabsContent>
 
             <TabsContent value="interviews">
-              <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="bg-muted rounded-2xl h-96 flex items-center justify-center">
+              <div className="grid md:grid-cols-2 gap-16 items-center">
+                <div className="bg-slate-50 rounded-3xl h-[500px] flex items-center justify-center border-4 border-white shadow-inner">
                   <Video className="w-32 h-32 text-primary/20" />
                 </div>
                 <div>
-                  <h2 className="text-4xl font-bold mb-6">AI-Powered Video Interviews</h2>
+                  <h2 className="text-display text-4xl font-bold mb-8 text-slate-900">AI-Powered Video Interviews</h2>
                   <ul className="space-y-4">
                     {[
                       "Real-time AI analysis of responses",
@@ -141,15 +141,15 @@ const Product = () => {
                       "Automated feedback generation",
                       "Customizable interview questions",
                     ].map((item) => (
-                      <li key={item} className="flex items-center gap-3">
-                        <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                          <div className="w-2 h-2 rounded-full bg-primary" />
+                      <li key={item} className="flex items-center gap-4 text-slate-700 font-medium">
+                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-primary">
+                          <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
                         <span>{item}</span>
                       </li>
                     ))}
                   </ul>
-                  <Button className="mt-8 w-full sm:w-auto" size="lg" onClick={() => navigate('/ai-interview')}>
+                  <Button className="mt-10 btn-premium py-6 px-8 text-lg" onClick={() => navigate('/ai-interview')}>
                     Watch Interview Demo
                   </Button>
                 </div>
@@ -157,9 +157,9 @@ const Product = () => {
             </TabsContent>
 
             <TabsContent value="analytics">
-              <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="grid md:grid-cols-2 gap-16 items-center">
                 <div>
-                  <h2 className="text-4xl font-bold mb-6">Deep Analytics & Insights</h2>
+                  <h2 className="text-display text-4xl font-bold mb-8 text-slate-900">Deep Analytics & Insights</h2>
                   <ul className="space-y-4">
                     {[
                       "Real-time performance dashboards",
@@ -169,19 +169,19 @@ const Product = () => {
                       "Export reports in multiple formats",
                       "Custom analytics views",
                     ].map((item) => (
-                      <li key={item} className="flex items-center gap-3">
-                        <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                          <div className="w-2 h-2 rounded-full bg-primary" />
+                      <li key={item} className="flex items-center gap-4 text-slate-700 font-medium">
+                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-primary">
+                          <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
                         <span>{item}</span>
                       </li>
                     ))}
                   </ul>
-                  <Button className="mt-8 w-full sm:w-auto" size="lg" onClick={() => navigate('/interviews')}>
+                  <Button className="mt-10 btn-premium py-6 px-8 text-lg" onClick={() => navigate('/interviews')}>
                     Explore Analytics
                   </Button>
                 </div>
-                <div className="bg-muted rounded-2xl h-96 flex items-center justify-center">
+                <div className="bg-slate-50 rounded-3xl h-[500px] flex items-center justify-center border-4 border-white shadow-inner">
                   <BarChart3 className="w-32 h-32 text-primary/20" />
                 </div>
               </div>
@@ -191,9 +191,9 @@ const Product = () => {
       </section>
 
       {/* Additional Benefits */}
-      <section className="py-20 px-4 bg-muted/30">
-        <div className="container mx-auto max-w-7xl">
-          <h2 className="text-4xl font-bold text-center mb-12">Why Choose InterQ?</h2>
+      <section className="py-24 bg-slate-50/50">
+        <div className="container-premium">
+          <h2 className="text-display text-4xl font-bold text-center mb-16 text-slate-900">Why Choose InterQ?</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
@@ -212,10 +212,10 @@ const Product = () => {
                 description: "From 10 to 10,000 candidates - we scale with you",
               },
             ].map((benefit) => (
-              <div key={benefit.title} className="bg-card border border-border rounded-xl p-6 shadow-soft">
-                <benefit.icon className="w-12 h-12 text-primary mb-4" />
-                <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
-                <p className="text-muted-foreground">{benefit.description}</p>
+              <div key={benefit.title} className="glass-card bg-white p-8 rounded-2xl hover:-translate-y-1 transition-transform duration-300">
+                <benefit.icon className="w-12 h-12 text-primary mb-6" />
+                <h3 className="text-xl font-bold text-slate-900 mb-3">{benefit.title}</h3>
+                <p className="text-slate-600 leading-relaxed">{benefit.description}</p>
               </div>
             ))}
           </div>

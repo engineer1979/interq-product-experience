@@ -1,67 +1,69 @@
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { FileQuestion, Users, Code, ArrowRight } from "lucide-react";
+import { FileQuestion, Users, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-
-const products = [
-    {
-        title: "Online Assessments",
-        description: "Structured MCQs & technical quizzes to filter top candidates efficiently.",
-        icon: FileQuestion,
-        color: "text-primary",
-        bg: "bg-primary/10"
-    },
-    {
-        title: "Pair Interviewing",
-        description: "Real-time collaborative interviews with domain experts for deep evaluation.",
-        icon: Users,
-        color: "text-primary",
-        bg: "bg-primary/10"
-    },
-    {
-        title: "Real-time Coding",
-        description: "Built-in coding environment for technical roles to assess hands-on skills.",
-        icon: Code,
-        color: "text-primary",
-        bg: "bg-primary/10"
-    },
-];
 
 const ServiceOverview: React.FC = () => {
     return (
-        <section className="container mx-auto px-4 py-24">
-            <div className="bg-card border border-border/50 rounded-[2rem] overflow-hidden shadow-premium hover:shadow-2xl transition-shadow duration-500">
-                <div className="grid lg:grid-cols-2 gap-0 items-center">
+        <section className="container-premium py-24">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-premium hover:shadow-2xl transition-all duration-500"
+            >
+                <div className="grid lg:grid-cols-2 gap-0 items-stretch">
                     {/* Left Image */}
-                    <div className="relative h-full min-h-[400px] overflow-hidden group">
+                    <div className="relative h-full min-h-[400px] lg:min-h-full overflow-hidden group">
                         <img
                             src="/consultation.jpg"
-                            alt="Recruitment consultation meeting in a modern office"
+                            alt="Recruitment consultation"
                             className="w-full h-full object-cover absolute inset-0 transition-transform duration-700 group-hover:scale-105"
                             loading="lazy"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/10 to-transparent pointer-events-none" />
                     </div>
 
                     {/* Right Content */}
-                    <div className="p-12 lg:p-20 bg-white">
-                        <h2 className="text-4xl font-bold mb-10 text-slate-900 tracking-tight">Services</h2>
-                        <ul className="space-y-6">
+                    <div className="p-12 lg:p-20 flex flex-col justify-center bg-white relative">
+                        <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+                            <FileQuestion className="w-64 h-64 text-slate-900" />
+                        </div>
+
+                        <h2 className="text-display text-4xl lg:text-5xl font-bold mb-10 text-slate-900 tracking-tight">
+                            Our <span className="text-primary">Services</span>
+                        </h2>
+
+                        <ul className="space-y-4 relative z-10">
                             {[
-                                "Recruitment",
-                                "Talent Screening",
-                                "Interview Scheduling",
-                                "Onboarding Support"
+                                { name: "Recruitment", desc: "Full-cycle hiring management" },
+                                { name: "Talent Screening", desc: "AI-driven candidate validation" },
+                                { name: "Interview Scheduling", desc: "Automated calendar coordination" },
+                                { name: "Onboarding Support", desc: "Seamless employee integration" }
                             ].map((service, i) => (
-                                <li key={i} className="flex items-center gap-5 text-xl text-slate-700 font-medium group cursor-default">
-                                    <div className="w-3 h-3 rounded-full bg-primary shrink-0 group-hover:scale-125 transition-transform" />
-                                    <span className="group-hover:translate-x-1 transition-transform">{service}</span>
-                                </li>
+                                <motion.li
+                                    key={i}
+                                    initial={{ opacity: 0, x: 20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: i * 0.1 }}
+                                    viewport={{ once: true }}
+                                    className="group flex items-center justify-between p-4 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all cursor-default"
+                                >
+                                    <div className="flex items-center gap-5">
+                                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                                            <Users className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <span className="block text-xl text-slate-800 font-bold group-hover:text-primary transition-colors">{service.name}</span>
+                                            <span className="text-sm text-slate-500">{service.desc}</span>
+                                        </div>
+                                    </div>
+                                    <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-primary opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all" />
+                                </motion.li>
                             ))}
                         </ul>
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 };
