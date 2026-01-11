@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Inter:wght@100..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+  TURQUOISE WAVE THEME 
+  Palette: Ethereal White, Turquoise, Dark Blue, Sky Blue
+*/
+
+@layer base {
+  :root {
+    color-scheme: light;
+
+    --background: 0 0% 100%;
+    /* Pure White */
+    /* Light Mode - Turquoise Wave */
+    /* --background: 210 40% 98%; <- Previous off-white */
+    /* Very light blue tint */
+    --foreground: 215 60% 15%;
+    /* Dark Blue text */
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 60% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 60% 15%;
+
+    --primary: 188 90% 45%;
+    /* Vibrant Turquoise (Logo Primary) */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 195 85% 90%;
+    /* Light Blue (Secondary) */
+    --secondary-foreground: 215 60% 15%;
+
+    --muted: 210 20% 96%;
+    --muted-foreground: 0 0% 0%;
+    /* distinct solid black for maximum visibility */
+
+    --accent: 215 80% 30%;
+    /* Dark Blue (Accent) */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 210 20% 90%;
+    --input: 210 20% 90%;
+    --ring: 188 90% 45%;
+
+    /* UI/UX Improvements - Clean SaaS Look */
+    --radius: 1rem;
+    /* More modern, softer rounded corners */
+
+    /* Shadows (Refined for depth) */
+    --shadow-elegant: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow-soft: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+    /* Softer, larger spread */
+    --shadow-glow: 0 0 20px rgba(24, 182, 200, 0.15);
+    /* Subtler teal glow */
+    --shadow-card: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+}
+
+@layer utilities {
+  .gradient-primary {
+    background-image: var(--gradient-primary);
+  }
+
+  .text-display {
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+  }
+
+  .container-premium {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    max-width: 1400px;
+    /* Wider for modern monitors */
+  }
+
+  @media (min-width: 640px) {
+    .container-premium {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground min-h-screen text-base antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: #334155;
+    /* Slate-700 for better readability than pure black */
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Outfit', sans-serif;
+    color: #0F172A;
+    /* Slate-900 */
+  }
+}
+
+.font-outfit {
+  font-family: 'Outfit', sans-serif;
+}
+
+.text-gradient {
+  color: #0F172A;
+  /* background: var(--gradient-primary); */
+  /* -webkit-background-clip: text; */
+  /* background-clip: text; */
+  /* -webkit-text-fill-color: transparent; */
+  display: inline-block;
+}
+
+.glass-panel {
+  @apply bg-white/80 backdrop-blur-xl border border-white/60 shadow-lg;
+}
+
+.card-hover {
+  @apply transition-all duration-300;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-soft);
+  }
+}
+
+/* Premium UI Utilities */
+.text-edge-outline {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+}
+
+.glass-card {
+  @apply bg-white/90 backdrop-blur-2xl border border-slate-100 shadow-xl;
+}
+
+.glass-panel-dark {
+  @apply bg-slate-900/60 backdrop-blur-md border border-white/10 shadow-2xl;
+}
+
+.shadow-premium {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+  /* Really soft deep shadow */
+}
+
+.shadow-glow-primary {
+  box-shadow: 0 0 25px -5px hsl(var(--primary) / 0.3);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.btn-premium {
+  @apply relative overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-95;
+
+  &:hover {
+    box-shadow: 0 10px 30px -10px hsl(var(--primary) / 0.4);
+  }
+}
+
+.btn-premium::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.2) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: opacity 0.3s;
+}
+
+.btn-premium:hover::after {
+  animation: shine 0.8s ease-in-out;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-150%);
+  }
+
+  100% {
+    transform: translateX(150%);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
