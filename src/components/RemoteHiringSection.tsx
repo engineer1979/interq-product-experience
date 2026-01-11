@@ -8,7 +8,7 @@ const RemoteHiringSection = () => {
                 <img
                     src="/remote-call.jpg"
                     alt="Recruiter conducting a video interview call"
-                    className="w-full h-full object-cover opacity-30 transition-transform duration-[3s] group-hover:scale-105"
+                    className="w-full h-full object-cover opacity-30 transition-transform duration-[3000ms] group-hover:scale-105"
                     loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-slate-900/50" />
