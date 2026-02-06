@@ -28,14 +28,17 @@ interface Assessment {
   face_detection_enabled: boolean;
   tab_switch_detection: boolean;
   max_tab_switches: number;
+  passing_score: number;
 }
 
 interface Question {
   id: string;
   question_text: string;
+  question_type?: string;
   options: any;
   order_index: number;
   points: number;
+  correct_answer?: string;
 }
 
 export default function TakeAssessment() {
@@ -229,11 +232,14 @@ export default function TakeAssessment() {
         const initialTime = assessmentData.duration_minutes * 60;
         const { data: newSession, error: sessionError } = await supabase
           .from('assessment_sessions')
-          .insert({
+          .upsert({
             assessment_id: id,
             user_id: user?.id,
             time_remaining_seconds: initialTime,
-            current_question_index: 0
+            current_question_index: 0,
+            last_activity_at: new Date().toISOString()
+          }, {
+            onConflict: 'assessment_id,user_id'
           })
           .select()
           .single();
@@ -315,15 +321,30 @@ export default function TakeAssessment() {
 
       const answersArray = questions.map(q => {
         const userAnswer = answers[q.id];
-        const isCorrect = false; // Will be evaluated server-side
+        let isCorrect = false;
+        let pointsEarned = 0;
+        
+        // Auto-grade MCQ
+        if ((q.question_type === 'mcq' || !q.question_type) && q.correct_answer) {
+             if (userAnswer === q.correct_answer) {
+                 isCorrect = true;
+                 pointsEarned = q.points;
+             }
+        }
+        
         totalPoints += q.points;
+        totalScore += pointsEarned;
+        
         return {
           question_id: q.id,
           answer: userAnswer || "",
           is_correct: isCorrect,
-          points_earned: 0
+          points_earned: pointsEarned
         };
       });
+
+      const percentage = totalPoints > 0 ? (totalScore / totalPoints) * 100 : 0;
+      const passed = percentage >= (assessment?.passing_score || 70);
 
       // Insert result
       const { error: resultError } = await supabase
@@ -333,8 +354,8 @@ export default function TakeAssessment() {
           user_id: user?.id,
           score: totalScore,
           total_points: totalPoints,
-          percentage: 0,
-          passed: false,
+          percentage: percentage,
+          passed: passed,
           answers: answersArray,
           time_taken_minutes: assessment ? assessment.duration_minutes - Math.floor(timeRemaining / 60) : 0,
           tab_switches_count: tabSwitches,
@@ -354,7 +375,7 @@ export default function TakeAssessment() {
 
       toast({
         title: "Assessment Submitted",
-        description: "Great job! Proceeding to the AI Interview stage.",
+        description: `You scored ${totalScore}/${totalPoints} (${Math.round(percentage)}%). ${passed ? 'Passed!' : 'Failed.'}`,
       });
 
       navigate('/ai-interview');

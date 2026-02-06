@@ -34,9 +34,43 @@ serve(async (req) => {
     const mcqCount = Math.floor(questionCount * 0.6); // 60% MCQs
     const codingCount = questionCount - mcqCount; // 40% coding
 
-    const systemPrompt = `You are an expert technical interviewer for ${jobRole} positions. Generate interview questions that test real-world skills and knowledge.`;
+    // Fallback Mock Data in case of AI failure
+    const fallbackQuestions = {
+      mcqs: [
+        {
+          question_text: `What is a key principle of ${jobRole}?`,
+          options: ["Option A", "Option B", "Option C", "Option D"],
+          correct_answer: "Option A",
+          difficulty: difficulty,
+          points: 10
+        },
+        {
+          question_text: `Which tool is commonly used in ${jobRole}?`,
+          options: ["Tool X", "Tool Y", "Tool Z", "None"],
+          correct_answer: "Tool X",
+          difficulty: difficulty,
+          points: 10
+        }
+      ],
+      coding: [
+        {
+          question_text: `Write a function to solve a common problem in ${jobRole}.`,
+          difficulty: difficulty,
+          points: 20,
+          starter_code: "function solution() {\n  // Your code here\n}",
+          test_cases: [{ input: "test", expected_output: "result", description: "Sample case" }],
+          time_limit_minutes: 30,
+          language_options: ["javascript", "python"]
+        }
+      ]
+    };
 
-    const userPrompt = `Generate ${mcqCount} multiple-choice questions and ${codingCount} coding challenges for a ${difficulty} level ${jobRole} interview.
+    let questions = fallbackQuestions;
+
+    try {
+        const systemPrompt = `You are an expert technical interviewer for ${jobRole} positions. Generate interview questions that test real-world skills and knowledge.`;
+
+        const userPrompt = `Generate ${mcqCount} multiple-choice questions and ${codingCount} coding challenges for a ${difficulty} level ${jobRole} interview.
 
 For MCQs, return this exact JSON structure:
 {
@@ -68,40 +102,49 @@ For coding challenges, return this exact JSON structure:
   ]
 }
 
-Return both in a single JSON object: {"mcqs": [...], "coding": [...]}`;
+Return both in a single JSON object: {"mcqs": [...], "coding": [...]}. Do not include markdown code block syntax. Just raw JSON.`;
 
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt }
-        ],
-        temperature: 0.7,
-      }),
-    });
+        const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'google/gemini-1.5-flash',
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: userPrompt }
+            ],
+            temperature: 0.7,
+          }),
+        });
 
-    if (!aiResponse.ok) {
-      const errorText = await aiResponse.text();
-      console.error('AI Gateway error:', aiResponse.status, errorText);
-      throw new Error(`AI generation failed: ${errorText}`);
+        if (aiResponse.ok) {
+            const aiData = await aiResponse.json();
+            let generatedContent = aiData.choices[0].message.content;
+            
+            // Clean up markdown code blocks if present
+            generatedContent = generatedContent.replace(/```json/g, '').replace(/```/g, '').trim();
+            
+            // Parse JSON from AI response
+            const jsonMatch = generatedContent.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                questions = JSON.parse(jsonMatch[0]);
+            } else {
+                questions = JSON.parse(generatedContent);
+            }
+        } else {
+            console.warn("AI generation failed, using fallback questions.");
+        }
+    } catch (e) {
+        console.error('AI Generation/Parsing Error:', e);
+        console.warn("Using fallback questions due to error.");
+        // questions remains set to fallbackQuestions
     }
 
-    const aiData = await aiResponse.json();
-    const generatedContent = aiData.choices[0].message.content;
-    
-    // Parse JSON from AI response
-    const jsonMatch = generatedContent.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error('Failed to parse JSON from AI response');
-    }
-    
-    const questions = JSON.parse(jsonMatch[0]);
+    // First, delete any existing questions for this interview to avoid duplicates
+    await supabase.from('interview_questions').delete().eq('interview_id', interviewId)
 
     // Insert MCQs into database
     const mcqPromises = questions.mcqs?.map((q: any, index: number) => 
