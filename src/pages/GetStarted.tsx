@@ -223,21 +223,21 @@ const GetStarted = () => {
 
                   <p className="text-xs text-muted-foreground text-center">
                     By signing up, you agree to our{" "}
-                    <a href="#" className="text-primary hover:underline">
+                    <Link to="/terms-of-service" className="text-primary hover:underline">
                       Terms of Service
-                    </a>{" "}
+                    </Link>{" "}
                     and{" "}
-                    <a href="#" className="text-primary hover:underline">
+                    <Link to="/privacy-policy" className="text-primary hover:underline">
                       Privacy Policy
-                    </a>
+                    </Link>
                   </p>
 
                   <div className="text-center pt-4">
                     <span className="text-sm text-muted-foreground">
                       Already have an account?{" "}
-                      <a href="#" className="text-primary font-semibold hover:underline">
+                      <Link to="/auth" className="text-primary font-semibold hover:underline">
                         Sign in
-                      </a>
+                      </Link>
                     </span>
                   </div>
                 </form>
@@ -266,7 +266,7 @@ const GetStarted = () => {
               Protecting Your Data with the Highest Standards
             </h3>
             <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-              InterQ is committed to enterprise-grade security and compliance, ensuring your hiring data remains safe and confidential.
+              InterQ is committed to organizational-grade security and compliance, ensuring your hiring data remains safe and confidential.
             </p>
             <div className="flex justify-center gap-8 flex-wrap">
               <div className="flex items-center gap-2">

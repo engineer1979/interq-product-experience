@@ -56,7 +56,10 @@ export function AdminLayout() {
                     })}
                 </nav>
                 <div className="px-4 pb-4 md:absolute md:bottom-4 md:left-4 md:right-4">
-                    <Button variant="ghost" className="w-full justify-start">
+                    <Button variant="ghost" className="w-full justify-start" onClick={() => {
+                        // Add logout functionality here
+                        window.location.href = '/auth';
+                    }}>
                         <LogOut className="h-4 w-4 mr-2" />
                         Logout
                     </Button>

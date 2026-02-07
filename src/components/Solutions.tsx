@@ -41,7 +41,7 @@ const Solutions = () => {
     {
       icon: Boxes,
       title: "Scalable for All Sizes",
-      description: "From startups to enterprises, our platform grows with your organization's needs",
+      description: "From startups to organizational hiring teams, our platform grows with your organization's needs",
       gradient: "from-pink-500 to-pink-600"
     },
     {

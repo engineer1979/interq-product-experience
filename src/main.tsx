@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import "./styles/team-images.css";
 
 import { HelmetProvider } from "react-helmet-async";
 

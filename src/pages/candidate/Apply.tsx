@@ -115,7 +115,7 @@ export default function ApplyPage() {
 
             // 3. Redirect to Assessment
             // Pass the Application ID so the assessment can link results back
-            navigate(`/voice-interview?applicationId=${appData.id}`);
+            navigate(`/live-interview?applicationId=${appData.id}`);
 
         } catch (error: any) {
             console.error(error);

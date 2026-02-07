@@ -6,7 +6,7 @@ const industries = [
     { name: "Finance", icon: DollarSign, color: "text-green-500", bg: "bg-green-500/10" },
     { name: "Mining", icon: Pickaxe, color: "text-amber-600", bg: "bg-amber-600/10" },
     { name: "Sustainability", icon: Leaf, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-    { name: "University", icon: GraduationCap, color: "text-blue-500", bg: "bg-blue-500/10" },
+    { name: "Educational Institutes", icon: GraduationCap, color: "text-blue-500", bg: "bg-blue-500/10" },
 ];
 
 const FutureExpansion = () => {

@@ -34,7 +34,7 @@ export default function AdminSettings() {
                         <CardContent className="space-y-4">
                             <div className="grid gap-2">
                                 <Label htmlFor="workspace-name">Workspace Name</Label>
-                                <Input id="workspace-name" defaultValue="InterQ Recruitment Team" />
+                                <Input id="workspace-name" defaultValue="InterQ Technologies Inc." />
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="workspace-email">Contact Email</Label>

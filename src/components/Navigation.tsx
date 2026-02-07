@@ -29,7 +29,7 @@ const Navigation = () => {
     { label: "Product", href: "/product" },
     { label: "Assessments", href: "/assessments" },
     { label: "AI Interviewing", href: "/ai-interview" },
-    { label: "Voice Interview", href: "/voice-interview" },
+    { label: "Live Interview", href: "/live-interview" },
     { label: "Solutions", href: "/solutions" },
     { label: "Pricing", href: "/pricing" },
     { label: "About", href: "/about" },

@@ -21,7 +21,7 @@ const Solutions = () => {
   const solutions = {
     enterprise: {
       icon: Building2,
-      title: "Enterprise Solutions",
+      title: "Organizational hiring Solutions",
       subtitle: "For large organizations with complex hiring needs",
       benefits: [
         "Unlimited assessments and interviews",
@@ -103,6 +103,7 @@ const Solutions = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
 
+      {/* Hero Section with Remote Hiring Image */}
       <section className="pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-7xl">
           <motion.div
@@ -111,11 +112,25 @@ const Solutions = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
+            <div className="relative mb-8 rounded-2xl overflow-hidden shadow-2xl max-w-4xl mx-auto">
+              <img
+                src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                alt="Remote Hiring Made Easy - Professional team meeting"
+                className="w-full h-64 md:h-96 object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6 text-white">
+                <h2 className="text-2xl md:text-4xl font-bold mb-2">Remote Hiring Made Easy</h2>
+                <p className="text-lg md:text-xl opacity-90">Connect with top talent anywhere in the world</p>
+              </div>
+            </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               Solutions for <span className="gradient-primary bg-clip-text text-transparent">Every</span> Organization
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Whether you're a startup, recruitment agency, or enterprise - we have the perfect solution for your hiring needs
+              Whether you're a startup, recruitment agency, or organizational hiring - we have the perfect solution for your hiring needs
             </p>
           </motion.div>
 
@@ -135,7 +150,7 @@ const Solutions = () => {
                 <solution.icon className={`w-6 h-6 md:w-8 md:h-8 mb-2 md:mb-3 ${
                   selectedSolution === key ? "text-primary" : "text-muted-foreground"
                 }`} />
-                <h3 className="font-semibold text-sm md:text-base mb-1">{solution.title.replace(/^For |^Enterprise /, "")}</h3>
+                <h3 className="font-semibold text-sm md:text-base mb-1">{solution.title.replace(/^For |^Organizational hiring /, "")}</h3>
               </button>
             ))}
           </div>

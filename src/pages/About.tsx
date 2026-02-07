@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Target, Eye, Heart, Zap, Users, Globe } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import TeamSection from "@/components/TeamSection";
 
 const About = () => {
   const { toast } = useToast();
@@ -58,52 +59,68 @@ const About = () => {
             className="text-center max-w-4xl mx-auto"
           >
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              About <span className="gradient-primary bg-clip-text text-transparent">InterQ</span>
+              Hire Smarter. Get hired faster.
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
-              We're on a mission to transform recruitment through AI, making hiring faster, fairer, and more efficient for organizations worldwide.
+              InterQ is an AI-powered assessment platform built to fix what traditional hiring gets wrong. We replace resumes, biased interviews, and gut decisions with objective, skill-based evaluations — so companies identify real talent, faster and fairer. 
+              <br /><br />
+              InterQ is an AI-powered assessment platform built to fix what traditional hiring gets wrong. We replace resumes, biased interviews, and gut decisions with objective, skill-based evaluations so companies identify real talent, faster and fairer.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Company Info */}
+      {/* Meet the Team */}
+      <TeamSection />
+
+      {/* Mission Section */}
+      <section className="py-20 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-4xl mx-auto"
+          >
+            <h2 className="text-4xl font-bold mb-6">Our Mission</h2>
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              To streamline hiring through AI-driven interviews and assessments, making recruitment efficient, unbiased, and scalable for organizations worldwide.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Vision Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-7xl">
-          <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-4xl font-bold mb-6">InterQ Enterprise Inc</h2>
-              <p className="text-lg text-muted-foreground mb-6">
-                Founded with a vision to revolutionize the recruitment industry, InterQ combines cutting-edge AI technology with deep industry expertise to deliver unparalleled hiring solutions.
-              </p>
-              <p className="text-lg text-muted-foreground mb-6">
-                <strong className="text-foreground">Our Mission:</strong> Streamline hiring through AI-driven interviews and assessments, making recruitment efficient, unbiased, and scalable.
-              </p>
-              <p className="text-lg text-muted-foreground">
-                <strong className="text-foreground">Our Vision:</strong> To become the leading AI recruitment platform across North America, Middle East and beyond.
-              </p>
-            </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-4xl mx-auto"
+          >
+            <h2 className="text-4xl font-bold mb-6">Our Vision</h2>
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              To become the leading AI recruitment platform across North America, Middle East and beyond, transforming how organizations identify and hire talent through objective, skill-based evaluations.
+            </p>
+          </motion.div>
+        </div>
+      </section>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="bg-muted rounded-2xl h-96 flex items-center justify-center"
-            >
-              <Users className="w-32 h-32 text-primary/20" />
-            </motion.div>
-          </div>
-
-          {/* Core Values */}
-          <div className="mb-20">
-            <h2 className="text-4xl font-bold text-center mb-12">Our Core Values</h2>
-            <div className="grid md:grid-cols-3 gap-8">
+      {/* Our Values - Fixed Accordion */}
+      <section className="py-20 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto"
+          >
+            <h2 className="text-4xl font-bold text-center mb-12 text-foreground">Our Values</h2>
+            <div className="grid md:grid-cols-2 gap-6">
               {values.map((value, index) => (
                 <motion.div
                   key={value.title}
@@ -111,57 +128,76 @@ const About = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-card border border-border rounded-xl p-6 shadow-soft hover:shadow-elegant transition-smooth"
+                  className="bg-card border border-border rounded-xl p-6 shadow-soft"
                 >
-                  <value.icon className="w-12 h-12 text-primary mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">{value.title}</h3>
-                  <p className="text-muted-foreground">{value.description}</p>
+                  <div className="flex items-start gap-4">
+                    <value.icon className="w-8 h-8 text-primary mt-1 flex-shrink-0" />
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2 text-foreground">{value.title}</h3>
+                      <p className="text-muted-foreground">{value.description}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-bold mb-4">Our Journey</h2>
+            <p className="text-xl text-muted-foreground">How we got here</p>
+          </motion.div>
+          <div className="max-w-4xl mx-auto">
+            <div className="relative">
+              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-border" />
+              {timeline.map((item, index) => (
+                <motion.div
+                  key={item.year}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className={`flex items-center mb-8 ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"}`}
+                >
+                  <div className={`w-1/2 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8"}`}>
+                    <div className="bg-card border border-border rounded-xl p-6 shadow-soft">
+                      <div className="text-primary font-bold text-lg mb-2">{item.year}</div>
+                      <h3 className="font-semibold mb-2">{item.event}</h3>
+                      <p className="text-sm text-muted-foreground">{item.description}</p>
+                    </div>
+                  </div>
+                  <div className="relative flex items-center justify-center w-12 h-12">
+                    <div className="w-4 h-4 rounded-full bg-primary border-4 border-background" />
+                  </div>
+                  <div className="w-1/2" />
                 </motion.div>
               ))}
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Timeline */}
-          <div className="mb-20">
-            <h2 className="text-4xl font-bold text-center mb-12">Our Journey</h2>
-            <div className="max-w-4xl mx-auto">
-              <div className="relative">
-                <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-border" />
-                {timeline.map((item, index) => (
-                  <motion.div
-                    key={item.year}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className={`flex items-center mb-8 ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"}`}
-                  >
-                    <div className={`w-1/2 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8"}`}>
-                      <div className="bg-card border border-border rounded-xl p-6 shadow-soft">
-                        <div className="text-primary font-bold text-lg mb-2">{item.year}</div>
-                        <h3 className="font-semibold mb-2">{item.event}</h3>
-                        <p className="text-sm text-muted-foreground">{item.description}</p>
-                      </div>
-                    </div>
-                    <div className="relative flex items-center justify-center w-12 h-12">
-                      <div className="w-4 h-4 rounded-full bg-primary border-4 border-background" />
-                    </div>
-                    <div className="w-1/2" />
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Form */}
-          <div className="max-w-2xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="bg-card border border-border rounded-2xl p-8 shadow-elegant"
-            >
+      {/* Contact Form */}
+      <section className="py-20 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-2xl mx-auto"
+          >
+            <div className="bg-card border border-border rounded-2xl p-8 shadow-elegant">
               <h2 className="text-3xl font-bold mb-6 text-center">Get in Touch</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
@@ -200,8 +236,8 @@ const About = () => {
                   Send Message
                 </Button>
               </form>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 

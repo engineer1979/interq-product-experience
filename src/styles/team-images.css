@@ -1,0 +1,297 @@
+/* Professional team image styling with clean white backgrounds */
+
+.team-image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.8),
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(var(--primary-rgb), 0.15);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.team-image-container:hover {
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.9),
+    0 12px 48px rgba(0, 0, 0, 0.15),
+    0 0 0 3px rgba(var(--primary-rgb), 0.25),
+    0 0 30px rgba(var(--primary-rgb), 0.1);
+  transform: translateY(-2px);
+}
+
+.team-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #ffffff;
+  border-radius: 50%;
+  /* Enhanced image quality for crisp display */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  /* Smooth scaling */
+  transform: scale(1);
+  filter: 
+    contrast(1.02) 
+    brightness(1.01) 
+    saturate(1.05) 
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.team-image-container:hover img {
+  transform: scale(1.03);
+  filter: 
+    contrast(1.05) 
+    brightness(1.03) 
+    saturate(1.08) 
+    drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+}
+
+/* Professional background enhancement */
+.team-image-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(248, 250, 252, 0.8) 70%,
+    rgba(241, 245, 249, 0.6) 100%
+  );
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.team-image-container img {
+  position: relative;
+  z-index: 2;
+}
+
+/* Subtle highlight effect */
+.team-image-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 100%
+  );
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.team-image-container:hover::after {
+  opacity: 0.8;
+}
+
+/* Ensure consistent aspect ratios across all team images */
+.team-member-image-wrapper {
+  width: 240px;
+  height: 240px;
+  margin-bottom: 2rem;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Enhanced responsive sizing */
+@media (max-width: 1280px) {
+  .team-member-image-wrapper {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .team-member-image-wrapper {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .team-member-image-wrapper {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .team-image-container {
+    box-shadow: 
+      0 0 0 1px rgba(255, 255, 255, 0.8),
+      0 6px 24px rgba(0, 0, 0, 0.1),
+      0 0 0 2px rgba(var(--primary-rgb), 0.15);
+  }
+}
+
+@media (max-width: 640px) {
+  .team-member-image-wrapper {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-member-image-wrapper {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+/* Professional card styling */
+.team-member-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.team-member-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
+}
+
+/* Enhanced image border and shadow effects */
+.image-border-enhanced {
+  border-width: 8px;
+  border-color: #ffffff;
+  border-style: solid;
+  border-radius: 50%;
+  box-shadow: 
+    0 20px 40px -10px rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(var(--primary-rgb), 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.image-border-enhanced:hover {
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 3px rgba(var(--primary-rgb), 0.3),
+    0 0 40px rgba(var(--primary-rgb), 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Professional gradient overlay for depth */
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.image-overlay:hover {
+  opacity: 1;
+}
+
+/* Glow effect for enhanced visual appeal */
+.image-glow {
+  position: absolute;
+  inset: -12px;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--primary-rgb), 0.15) 0%,
+    transparent 60%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.image-glow:hover {
+  opacity: 1;
+}
+
+/* Ensure proper image scaling and centering */
+.team-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: center center;
+  background-color: #ffffff;
+  border-radius: 50%;
+}
+
+/* Fallback for images that need cover instead of contain */
+.team-image-cover {
+  object-fit: cover;
+  object-position: center center;
+  background-color: #ffffff;
+  border-radius: 50%;
+}
+
+/* High DPI display support for crisp images */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .team-image-container img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: pixelated;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .team-image-container {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    box-shadow: 
+      0 0 0 1px rgba(255, 255, 255, 0.1),
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 0 0 2px rgba(var(--primary-rgb), 0.3);
+  }
+  
+  .team-image-container img {
+    background: #1e293b;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .team-image-container,
+  .team-image-container img,
+  .image-border-enhanced,
+  .team-member-card {
+    transition: none;
+  }
+  
+  .team-image-container:hover {
+    transform: none;
+  }
+  
+  .team-image-container:hover img {
+    transform: none;
+    filter: none;
+  }
+}

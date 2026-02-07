@@ -40,7 +40,7 @@ const Pricing = () => {
       popular: true,
     },
     {
-      name: "Enterprise",
+      name: "Organizational hiring",
       description: "For large organizations",
       displayPrice: "Contact Sales",
       features: [
@@ -141,7 +141,7 @@ const Pricing = () => {
                 },
                 {
                   question: "What payment methods do you accept?",
-                  answer: "We accept all major credit cards, PayPal, and wire transfers for enterprise plans.",
+                  answer: "We accept all major credit cards, PayPal, and wire transfers for organizational hiring plans.",
                 },
                 {
                   question: "Is there a free trial?",

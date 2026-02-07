@@ -144,7 +144,7 @@ export function IntegrationsTab() {
                 </h4>
                 <p className="text-sm text-yellow-700 dark:text-yellow-400">
                     Need to connect with Workday, SAP, or specific HRIS systems?
-                    <a href="#" className="underline ml-1 font-medium">Contact our Sales Team</a> to enable enterprise integration packages.
+                    <Link to="/get-started" className="underline ml-1 font-medium">Contact our Sales Team</Link> to enable enterprise integration packages.
                 </p>
             </div>
         </div>

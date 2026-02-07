@@ -61,63 +61,87 @@ const team = [
 
 const TeamSection = () => {
     return (
-        <section className="py-24 bg-background text-foreground">
-            <div className="container mx-auto px-4 lg:px-8">
+        <section className="py-24 bg-gradient-to-br from-slate-50 via-white to-slate-100 text-foreground relative overflow-hidden">
+            {/* Clean background decoration */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-white to-slate-50 rounded-full blur-3xl opacity-60" />
+                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-slate-50 to-white rounded-full blur-3xl opacity-60" />
+            </div>
+            
+            <div className="container mx-auto px-4 lg:px-8 relative z-10">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-6">Meet the Team Behind InterQ</h2>
-                    <p className="text-muted-foreground text-lg">
-                        The talent, expertise, and passion driving our platform's success.
-                    </p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        viewport={{ once: true }}
+                    >
+                        <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent">
+                            Meet the Team Behind InterQ
+                        </h2>
+                        <p className="text-muted-foreground text-xl leading-relaxed">
+                            The talent, expertise, and passion driving our platform's success.
+                        </p>
+                    </motion.div>
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-stretch">
                     {team.map((member, index) => (
                         <motion.div
                             key={member.name}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1, duration: 0.5 }}
-                            viewport={{ once: true }}
+                            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ 
+                                delay: index * 0.15, 
+                                duration: 0.7,
+                                ease: "easeOut"
+                            }}
+                            viewport={{ once: true, margin: "-50px" }}
                             className="h-full"
+                            whileHover={{ y: -5, scale: 1.02 }}
                         >
-                            <Card className="h-full border-border/50 bg-card/50 hover:bg-card transition-all duration-300 hover:shadow-xl flex flex-col items-center text-center p-8">
-                                {/* Image Container */}
-                                <div className="relative w-[200px] h-[200px] mb-8 shrink-0">
-                                    <div className="w-full h-full rounded-full overflow-hidden border-[6px] border-background shadow-lg ring-1 ring-border relative group">
+                            <Card className="team-member-card h-full bg-white/95 hover:bg-white backdrop-blur-sm border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 flex flex-col items-center text-center p-8">
+                                {/* Image Container - Professional clean white background */}
+                                <div className="team-member-image-wrapper relative mb-8">
+                                    <div className="team-image-container w-full h-full relative group">
                                         <img
                                             src={member.image}
                                             alt={member.name}
-                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                            loading="lazy"
+                                            className="team-image w-full h-full object-contain transition-all duration-500 group-hover:scale-105 group-hover:brightness-110"
+                                            loading="eager"
+                                            decoding="async"
+                                            onError={(e) => {
+                                                const target = e.target as HTMLImageElement;
+                                                target.classList.remove('team-image');
+                                                target.classList.add('team-image-cover');
+                                            }}
                                         />
-                                        {/* Subtle overlay on hover */}
-                                        <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                                     </div>
                                 </div>
 
                                 {/* Content */}
                                 <div className="flex-1 flex flex-col w-full">
-                                    <h3 className="text-2xl font-bold mb-2 text-foreground">{member.name}</h3>
-                                    <p className="text-primary font-semibold text-sm mb-6 uppercase tracking-wide px-4 border-b pb-4 border-border/50">
+                                    <h3 className="text-2xl font-bold mb-2 text-slate-800 tracking-tight">{member.name}</h3>
+                                    <p className="text-primary font-semibold text-sm mb-6 uppercase tracking-wider px-4 border-b pb-4 border-slate-200">
                                         {member.role}
                                     </p>
 
-                                    <p className="text-muted-foreground leading-relaxed mb-6 px-2">
+                                    <p className="text-slate-600 leading-relaxed mb-6 px-2 text-base">
                                         {member.bio}
                                     </p>
 
                                     <div className="mt-auto pt-4 flex flex-col items-center gap-4">
-                                        <p className="italic text-sm text-foreground/80 font-medium">"{member.quote}"</p>
+                                        <p className="italic text-base text-slate-700 font-medium leading-relaxed max-w-xs">"{member.quote}"</p>
 
-                                        <div className="flex gap-4 mt-2">
+                                        <div className="flex gap-3 mt-2">
                                             {member.socials.linkedin && (
-                                                <a href={member.socials.linkedin} className="text-muted-foreground hover:text-blue-600 transition-colors bg-secondary/50 p-2 rounded-full hover:bg-secondary">
-                                                    <Linkedin className="w-5 h-5" />
+                                                <a href={member.socials.linkedin} className="text-slate-500 hover:text-blue-600 transition-all duration-300 bg-white/80 hover:bg-white shadow-sm hover:shadow-md p-3 rounded-full group border border-slate-200 hover:border-blue-300">
+                                                    <Linkedin className="w-5 h-5 group-hover:scale-110 transition-transform" />
                                                 </a>
                                             )}
                                             {member.socials.twitter && (
-                                                <a href={member.socials.twitter} className="text-muted-foreground hover:text-sky-500 transition-colors bg-secondary/50 p-2 rounded-full hover:bg-secondary">
-                                                    <Twitter className="w-5 h-5" />
+                                                <a href={member.socials.twitter} className="text-slate-500 hover:text-sky-500 transition-all duration-300 bg-white/80 hover:bg-white shadow-sm hover:shadow-md p-3 rounded-full group border border-slate-200 hover:border-sky-300">
+                                                    <Twitter className="w-5 h-5 group-hover:scale-110 transition-transform" />
                                                 </a>
                                             )}
                                             {/* Github was mainly for engineers, can re-add if needed for specific roles */}

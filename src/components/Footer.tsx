@@ -6,7 +6,7 @@ const Footer = () => {
   const navigate = useNavigate();
   const footerLinks = {
     Product: ["Features", "Assessments", "AI Interviewing", "Pricing", "Integrations"],
-    Solutions: ["For Recruiters", "For Enterprises", "For SMEs", "Industry Solutions"],
+    Solutions: ["For Recruiters", "For Organizational hiring", "For SMEs", "Industry Solutions"],
     Resources: ["Blog", "Documentation", "Case Studies", "Help Center", "API"],
     Company: ["About Us", "Careers", "Press Kit", "Partners", "Contact"],
   };
@@ -59,7 +59,7 @@ const Footer = () => {
                       <Link to="/help-center" className="text-background/70 hover:text-primary transition-smooth text-sm">Help Center</Link>
                     )}
                     {link !== "Blog" && link !== "Documentation" && link !== "Case Studies" && link !== "Help Center" && (
-                      <a href="#" className="text-background/70 hover:text-primary transition-smooth text-sm">{link}</a>
+                      <Link to={`/${link.toLowerCase().replace(/\s+/g, '-')}`} className="text-background/70 hover:text-primary transition-smooth text-sm">{link}</Link>
                     )}
                   </li>
                 ))}
@@ -91,31 +91,31 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-background/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-sm text-background/60">
-            © 2025 InterQ Enterprise Inc. All rights reserved.
+            © 2025 InterQ Technologies Inc. All rights reserved.
           </div>
           
           <div className="flex items-center gap-6">
-            <a href="#" className="text-background/60 hover:text-primary transition-smooth">
+            <a href="https://linkedin.com/company/interq" target="_blank" rel="noopener noreferrer" className="text-background/60 hover:text-primary transition-smooth">
               <Linkedin className="h-5 w-5" />
             </a>
-            <a href="#" className="text-background/60 hover:text-primary transition-smooth">
+            <a href="https://twitter.com/interq" target="_blank" rel="noopener noreferrer" className="text-background/60 hover:text-primary transition-smooth">
               <Twitter className="h-5 w-5" />
             </a>
-            <a href="#" className="text-background/60 hover:text-primary transition-smooth">
+            <a href="https://facebook.com/interq" target="_blank" rel="noopener noreferrer" className="text-background/60 hover:text-primary transition-smooth">
               <Facebook className="h-5 w-5" />
             </a>
-            <a href="#" className="text-background/60 hover:text-primary transition-smooth">
+            <a href="https://instagram.com/interq" target="_blank" rel="noopener noreferrer" className="text-background/60 hover:text-primary transition-smooth">
               <Instagram className="h-5 w-5" />
             </a>
           </div>
 
           <div className="flex gap-6 text-sm">
-            <a href="#" className="text-background/60 hover:text-primary transition-smooth">
+            <Link to="/privacy-policy" className="text-background/60 hover:text-primary transition-smooth">
               Privacy Policy
-            </a>
-            <a href="#" className="text-background/60 hover:text-primary transition-smooth">
+            </Link>
+            <Link to="/terms-of-service" className="text-background/60 hover:text-primary transition-smooth">
               Terms of Service
-            </a>
+            </Link>
           </div>
         </div>
 

@@ -74,9 +74,9 @@ const HeroSection = () => {
               variants={itemVariants}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight"
             >
-              <span className="text-foreground/90">Fair, Scalable &</span>
+              <span className="text-foreground/90">Measure what matters.</span>
               <br />
-              <span className="text-primary">Insightful Interviews</span>
+              <span className="text-primary">Hire with confidence.</span>
             </motion.h1>
 
             {/* Subheading */}
@@ -94,36 +94,22 @@ const HeroSection = () => {
             >
               <motion.div variants={buttonVariants} className="w-full sm:w-auto">
                 <Button
-                  onClick={() => navigate('/create-interview')}
+                  onClick={() => navigate('/get-started')}
                   size="lg"
-                  className="w-full sm:w-auto h-14 px-8 text-lg rounded-xl shadow-md hover:shadow-xl hover:translate-y-[-2px] transition-all duration-300 gradient-primary text-primary-foreground border-0"
+                  className="w-full sm:w-auto h-14 px-8 text-lg rounded-xl shadow-md hover:shadow-xl hover:translate-y-[-2px] transition-all duration-300 bg-foreground text-background hover:bg-foreground/90 border-0"
                 >
-                  <Briefcase className="mr-2 h-5 w-5" />
-                  Hire with InterQ
+                  Request a Demo
                 </Button>
               </motion.div>
 
               <motion.div variants={buttonVariants} className="w-full sm:w-auto">
                 <Button
-                  onClick={() => navigate('/careers')}
-                  size="lg"
-                  variant="secondary"
-                  className="w-full sm:w-auto h-14 px-8 text-lg rounded-xl shadow-md hover:shadow-xl hover:translate-y-[-2px] transition-all duration-300 bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                >
-                  <UserCheck className="mr-2 h-5 w-5" />
-                  Join as Candidate
-                </Button>
-              </motion.div>
-
-              <motion.div variants={buttonVariants} className="w-full sm:w-auto">
-                <Button
-                  onClick={() => navigate('/auth?tab=register')}
+                  onClick={() => navigate('/how-it-works')}
                   size="lg"
                   variant="outline"
-                  className="w-full sm:w-auto h-14 px-8 text-lg rounded-xl shadow-sm hover:shadow-md hover:translate-y-[-2px] transition-all duration-300 border-2 border-primary/10 hover:border-primary/30 hover:bg-primary/5"
+                  className="w-full sm:w-auto h-14 px-8 text-lg rounded-xl shadow-sm hover:shadow-md hover:translate-y-[-2px] transition-all duration-300 border-2 border-foreground/20 hover:border-foreground/40 hover:bg-foreground/5"
                 >
-                  <Users className="mr-2 h-5 w-5" />
-                  Expert Interviewer
+                  See How It Works
                 </Button>
               </motion.div>
             </motion.div>
@@ -136,44 +122,67 @@ const HeroSection = () => {
             transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
             className="relative w-full flex justify-center lg:justify-end items-center mt-8 lg:mt-0"
           >
-            <div className="relative z-10 w-full max-w-[320px] sm:max-w-[360px] md:max-w-[400px]">
+            <div className="relative z-10 w-full max-w-[400px] sm:max-w-[450px] md:max-w-[500px]">
               {/* Decorative background blob */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[110%] bg-primary/20 rounded-full blur-3xl -z-10 animate-pulse" />
 
-              <div className="relative bg-card border border-border rounded-xl shadow-2xl overflow-hidden transform hover:scale-[1.02] transition-transform duration-500">
-                {/* Custom Header Overlay to replace existing logo */}
-                <div className="absolute top-0 left-0 right-0 h-16 bg-background/95 backdrop-blur-sm z-20 flex items-center justify-between px-4 border-b border-border/50">
-                  <div className="flex items-center gap-2">
-                    <img
-                      src="/interq-logo.png"
-                      alt="InterQ Logo"
-                      className="h-8 w-auto object-contain"
-                    />
-                    <span className="font-bold text-sm text-foreground/80">InterQ</span>
-                  </div>
-                  {/* Social Icons in Header */}
-                  <div className="flex items-center gap-3">
-                    <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                      <Linkedin className="w-4 h-4" />
-                    </a>
-                    <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                      <Facebook className="w-4 h-4" />
-                    </a>
-                    <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                      <Instagram className="w-4 h-4" />
-                    </a>
+              <div className="relative bg-card border border-border rounded-2xl shadow-2xl overflow-hidden transform hover:scale-[1.02] transition-transform duration-500">
+                {/* Demo Button - Prominently placed */}
+                <div className="absolute top-4 right-4 z-20">
+                  <Button
+                    onClick={() => navigate('/get-started')}
+                    size="sm"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
+                  >
+                    Demo
+                  </Button>
+                </div>
+
+                {/* Professional Remote Hiring Image */}
+                <div className="relative">
+                  <img
+                    src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80"
+                    alt="Remote Hiring Made Easy - Professional business team"
+                    className="w-full h-64 md:h-80 object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <div className="bg-background/90 backdrop-blur-sm rounded-lg p-3 border border-border/50">
+                      <div className="flex items-center gap-2 mb-2">
+                        <img
+                          src="/interq-logo.png"
+                          alt="InterQ Logo"
+                          className="h-6 w-auto object-contain"
+                        />
+                        <span className="font-bold text-sm text-foreground">InterQ</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">Making remote hiring seamless and efficient</p>
+                    </div>
                   </div>
                 </div>
 
-                {/* Video Embed */}
-                <div className="pt-16 pb-0"> {/* Padding top to account for header */}
-                  <iframe
-                    src="https://www.instagram.com/reel/DFsGakVJIyn/embed"
-                    className="w-full aspect-[9/16] border-none"
-                    title="InterQ Instagram Reel"
-                    allow="encrypted-media"
-                    scrolling="no"
-                  />
+                {/* Key Features Overlay */}
+                <div className="p-4 bg-gradient-to-br from-primary/5 to-accent/5">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <div className="w-2 h-2 rounded-full bg-primary" />
+                      <span>Global Talent</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <div className="w-2 h-2 rounded-full bg-primary" />
+                      <span>Seamless Process</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <div className="w-2 h-2 rounded-full bg-primary" />
+                      <span>AI-Powered</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <div className="w-2 h-2 rounded-full bg-primary" />
+                      <span>Real-time Insights</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

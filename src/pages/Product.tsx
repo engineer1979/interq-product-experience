@@ -194,7 +194,7 @@ const Product = () => {
             {[
               {
                 icon: Shield,
-                title: "Enterprise Security",
+                title: "Organizational Security",
                 description: "Bank-level encryption and SOC 2 compliance for your data",
               },
               {

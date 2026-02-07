@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
@@ -7,10 +7,13 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2, Clock, Code, CheckCircle2 } from "lucide-react";
+import { Loader2, Clock, Code, CheckCircle2, AlertCircle, Save, ArrowLeft, ArrowRight } from "lucide-react";
 import { MCQQuestion } from "@/components/interview/MCQQuestion";
 import { CodingQuestion } from "@/components/interview/CodingQuestion";
 import { useAuth } from "@/contexts/AuthContext";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 
 interface Question {
   id: string;
@@ -27,28 +30,41 @@ interface Question {
   language_options?: any;
 }
 
+interface InterviewSession {
+  id?: string;
+  current_question_index: number;
+  responses: Record<string, any>;
+  start_time: string;
+  time_remaining?: number;
+}
+
 export default function TakeInterview() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
+  
+  // State Management
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [interview, setInterview] = useState<any>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [startTime] = useState(Date.now());
   const [responses, setResponses] = useState<Record<string, any>>({});
+  const [session, setSession] = useState<InterviewSession | null>(null);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Auto-save timer
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [autoSaveInterval, setAutoSaveInterval] = useState<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    if (id) {
-      fetchInterviewData();
-    }
-  }, [id]);
-
-  const fetchInterviewData = async () => {
+  // Fetch interview data and resume session
+  const fetchInterviewData = useCallback(async () => {
     try {
       setLoading(true);
 
+      // Fetch interview details
       const { data: interviewData, error: interviewError } = await supabase
         .from('interviews')
         .select('*')
@@ -58,6 +74,7 @@ export default function TakeInterview() {
       if (interviewError) throw interviewError;
       setInterview(interviewData);
 
+      // Fetch questions
       const { data: questionsData, error: questionsError } = await supabase
         .from('interview_questions')
         .select('*')
@@ -66,7 +83,6 @@ export default function TakeInterview() {
 
       if (questionsError) throw questionsError;
 
-      // Transform the data to match our interface
       const transformedQuestions = questionsData?.map(q => ({
         ...q,
         options: q.options as any,
@@ -76,6 +92,42 @@ export default function TakeInterview() {
 
       setQuestions(transformedQuestions);
 
+      // Check for existing session
+      if (user) {
+        const { data: existingSession } = await supabase
+          .from('interview_sessions')
+          .select('*')
+          .eq('interview_id', id)
+          .eq('user_id', user.id)
+          .eq('completed', false)
+          .maybeSingle();
+
+        if (existingSession) {
+          setSession(existingSession);
+          setCurrentQuestionIndex(existingSession.current_question_index);
+          setResponses(existingSession.responses || {});
+          setLastSaved(new Date(existingSession.updated_at));
+        } else {
+          // Create new session
+          const newSession = {
+            interview_id: id,
+            user_id: user.id,
+            current_question_index: 0,
+            responses: {},
+            start_time: new Date().toISOString(),
+            completed: false,
+          };
+          
+          const { data: createdSession } = await supabase
+            .from('interview_sessions')
+            .insert(newSession)
+            .select()
+            .single();
+          
+          setSession(createdSession);
+        }
+      }
+
     } catch (error: any) {
       console.error('Error fetching interview:', error);
       toast({
@@ -83,26 +135,108 @@ export default function TakeInterview() {
         description: error.message,
         variant: "destructive",
       });
+      navigate('/interviews');
     } finally {
       setLoading(false);
     }
+  }, [id, user, navigate, toast]);
+
+  // Auto-save functionality
+  const saveProgress = useCallback(async () => {
+    if (!session?.id || !user) return;
+    
+    try {
+      setSaving(true);
+      await supabase
+        .from('interview_sessions')
+        .update({
+          current_question_index: currentQuestionIndex,
+          responses: responses,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', session.id);
+      
+      setLastSaved(new Date());
+    } catch (error) {
+      console.error('Auto-save failed:', error);
+    } finally {
+      setSaving(false);
+    }
+  }, [session, currentQuestionIndex, responses, user]);
+
+  // Set up auto-save interval
+  useEffect(() => {
+    const interval = setInterval(saveProgress, 30000); // Auto-save every 30 seconds
+    setAutoSaveInterval(interval);
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [saveProgress]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (autoSaveInterval) clearInterval(autoSaveInterval);
+    };
+  }, [autoSaveInterval]);
+
+  // Initial data fetch
+  useEffect(() => {
+    if (id && user) {
+      fetchInterviewData();
+    }
+  }, [id, user, fetchInterviewData]);
+
+  // Validate current question
+  const validateCurrentQuestion = (): boolean => {
+    const currentQuestion = questions[currentQuestionIndex];
+    if (!currentQuestion) return true;
+
+    const response = responses[currentQuestion.id];
+    const errors: Record<string, string> = {};
+
+    if (currentQuestion.question_type === 'mcq') {
+      if (!response) {
+        errors[currentQuestion.id] = "Please select an answer";
+      }
+    } else if (currentQuestion.question_type === 'coding') {
+      if (!response?.code || response.code.trim() === '') {
+        errors[currentQuestion.id] = "Please write your code solution";
+      }
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
+  // Handle answer changes
   const handleAnswerChange = (questionId: string, answer: any) => {
     setResponses(prev => ({
       ...prev,
       [questionId]: answer
     }));
+    // Clear validation error for this question
+    setValidationErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors[questionId];
+      return newErrors;
+    });
   };
 
+  // Navigation handlers
   const handleNext = async () => {
-    const currentQuestion = questions[currentQuestionIndex];
-
-    // Save current answer if provided
-    if (responses[currentQuestion.id]) {
-      await saveResponse(currentQuestion);
+    if (!validateCurrentQuestion()) {
+      toast({
+        title: "Please answer the question",
+        description: validationErrors[questions[currentQuestionIndex].id],
+        variant: "destructive",
+      });
+      return;
     }
 
+    await saveProgress();
+    
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
     } else {
@@ -110,179 +244,246 @@ export default function TakeInterview() {
     }
   };
 
-  const handlePrevious = () => {
+  const handlePrevious = async () => {
     if (currentQuestionIndex > 0) {
+      await saveProgress();
       setCurrentQuestionIndex(prev => prev - 1);
     }
   };
 
-  const saveResponse = async (question: Question) => {
-    try {
-      const response = responses[question.id];
-
-      if (question.question_type === 'mcq') {
-        await supabase.from('interview_responses').upsert({
-          interview_id: id,
-          question_id: question.id,
-          user_id: user?.id,
-          answer_text: response,
-          is_correct: response === question.correct_answer,
-          points_earned: response === question.correct_answer ? question.points : 0,
-        });
-      } else if (question.question_type === 'coding') {
-        // Coding evaluation happens via edge function
-        const { data, error } = await supabase.functions.invoke('evaluate-code', {
-          body: {
-            questionId: question.id,
-            code: response.code,
-            language: response.language,
-            userId: user?.id,
-            interviewId: id,
-          }
-        });
-
-        if (error) throw error;
-      }
-    } catch (error: any) {
-      console.error('Error saving response:', error);
-    }
-  };
-
+  // Submit interview
   const submitInterview = async () => {
+    if (!user || !session) return;
+    
     try {
-      const timeTaken = Math.floor((Date.now() - startTime) / 60000);
+      setIsSubmitting(true);
+      
+      // Calculate score
+      let totalPoints = 0;
+      let earnedPoints = 0;
 
-      // Calculate total score
-      const { data: responsesData } = await supabase
-        .from('interview_responses')
-        .select('points_earned')
-        .eq('interview_id', id)
-        .eq('user_id', user?.id);
+      // Process MCQ responses
+      for (const question of questions) {
+        const response = responses[question.id];
+        if (!response) continue;
 
-      const totalPoints = responsesData?.reduce((sum, r) => sum + (r.points_earned || 0), 0) || 0;
-      const maxPoints = questions.reduce((sum, q) => sum + q.points, 0);
-      const percentage = maxPoints > 0 ? (totalPoints / maxPoints) * 100 : 0;
+        if (question.question_type === 'mcq') {
+          const isCorrect = response === question.correct_answer;
+          const pointsEarned = isCorrect ? question.points : 0;
+          
+          totalPoints += question.points;
+          earnedPoints += pointsEarned;
 
+          await supabase.from('interview_responses').insert({
+            interview_id: id,
+            question_id: question.id,
+            user_id: user.id,
+            answer_text: response,
+            is_correct: isCorrect,
+            points_earned: pointsEarned,
+          });
+        } else if (question.question_type === 'coding') {
+          // Evaluate coding responses
+          const { data, error } = await supabase.functions.invoke('evaluate-code', {
+            body: {
+              questionId: question.id,
+              code: response.code,
+              language: response.language,
+              userId: user.id,
+              interviewId: id,
+            }
+          });
+
+          if (!error && data) {
+            totalPoints += question.points;
+            earnedPoints += data.points_earned || 0;
+          }
+        }
+      }
+
+      const percentage = totalPoints > 0 ? (earnedPoints / totalPoints) * 100 : 0;
+
+      // Update session as completed
+      await supabase
+        .from('interview_sessions')
+        .update({
+          completed: true,
+          completed_at: new Date().toISOString(),
+          final_score: percentage,
+        })
+        .eq('id', session.id);
+
+      // Insert results
       await supabase.from('interview_results').insert({
         interview_id: id,
-        user_id: user?.id,
+        user_id: user.id,
         overall_score: percentage,
         technical_score: percentage,
         communication_score: 0,
         confidence_score: 0,
-        ai_feedback: { completed: true, timeTaken },
+        fraud_detected: false,
+        ai_feedback: {
+          total_points: totalPoints,
+          earned_points: earnedPoints,
+          completed_at: new Date().toISOString(),
+        }
       });
 
       toast({
-        title: "Interview Submitted",
-        description: "Your interview has been submitted successfully!",
+        title: "Interview Completed!",
+        description: `You scored ${Math.round(percentage)}% (${earnedPoints}/${totalPoints} points)`,
       });
 
       navigate('/ai-interview');
+      
     } catch (error: any) {
       console.error('Error submitting interview:', error);
       toast({
-        title: "Error",
+        title: "Submission Error",
         description: error.message,
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
+  // Loading state
   if (loading) {
     return (
       <ProtectedRoute>
-        <div className="min-h-screen flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <div className="min-h-screen flex items-center justify-center bg-background">
+          <div className="text-center">
+            <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
+            <p className="text-muted-foreground">Loading interview...</p>
+          </div>
+        </div>
+      </ProtectedRoute>
+    );
+  }
+
+  if (!interview || questions.length === 0) {
+    return (
+      <ProtectedRoute>
+        <div className="min-h-screen flex items-center justify-center bg-background">
+          <Alert className="max-w-md">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              No interview found. Please check the URL or contact support.
+            </AlertDescription>
+          </Alert>
         </div>
       </ProtectedRoute>
     );
   }
 
   const currentQuestion = questions[currentQuestionIndex];
+  const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+  const hasAnswer = responses[currentQuestion.id] !== undefined;
 
   return (
     <ProtectedRoute>
       <div className="min-h-screen flex flex-col bg-background">
         <Navigation />
 
-        <main className="flex-grow container mx-auto px-4 pt-28 pb-8">
-          <div className="max-w-4xl mx-auto">
-            {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold mb-2">{interview?.title}</h1>
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  {interview?.duration_minutes} minutes
-                </span>
-                <span className="flex items-center gap-1">
-                  <Code className="h-4 w-4" />
-                  {interview?.job_role}
-                </span>
+        <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold mb-2">{interview.title}</h1>
+                <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-4 w-4" />
+                    {interview.duration_minutes} minutes
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Code className="h-4 w-4" />
+                    {interview.job_role}
+                  </span>
+                  <Badge variant="outline">{currentQuestionIndex + 1} of {questions.length}</Badge>
+                </div>
               </div>
-            </div>
-
-            {/* Progress */}
-            <Card className="p-4 mb-6">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium">
-                  Question {currentQuestionIndex + 1} of {questions.length}
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  {Math.round(((currentQuestionIndex + 1) / questions.length) * 100)}% Complete
-                </span>
-              </div>
-              <div className="w-full bg-muted rounded-full h-2">
-                <div
-                  className="bg-primary h-2 rounded-full transition-all"
-                  style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
-                />
-              </div>
-            </Card>
-
-            {/* Question */}
-            {currentQuestion && (
-              <div className="mb-6">
-                {currentQuestion.question_type === 'mcq' ? (
-                  <MCQQuestion
-                    question={currentQuestion}
-                    selectedAnswer={responses[currentQuestion.id]}
-                    onAnswerChange={(answer) => handleAnswerChange(currentQuestion.id, answer)}
-                  />
-                ) : (
-                  <CodingQuestion
-                    question={currentQuestion}
-                    code={responses[currentQuestion.id]}
-                    onCodeChange={(code) => handleAnswerChange(currentQuestion.id, code)}
-                  />
+              
+              {/* Auto-save indicator */}
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                {saving && <Loader2 className="h-3 w-3 animate-spin" />}
+                {lastSaved && (
+                  <span className="text-xs">
+                    Saved {lastSaved.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
                 )}
               </div>
+            </div>
+            
+            {/* Progress bar */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span>Question {currentQuestionIndex + 1} of {questions.length}</span>
+                <span>{Math.round(progress)}% Complete</span>
+              </div>
+              <Progress value={progress} className="h-2" />
+            </div>
+          </div>
+
+          {/* Question */}
+          <div className="mb-8">
+            {validationErrors[currentQuestion.id] && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{validationErrors[currentQuestion.id]}</AlertDescription>
+              </Alert>
             )}
+            
+            {currentQuestion.question_type === 'mcq' ? (
+              <MCQQuestion
+                question={currentQuestion}
+                selectedAnswer={responses[currentQuestion.id]}
+                onAnswerChange={(answer) => handleAnswerChange(currentQuestion.id, answer)}
+              />
+            ) : (
+              <CodingQuestion
+                question={currentQuestion}
+                code={responses[currentQuestion.id]}
+                onCodeChange={(code) => handleAnswerChange(currentQuestion.id, code)}
+              />
+            )}
+          </div>
 
-            {/* Navigation Buttons */}
-            <div className="flex justify-between">
-              <Button
-                variant="outline"
-                onClick={handlePrevious}
-                disabled={currentQuestionIndex === 0}
-              >
-                Previous
-              </Button>
-              <Button
-                onClick={handleNext}
-                className="gap-2"
-              >
-                {currentQuestionIndex === questions.length - 1 ? (
-                  <>
-                    <CheckCircle2 className="h-4 w-4" />
-                    Submit Interview
-                  </>
-                ) : (
-                  'Next Question'
-                )}
-              </Button>
+          {/* Navigation */}
+          <div className="flex flex-col sm:flex-row justify-between gap-4">
+            <Button
+              variant="outline"
+              onClick={handlePrevious}
+              disabled={currentQuestionIndex === 0}
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Previous
+            </Button>
+            
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              {hasAnswer && <Save className="h-3 w-3 text-green-500" />}
+              <span>{hasAnswer ? 'Answered' : 'Not answered'}</span>
             </div>
+
+            <Button
+              onClick={handleNext}
+              disabled={isSubmitting}
+              className="flex items-center gap-2"
+            >
+              {currentQuestionIndex === questions.length - 1 ? (
+                <>
+                  <CheckCircle2 className="h-4 w-4" />
+                  {isSubmitting ? 'Submitting...' : 'Submit Interview'}
+                </>
+              ) : (
+                <>
+                  Next
+                  <ArrowRight className="h-4 w-4" />
+                </>
+              )}
+            </Button>
           </div>
         </main>
 

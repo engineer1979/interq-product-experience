@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 const cases = [
-  { title: "Enterprise Hiring", desc: "Reduced time-to-hire by 35% across regions." },
+  { title: "Organizational Hiring", desc: "Reduced time-to-hire by 35% across regions." },
   { title: "Campus Recruitment", desc: "Automated screening for 10k+ candidates." },
   { title: "Technical Interviews", desc: "Improved evaluation quality with AI feedback." },
 ];

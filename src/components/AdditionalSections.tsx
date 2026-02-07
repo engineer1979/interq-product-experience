@@ -13,7 +13,7 @@ const AdditionalSections: React.FC = () => {
                 />
                 <InfoSection
                     title="Security Assurance"
-                    description="Enterprise-grade security measures to protect your data and candidate privacy at every step."
+                    description="Organizational-grade security measures to protect your data and candidate privacy at every step."
                     icon={Shield}
                 />
                 <InfoSection
