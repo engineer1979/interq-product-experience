@@ -4,7 +4,7 @@ import { Shield, Database, Layout, Library, Headset } from "lucide-react";
 
 const AdditionalSections: React.FC = () => {
     return (
-        <section className="container mx-auto px-4 py-12 space-y-12">
+        <section className="container mx-auto px-4 lg:px-8 py-12 space-y-12">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <InfoSection
                     title="Data Collection"

@@ -10,6 +10,8 @@ const Index = lazy(() => import("./pages/Index"));
 const Auth = lazy(() => import("./pages/Auth"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
 const Product = lazy(() => import("./pages/Product"));
+const Features = lazy(() => import("./pages/Features"));
+const Integrations = lazy(() => import("./pages/Integrations"));
 const Assessments = lazy(() => import("./pages/Assessments"));
 const TakeAssessment = lazy(() => import("./pages/TakeAssessment"));
 const AIInterview = lazy(() => import("./pages/AIInterview"));
@@ -20,6 +22,9 @@ const LiveInterview = lazy(() => import("./pages/LiveInterview"));
 const Solutions = lazy(() => import("./pages/Solutions"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const About = lazy(() => import("./pages/About"));
+const PressKit = lazy(() => import("./pages/PressKit"));
+const Partners = lazy(() => import("./pages/Partners"));
+const Contact = lazy(() => import("./pages/Contact"));
 const Settings = lazy(() => import("./pages/Settings"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
@@ -53,6 +58,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/get-started" element={<GetStarted />} />
               <Route path="/product" element={<Product />} />
+              <Route path="/features" element={<Features />} />
               <Route path="/assessments" element={<Assessments />} />
               <Route path="/assessment/:id" element={<TakeAssessment />} />
               <Route path="/assessment-workflow" element={<AssessmentWorkflowPage />} />
@@ -62,9 +68,23 @@ const App = () => (
               <Route path="/create-interview" element={<CreateInterview />} />
               <Route path="/interview/:id" element={<TakeInterview />} />
               <Route path="/live-interview" element={<LiveInterview />} />
+              <Route path="/integrations" element={<Integrations />} />
               <Route path="/solutions" element={<Solutions />} />
+              <Route path="/solutions/recruiters" element={<Solutions />} />
+              <Route path="/for-recruiters" element={<Solutions />} />
+              <Route path="/solutions/enterprise" element={<Solutions />} />
+              <Route path="/for-organizational-hiring" element={<Solutions />} />
+              <Route path="/solutions/sme" element={<Solutions />} />
+              <Route path="/for-smes" element={<Solutions />} />
+              <Route path="/solutions/industry" element={<Solutions />} />
+              <Route path="/industry-solutions" element={<Solutions />} />
+              <Route path="/ai-interviewing" element={<AIInterview />} />
+              <Route path="/recruitment-automation" element={<AIInterview />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/about" element={<About />} />
+              <Route path="/press-kit" element={<PressKit />} />
+              <Route path="/partners" element={<Partners />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/landing" element={<LandingPage />} />
               <Route path="/blog" element={<Blog />} />
@@ -75,6 +95,11 @@ const App = () => (
               <Route path="/apply/:jobId" element={<ApplyPage />} />
               <Route path="/privacy-policy" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Privacy Policy</h1><p className="text-muted-foreground">Privacy policy content coming soon.</p></div></div>} />
               <Route path="/terms-of-service" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Terms of Service</h1><p className="text-muted-foreground">Terms of service content coming soon.</p></div></div>} />
+              <Route path="/cookie-policy" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Cookie Policy</h1><p className="text-muted-foreground">Cookie policy content coming soon.</p></div></div>} />
+              <Route path="/gdpr" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">GDPR Compliance</h1><p className="text-muted-foreground">GDPR compliance information coming soon.</p></div></div>} />
+              <Route path="/api-docs" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">API Documentation</h1><p className="text-muted-foreground">API documentation coming soon.</p></div></div>} />
+              <Route path="/partner-application" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Partner Application</h1><p className="text-muted-foreground">Partner application form coming soon.</p></div></div>} />
+              <Route path="/newsletter" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Newsletter Signup</h1><p className="text-muted-foreground">Newsletter signup coming soon.</p></div></div>} />
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
                 <Route path="jobs" element={<AdminJobs />} />

@@ -43,40 +43,40 @@ const FinalCTA = () => {
                         Join thousands of companies and professionals enhancing their recruitment process with InterQ.
                     </p>
 
-                    <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
+                    <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center items-stretch sm:items-center">
                         <Button
                             onClick={() => navigate('/create-interview')}
                             size="lg"
-                            className="h-16 px-8 text-lg bg-white text-primary hover:bg-white/90 shadow-xl w-full md:w-auto hover:-translate-y-1 transition-transform"
+                            className="h-12 sm:h-16 px-6 sm:px-8 text-base sm:text-lg bg-white text-primary hover:bg-white/90 shadow-xl w-full sm:w-auto hover:-translate-y-1 transition-all duration-300"
                         >
-                            <Briefcase className="mr-2 w-5 h-5" />
+                            <Briefcase className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
                             Recruiters: Start Hiring Smarter
                         </Button>
 
                         <Button
                             onClick={() => navigate('/careers')}
                             size="lg"
-                            className="h-16 px-8 text-lg bg-transparent border-2 border-white text-white hover:bg-white/10 shadow-xl w-full md:w-auto hover:-translate-y-1 transition-transform"
+                            className="h-12 sm:h-16 px-6 sm:px-8 text-base sm:text-lg bg-transparent border-2 border-white text-white hover:bg-white/10 shadow-xl w-full sm:w-auto hover:-translate-y-1 transition-all duration-300"
                         >
-                            <UserCheck className="mr-2 w-5 h-5" />
+                            <UserCheck className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
                             Candidates: Get Interview Ready
                         </Button>
 
                         <Button
                             onClick={() => navigate('/solutions?view=enterprise')}
                             size="lg"
-                            className="h-16 px-8 text-lg bg-gradient-to-r from-primary to-accent text-white hover:from-primary/90 hover:to-accent/90 border border-white/20 shadow-xl hover:shadow-2xl w-full md:w-auto hover:-translate-y-1 transition-all duration-300"
+                            className="h-12 sm:h-16 px-6 sm:px-8 text-base sm:text-lg bg-gradient-to-r from-primary to-accent text-white hover:from-primary/90 hover:to-accent/90 border border-white/20 shadow-xl hover:shadow-2xl w-full sm:w-auto hover:-translate-y-1 transition-all duration-300"
                         >
-                            <Building2 className="mr-2 w-5 h-5" />
+                            <Building2 className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
                             For Organizational Hiring
                         </Button>
 
                         <Button
                             onClick={() => navigate('/auth?tab=register')}
                             size="lg"
-                            className="h-16 px-8 text-lg bg-accent text-white hover:bg-accent/90 border border-white/20 shadow-xl w-full md:w-auto hover:-translate-y-1 transition-transform"
+                            className="h-12 sm:h-16 px-6 sm:px-8 text-base sm:text-lg bg-accent text-white hover:bg-accent/90 border border-white/20 shadow-xl w-full sm:w-auto hover:-translate-y-1 transition-all duration-300"
                         >
-                            <Users className="mr-2 w-5 h-5" />
+                            <Users className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
                             Interviewers: Join as Evaluator
                         </Button>
                     </div>

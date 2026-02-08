@@ -29,19 +29,23 @@ const TeamStorySection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-center space-y-8"
+          className="text-center space-y-10"
         >
-          <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-foreground font-bold leading-relaxed max-w-3xl mx-auto">
             At InterQ, we help you hire the right people — without stress or guesswork.
           </p>
 
-          <div className="space-y-6 text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+          <div className="space-y-8 text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto text-left md:text-center">
             <p>
-              Our team of builders and problem-solvers saw how slow, unfair, and confusing hiring had become. Good candidates were getting missed, and we knew there had to be a better way. So we created InterQ to make hiring simpler, fairer, and clearer.
+              Our team of builders and problem-solvers saw how slow, unfair, and confusing hiring had become. Good candidates were getting missed, and we knew there had to be a better way.
             </p>
 
             <p>
-              We focus on what really matters: how someone thinks, solves problems, and performs real work, not just their resume or interview skills. This helps companies find people who can succeed in the job and helps candidates show their true ability.
+              So we created InterQ to make hiring simpler, fairer, and clearer.
+            </p>
+
+            <p>
+              We focus on what really matters: how someone thinks, solves problems, and performs real work, not just their resume or interview skills. This helps companies find people who can succeed in the job, and helps candidates show their true ability.
             </p>
 
             <p>

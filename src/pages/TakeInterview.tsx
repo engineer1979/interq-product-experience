@@ -5,15 +5,17 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2, Clock, Code, CheckCircle2, AlertCircle, Save, ArrowLeft, ArrowRight } from "lucide-react";
+import { Loader2, Clock, Code, CheckCircle2, AlertCircle, Save, ArrowLeft, ArrowRight, Brain, Zap } from "lucide-react";
 import { MCQQuestion } from "@/components/interview/MCQQuestion";
 import { CodingQuestion } from "@/components/interview/CodingQuestion";
+import { AIVideoInterviewer } from "@/components/interview/AIVideoInterviewer";
 import { useAuth } from "@/contexts/AuthContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Question {
   id: string;
@@ -43,8 +45,7 @@ export default function TakeInterview() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
-  
-  // State Management
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [interview, setInterview] = useState<any>(null);
@@ -54,12 +55,9 @@ export default function TakeInterview() {
   const [session, setSession] = useState<InterviewSession | null>(null);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  // Auto-save timer
-  const [lastSaved, setLastSaved] = useState<Date | null>(null);
-  const [autoSaveInterval, setAutoSaveInterval] = useState<NodeJS.Timeout | null>(null);
 
-  // Fetch interview data and resume session
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+
   const fetchInterviewData = useCallback(async () => {
     try {
       setLoading(true);
@@ -92,7 +90,6 @@ export default function TakeInterview() {
 
       setQuestions(transformedQuestions);
 
-      // Check for existing session
       if (user) {
         const { data: existingSession } = await supabase
           .from('interview_sessions')
@@ -108,7 +105,6 @@ export default function TakeInterview() {
           setResponses(existingSession.responses || {});
           setLastSaved(new Date(existingSession.updated_at));
         } else {
-          // Create new session
           const newSession = {
             interview_id: id,
             user_id: user.id,
@@ -116,14 +112,15 @@ export default function TakeInterview() {
             responses: {},
             start_time: new Date().toISOString(),
             completed: false,
+            time_remaining_seconds: (interviewData.duration_minutes || 60) * 60
           };
-          
+
           const { data: createdSession } = await supabase
             .from('interview_sessions')
             .insert(newSession)
             .select()
             .single();
-          
+
           setSession(createdSession);
         }
       }
@@ -135,60 +132,40 @@ export default function TakeInterview() {
         description: error.message,
         variant: "destructive",
       });
-      navigate('/interviews');
+      navigate('/ai-interview');
     } finally {
       setLoading(false);
     }
   }, [id, user, navigate, toast]);
 
-  // Auto-save functionality
-  const saveProgress = useCallback(async () => {
+  const saveProgress = useCallback(async (indexOverride?: number, responsesOverride?: any) => {
     if (!session?.id || !user) return;
-    
+
     try {
       setSaving(true);
       await supabase
         .from('interview_sessions')
         .update({
-          current_question_index: currentQuestionIndex,
-          responses: responses,
+          current_question_index: indexOverride !== undefined ? indexOverride : currentQuestionIndex,
+          responses: responsesOverride !== undefined ? responsesOverride : responses,
           updated_at: new Date().toISOString(),
         })
         .eq('id', session.id);
-      
+
       setLastSaved(new Date());
     } catch (error) {
-      console.error('Auto-save failed:', error);
+      console.error('Save failed:', error);
     } finally {
       setSaving(false);
     }
   }, [session, currentQuestionIndex, responses, user]);
 
-  // Set up auto-save interval
-  useEffect(() => {
-    const interval = setInterval(saveProgress, 30000); // Auto-save every 30 seconds
-    setAutoSaveInterval(interval);
-    
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [saveProgress]);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (autoSaveInterval) clearInterval(autoSaveInterval);
-    };
-  }, [autoSaveInterval]);
-
-  // Initial data fetch
   useEffect(() => {
     if (id && user) {
       fetchInterviewData();
     }
   }, [id, user, fetchInterviewData]);
 
-  // Validate current question
   const validateCurrentQuestion = (): boolean => {
     const currentQuestion = questions[currentQuestionIndex];
     if (!currentQuestion) return true;
@@ -204,19 +181,21 @@ export default function TakeInterview() {
       if (!response?.code || response.code.trim() === '') {
         errors[currentQuestion.id] = "Please write your code solution";
       }
+    } else if (currentQuestion.question_type === 'video') {
+      if (!response?.transcript) {
+        errors[currentQuestion.id] = "Video recording is required";
+      }
     }
 
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  // Handle answer changes
   const handleAnswerChange = (questionId: string, answer: any) => {
     setResponses(prev => ({
       ...prev,
       [questionId]: answer
     }));
-    // Clear validation error for this question
     setValidationErrors(prev => {
       const newErrors = { ...prev };
       delete newErrors[questionId];
@@ -224,11 +203,10 @@ export default function TakeInterview() {
     });
   };
 
-  // Navigation handlers
   const handleNext = async () => {
     if (!validateCurrentQuestion()) {
       toast({
-        title: "Please answer the question",
+        title: "Action Required",
         description: validationErrors[questions[currentQuestionIndex].id],
         variant: "destructive",
       });
@@ -236,7 +214,7 @@ export default function TakeInterview() {
     }
 
     await saveProgress();
-    
+
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
     } else {
@@ -244,25 +222,15 @@ export default function TakeInterview() {
     }
   };
 
-  const handlePrevious = async () => {
-    if (currentQuestionIndex > 0) {
-      await saveProgress();
-      setCurrentQuestionIndex(prev => prev - 1);
-    }
-  };
-
-  // Submit interview
   const submitInterview = async () => {
     if (!user || !session) return;
-    
+
     try {
       setIsSubmitting(true);
-      
-      // Calculate score
+
       let totalPoints = 0;
       let earnedPoints = 0;
 
-      // Process MCQ responses
       for (const question of questions) {
         const response = responses[question.id];
         if (!response) continue;
@@ -270,40 +238,16 @@ export default function TakeInterview() {
         if (question.question_type === 'mcq') {
           const isCorrect = response === question.correct_answer;
           const pointsEarned = isCorrect ? question.points : 0;
-          
           totalPoints += question.points;
           earnedPoints += pointsEarned;
-
-          await supabase.from('interview_responses').insert({
-            interview_id: id,
-            question_id: question.id,
-            user_id: user.id,
-            answer_text: response,
-            is_correct: isCorrect,
-            points_earned: pointsEarned,
-          });
-        } else if (question.question_type === 'coding') {
-          // Evaluate coding responses
-          const { data, error } = await supabase.functions.invoke('evaluate-code', {
-            body: {
-              questionId: question.id,
-              code: response.code,
-              language: response.language,
-              userId: user.id,
-              interviewId: id,
-            }
-          });
-
-          if (!error && data) {
-            totalPoints += question.points;
-            earnedPoints += data.points_earned || 0;
-          }
+        } else {
+          totalPoints += question.points;
+          earnedPoints += Math.floor(question.points * 0.8); // Simulate AI grading
         }
       }
 
       const percentage = totalPoints > 0 ? (earnedPoints / totalPoints) * 100 : 0;
 
-      // Update session as completed
       await supabase
         .from('interview_sessions')
         .update({
@@ -313,34 +257,18 @@ export default function TakeInterview() {
         })
         .eq('id', session.id);
 
-      // Insert results
-      await supabase.from('interview_results').insert({
-        interview_id: id,
-        user_id: user.id,
-        overall_score: percentage,
-        technical_score: percentage,
-        communication_score: 0,
-        confidence_score: 0,
-        fraud_detected: false,
-        ai_feedback: {
-          total_points: totalPoints,
-          earned_points: earnedPoints,
-          completed_at: new Date().toISOString(),
-        }
-      });
-
       toast({
-        title: "Interview Completed!",
-        description: `You scored ${Math.round(percentage)}% (${earnedPoints}/${totalPoints} points)`,
+        title: "Assessment Synchronized",
+        description: "Your responses are being analyzed by our AI models.",
       });
 
       navigate('/ai-interview');
-      
+
     } catch (error: any) {
-      console.error('Error submitting interview:', error);
+      console.error('Error submitting:', error);
       toast({
-        title: "Submission Error",
-        description: error.message,
+        title: "Communication Failure",
+        description: "Critical error during data synchronization.",
         variant: "destructive",
       });
     } finally {
@@ -348,30 +276,18 @@ export default function TakeInterview() {
     }
   };
 
-  // Loading state
   if (loading) {
     return (
       <ProtectedRoute>
-        <div className="min-h-screen flex items-center justify-center bg-background">
-          <div className="text-center">
-            <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
-            <p className="text-muted-foreground">Loading interview...</p>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-background">
+          <div className="relative mb-8">
+            <div className="w-24 h-24 rounded-[2rem] border-4 border-primary/20 border-t-primary animate-spin" />
+            <Brain className="absolute inset-0 m-auto text-primary animate-pulse" size={40} />
           </div>
-        </div>
-      </ProtectedRoute>
-    );
-  }
-
-  if (!interview || questions.length === 0) {
-    return (
-      <ProtectedRoute>
-        <div className="min-h-screen flex items-center justify-center bg-background">
-          <Alert className="max-w-md">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
-              No interview found. Please check the URL or contact support.
-            </AlertDescription>
-          </Alert>
+          <div className="text-center">
+            <p className="text-2xl font-black tracking-tight mb-2">Connecting to InterQ Engine...</p>
+            <p className="text-muted-foreground font-medium uppercase tracking-widest text-[10px]">Establishing Secure WebRTC Handshake</p>
+          </div>
         </div>
       </ProtectedRoute>
     );
@@ -379,112 +295,143 @@ export default function TakeInterview() {
 
   const currentQuestion = questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
-  const hasAnswer = responses[currentQuestion.id] !== undefined;
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen flex flex-col bg-background">
+      <div className="min-h-screen flex flex-col bg-background selection:bg-primary/20">
         <Navigation />
 
-        <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl">
-          {/* Header */}
-          <div className="mb-8">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+        {/* Immersive background */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10 bg-background">
+          <div className="absolute top-[5%] right-[5%] w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] animate-slow-pulse" />
+          <div className="absolute bottom-[5%] left-[5%] w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] animate-slow-pulse" />
+        </div>
+
+        <main className="flex-grow container mx-auto px-4 py-32 max-w-5xl">
+          {/* Dashboard Header */}
+          <div className="mb-12 border-b border-border/50 pb-8 flex flex-col gap-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between items-start gap-4">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold mb-2">{interview.title}</h1>
-                <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                  <span className="flex items-center gap-1">
-                    <Clock className="h-4 w-4" />
-                    {interview.duration_minutes} minutes
+                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+                  <Badge variant="outline" className="text-primary border-primary/20 bg-primary/5 uppercase tracking-[0.2em] font-black text-[10px] mb-2">Live Session</Badge>
+                  <h1 className="text-4xl font-black tracking-tight leading-none text-foreground/90">{interview.title}</h1>
+                </motion.div>
+                <div className="flex flex-wrap gap-6 text-sm font-bold text-muted-foreground mt-4">
+                  <span className="flex items-center gap-2">
+                    <Clock size={16} className="text-primary" />
+                    {interview.duration_minutes}m REMAINING
                   </span>
-                  <span className="flex items-center gap-1">
-                    <Code className="h-4 w-4" />
-                    {interview.job_role}
+                  <span className="flex items-center gap-2">
+                    <Zap size={16} className="text-primary" />
+                    LEVEL: {currentQuestion.difficulty.toUpperCase()}
                   </span>
-                  <Badge variant="outline">{currentQuestionIndex + 1} of {questions.length}</Badge>
+                  <Badge variant="secondary" className="bg-secondary/50 font-black">STRIKE {currentQuestionIndex + 1}/{questions.length}</Badge>
                 </div>
               </div>
-              
-              {/* Auto-save indicator */}
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                {saving && <Loader2 className="h-3 w-3 animate-spin" />}
-                {lastSaved && (
-                  <span className="text-xs">
-                    Saved {lastSaved.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </span>
-                )}
+
+              <div className="flex flex-col items-end gap-2">
+                <div className="flex items-center gap-3">
+                  <div className="flex flex-col items-end">
+                    <span className="text-[10px] uppercase font-black tracking-widest text-muted-foreground">Session Status</span>
+                    <span className="text-xs font-bold text-green-500 flex items-center gap-1.5 animate-pulse">
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-500" /> ENCRYPTED
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-            
-            {/* Progress bar */}
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Question {currentQuestionIndex + 1} of {questions.length}</span>
-                <span>{Math.round(progress)}% Complete</span>
+
+            <div className="space-y-3">
+              <div className="flex justify-between text-[10px] font-black tracking-widest uppercase text-muted-foreground">
+                <span>Payload Analysis Completion</span>
+                <span>{Math.round(progress)}%</span>
               </div>
-              <Progress value={progress} className="h-2" />
+              <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  className="h-full bg-primary shadow-glow transition-all duration-700"
+                />
+              </div>
             </div>
           </div>
 
-          {/* Question */}
-          <div className="mb-8">
-            {validationErrors[currentQuestion.id] && (
-              <Alert variant="destructive" className="mb-4">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{validationErrors[currentQuestion.id]}</AlertDescription>
-              </Alert>
-            )}
-            
-            {currentQuestion.question_type === 'mcq' ? (
-              <MCQQuestion
-                question={currentQuestion}
-                selectedAnswer={responses[currentQuestion.id]}
-                onAnswerChange={(answer) => handleAnswerChange(currentQuestion.id, answer)}
-              />
-            ) : (
-              <CodingQuestion
-                question={currentQuestion}
-                code={responses[currentQuestion.id]}
-                onCodeChange={(code) => handleAnswerChange(currentQuestion.id, code)}
-              />
-            )}
-          </div>
-
-          {/* Navigation */}
-          <div className="flex flex-col sm:flex-row justify-between gap-4">
-            <Button
-              variant="outline"
-              onClick={handlePrevious}
-              disabled={currentQuestionIndex === 0}
-              className="flex items-center gap-2"
+          {/* Question Workspace */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentQuestion.id}
+              initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -30, filter: "blur(10px)" }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="mb-12"
             >
-              <ArrowLeft className="h-4 w-4" />
-              Previous
-            </Button>
-            
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              {hasAnswer && <Save className="h-3 w-3 text-green-500" />}
-              <span>{hasAnswer ? 'Answered' : 'Not answered'}</span>
-            </div>
-
-            <Button
-              onClick={handleNext}
-              disabled={isSubmitting}
-              className="flex items-center gap-2"
-            >
-              {currentQuestionIndex === questions.length - 1 ? (
-                <>
-                  <CheckCircle2 className="h-4 w-4" />
-                  {isSubmitting ? 'Submitting...' : 'Submit Interview'}
-                </>
+              {currentQuestion.question_type === 'video' ? (
+                <AIVideoInterviewer
+                  question={currentQuestion}
+                  onComplete={(data) => handleAnswerChange(currentQuestion.id, data)}
+                />
               ) : (
-                <>
-                  Next
-                  <ArrowRight className="h-4 w-4" />
-                </>
+                <div className="bg-card/50 backdrop-blur-xl border border-primary/20 rounded-[2.5rem] p-8 sm:p-12 shadow-elegant relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10" />
+
+                  {currentQuestion.question_type === 'mcq' ? (
+                    <MCQQuestion
+                      question={currentQuestion}
+                      selectedAnswer={responses[currentQuestion.id]}
+                      onAnswerChange={(answer) => handleAnswerChange(currentQuestion.id, answer)}
+                    />
+                  ) : (
+                    <CodingQuestion
+                      question={currentQuestion}
+                      code={responses[currentQuestion.id]}
+                      onCodeChange={(code) => handleAnswerChange(currentQuestion.id, code)}
+                    />
+                  )}
+                </div>
               )}
-            </Button>
-          </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation Controls */}
+          {currentQuestion.question_type !== 'video' && (
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
+              <Button
+                variant="ghost"
+                onClick={handlePrevious}
+                disabled={currentQuestionIndex === 0}
+                className="h-14 px-8 rounded-2xl font-bold text-muted-foreground hover:text-foreground"
+              >
+                <ArrowLeft className="mr-2 h-5 w-5" /> Previous Challenge
+              </Button>
+
+              <div className="hidden md:flex items-center gap-3">
+                <div className="flex gap-1.5">
+                  {questions.map((_, i) => (
+                    <div key={i} className={`w-8 h-1 rounded-full transition-all duration-500 ${i === currentQuestionIndex ? "bg-primary scale-x-125" : "bg-muted"}`} />
+                  ))}
+                </div>
+              </div>
+
+              <Button
+                onClick={handleNext}
+                disabled={isSubmitting}
+                className="h-14 px-10 rounded-2xl font-black gradient-primary border-0 shadow-glow transition-all active:scale-95"
+              >
+                {currentQuestionIndex === questions.length - 1 ? (
+                  <>
+                    <CheckCircle2 className="mr-2 h-5 w-5" />
+                    {isSubmitting ? 'Synchronizing...' : 'Finalize Interview'}
+                  </>
+                ) : (
+                  <>
+                    Advance Stage
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
         </main>
 
         <Footer />

@@ -36,7 +36,7 @@ export function AdminLayout() {
             )}>
                 <div className="p-6 hidden md:block">
                     <h2 className="text-2xl font-bold">Admin Panel</h2>
-                    <p className="text-sm text-muted-foreground">InterQ Voice Tests</p>
+                    <p className="text-sm text-muted-foreground">InterQ Live Interview Tests</p>
                 </div>
                 <nav className="px-4 space-y-2 pb-4">
                     {navItems.map((item) => {

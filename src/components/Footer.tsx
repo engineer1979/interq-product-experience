@@ -10,6 +10,31 @@ const Footer = () => {
     Resources: ["Blog", "Documentation", "Case Studies", "Help Center", "API"],
     Company: ["About Us", "Careers", "Press Kit", "Partners", "Contact"],
   };
+  const linkMapping: Record<string, string> = {
+    // Product
+    "Features": "/features",
+    "Assessments": "/assessments",
+    "AI Interviewing": "/ai-interview",
+    "Pricing": "/pricing",
+    "Integrations": "/integrations",
+    // Solutions
+    "For Recruiters": "/solutions/recruiters",
+    "For Organizational hiring": "/solutions/enterprise",
+    "For SMEs": "/solutions/sme",
+    "Industry Solutions": "/solutions/industry",
+    // Resources
+    "Blog": "/blog",
+    "Documentation": "/docs",
+    "Case Studies": "/case-studies",
+    "Help Center": "/help-center",
+    "API": "/api-docs",
+    // Company
+    "About Us": "/about",
+    "Careers": "/careers",
+    "Press Kit": "/press-kit",
+    "Partners": "/partners",
+    "Contact": "/contact",
+  };
 
   return (
     <footer className="bg-foreground text-background py-16">
@@ -20,21 +45,13 @@ const Footer = () => {
             <div className="text-3xl font-bold mb-4">
               Inter<span className="text-primary">Q</span>
             </div>
-            <p className="text-background/70 mb-6">
+            <p className="text-background/70 mb-6 text-sm leading-relaxed">
               Redefining recruitment with AI-driven interviews and assessments across North America, Middle East and beyond.
             </p>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm">
                 <Mail className="h-4 w-4 text-primary" />
                 <span>contact@interq.com</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Phone className="h-4 w-4 text-primary" />
-                <span>+1 (555) 123-4567</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <MapPin className="h-4 w-4 text-primary" />
-                <span>San Francisco, CA</span>
               </div>
             </div>
           </div>
@@ -46,21 +63,12 @@ const Footer = () => {
               <ul className="space-y-2">
                 {links.map((link) => (
                   <li key={link}>
-                    {link === "Blog" && (
-                      <Link to="/blog" className="text-background/70 hover:text-primary transition-smooth text-sm">Blog</Link>
-                    )}
-                    {link === "Documentation" && (
-                      <Link to="/docs" className="text-background/70 hover:text-primary transition-smooth text-sm">Documentation</Link>
-                    )}
-                    {link === "Case Studies" && (
-                      <Link to="/case-studies" className="text-background/70 hover:text-primary transition-smooth text-sm">Case Studies</Link>
-                    )}
-                    {link === "Help Center" && (
-                      <Link to="/help-center" className="text-background/70 hover:text-primary transition-smooth text-sm">Help Center</Link>
-                    )}
-                    {link !== "Blog" && link !== "Documentation" && link !== "Case Studies" && link !== "Help Center" && (
-                      <Link to={`/${link.toLowerCase().replace(/\s+/g, '-')}`} className="text-background/70 hover:text-primary transition-smooth text-sm">{link}</Link>
-                    )}
+                    <Link
+                      to={linkMapping[link] || `/${link.toLowerCase().replace(/\s+/g, '-')}`}
+                      className="text-background/70 hover:text-primary transition-smooth text-sm"
+                    >
+                      {link}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -93,7 +101,7 @@ const Footer = () => {
           <div className="text-sm text-background/60">
             © 2025 InterQ Technologies Inc. All rights reserved.
           </div>
-          
+
           <div className="flex items-center gap-6">
             <a href="https://linkedin.com/company/interq" target="_blank" rel="noopener noreferrer" className="text-background/60 hover:text-primary transition-smooth">
               <Linkedin className="h-5 w-5" />

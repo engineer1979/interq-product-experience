@@ -111,20 +111,28 @@ const Product = () => {
                       </li>
                     ))}
                   </ul>
-                  <Button className="mt-8 w-full sm:w-auto" size="lg" onClick={() => navigate('/assessments')}>
+                  <Button className="mt-6 sm:mt-8 w-full sm:w-auto h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg" size="lg" onClick={() => navigate('/assessments')}>
                     Try Assessment Demo
                   </Button>
                 </div>
-                <div className="bg-muted rounded-2xl h-96 flex items-center justify-center">
-                  <FileQuestion className="w-32 h-32 text-primary/20" />
+                <div className="rounded-2xl h-96 overflow-hidden shadow-2xl">
+                  <img
+                    src="https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=1260"
+                    alt="AI Assessments Dashboard"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </TabsContent>
 
             <TabsContent value="interviews">
               <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="bg-muted rounded-2xl h-96 flex items-center justify-center">
-                  <Video className="w-32 h-32 text-primary/20" />
+                <div className="rounded-2xl h-96 overflow-hidden shadow-2xl">
+                  <img
+                    src="https://images.pexels.com/photos/4240505/pexels-photo-4240505.jpeg?auto=compress&cs=tinysrgb&w=1260"
+                    alt="AI Video Interview Session"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
                   <h2 className="text-4xl font-bold mb-6">AI-Powered Video Interviews</h2>
@@ -177,8 +185,12 @@ const Product = () => {
                     Explore Analytics
                   </Button>
                 </div>
-                <div className="bg-muted rounded-2xl h-96 flex items-center justify-center">
-                  <BarChart3 className="w-32 h-32 text-primary/20" />
+                <div className="rounded-2xl h-96 overflow-hidden shadow-2xl">
+                  <img
+                    src="https://images.pexels.com/photos/5900165/pexels-photo-5900165.jpeg?auto=compress&cs=tinysrgb&w=1260"
+                    alt="Advanced Analytics Dashboard"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </TabsContent>

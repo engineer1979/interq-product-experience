@@ -11,27 +11,21 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2, Sparkles, Brain, Zap, Target, Layers, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
 
 const IT_ROLES = [
   "Software Engineer",
-  "Software Developer",
   "Frontend Developer",
   "Backend Developer",
   "Full Stack Developer",
   "DevOps Engineer",
   "Data Scientist",
-  "Data Analyst",
-  "Android Developer",
-  "iOS Developer",
+  "Mobile Developer",
   "QA Engineer",
-  "ML Engineer",
-  "Cloud Architect",
-  "Security Engineer",
   "Product Manager",
-  "Sales Representative",
-  "Marketing Manager",
   "UX Designer"
 ];
 
@@ -60,8 +54,8 @@ export default function CreateInterview() {
 
     if (!formData.title || !formData.job_role) {
       toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields",
+        title: "Configuration Error",
+        description: "Please specify both Title and Role for the AI engine.",
         variant: "destructive",
       });
       return;
@@ -70,7 +64,6 @@ export default function CreateInterview() {
     try {
       setLoading(true);
 
-      // Create interview
       const { data: interview, error: interviewError } = await supabase
         .from('interviews')
         .insert({
@@ -87,7 +80,6 @@ export default function CreateInterview() {
 
       if (interviewError) throw interviewError;
 
-      // Generate questions using AI
       setGenerating(true);
       const { data: genData, error: genError } = await supabase.functions.invoke('generate-interview-questions', {
         body: {
@@ -101,16 +93,16 @@ export default function CreateInterview() {
       if (genError) throw genError;
 
       toast({
-        title: "Success",
-        description: `Interview created with ${genData.mcqCount} MCQs and ${genData.codingCount} coding challenges!`,
+        title: "Intelligence Synthesized",
+        description: `Successfully mapped ${genData.mcqCount} MCQ and ${genData.codingCount} Coding parameters.`,
       });
 
       navigate('/ai-interview');
 
     } catch (error: any) {
-      console.error('Error creating interview:', error);
+      console.error('Error:', error);
       toast({
-        title: "Error",
+        title: "Synthesis Failed",
         description: error.message,
         variant: "destructive",
       });
@@ -120,156 +112,203 @@ export default function CreateInterview() {
     }
   };
 
+  if (generating) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background p-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-md w-full text-center space-y-12"
+        >
+          <div className="relative">
+            <div className="w-48 h-48 mx-auto rounded-[3rem] border-4 border-primary/20 border-t-primary animate-spin" />
+            <Brain className="absolute inset-0 m-auto text-primary animate-pulse" size={64} />
+            <div className="absolute -top-4 -right-4 w-12 h-12 bg-indigo-500 rounded-2xl flex items-center justify-center shadow-glow animate-bounce">
+              <Zap className="text-white" size={20} />
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-3xl font-black tracking-tight">Synthesizing Cognitive Vectors</h2>
+            <p className="text-muted-foreground font-medium uppercase tracking-widest text-xs">AI is currently mapping job requirements to technical rubrics...</p>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex justify-between text-[10px] font-black tracking-widest uppercase text-muted-foreground">
+              <span>Semantic Mapping</span>
+              <span className="animate-pulse">Active</span>
+            </div>
+            <div className="h-1 bg-secondary rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 15, ease: "linear" }}
+                className="h-full bg-primary shadow-glow"
+              />
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <ProtectedRoute>
-      <div className="min-h-screen flex flex-col bg-background">
+      <div className="min-h-screen flex flex-col bg-background selection:bg-primary/20">
         <Navigation />
 
-        <main className="flex-grow container mx-auto px-4 pt-28 pb-8">
-          <div className="max-w-3xl mx-auto">
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold mb-2">Create AI Interview</h1>
-              <p className="text-muted-foreground">
-                Generate a custom technical interview with AI-powered questions
-              </p>
+        {/* Cinematic Backdrop */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+          <div className="absolute top-[10%] left-[10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] animate-slow-pulse" />
+          <div className="absolute bottom-[10%] right-[10%] w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[80px] animate-slow-pulse" />
+        </div>
+
+        <main className="flex-grow container mx-auto px-4 py-32 max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-12"
+          >
+            {/* Header */}
+            <div className="space-y-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/ai-interview')}
+                className="group font-bold text-muted-foreground hover:text-foreground -ml-4"
+              >
+                <ArrowLeft size={16} className="mr-2 group-hover:-translate-x-1 transition-transform" /> Back to Intelligence Console
+              </Button>
+              <div>
+                <Badge variant="outline" className="text-primary border-primary/20 bg-primary/5 uppercase tracking-[0.2em] font-black text-[10px] mb-4">Neural Generator</Badge>
+                <h1 className="text-5xl font-black tracking-tighter leading-none">Assemble AI Interview</h1>
+                <p className="text-xl text-muted-foreground font-medium mt-4">Define your hiring parameters. Our engine will synthesize the rest.</p>
+              </div>
             </div>
 
-            <Card className="p-6">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <Label htmlFor="title">Interview Title *</Label>
-                  <Input
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) => handleChange('title', e.target.value)}
-                    placeholder="e.g., Senior Frontend Developer Assessment"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    value={formData.description}
-                    onChange={(e) => handleChange('description', e.target.value)}
-                    placeholder="Describe what this interview will test..."
-                    rows={3}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="job_role">IT Job Role *</Label>
-                    <Select
-                      value={formData.job_role}
-                      onValueChange={(value) => handleChange('job_role', value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {IT_ROLES.map(role => (
-                          <SelectItem key={role} value={role}>
-                            {role}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="difficulty">Difficulty Level</Label>
-                    <Select
-                      value={formData.difficulty}
-                      onValueChange={(value) => handleChange('difficulty', value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="easy">Easy</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="hard">Hard</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="duration">Duration (minutes)</Label>
+            {/* Form Workspace */}
+            <form onSubmit={handleSubmit} className="grid md:grid-cols-12 gap-8">
+              <div className="md:col-span-8 space-y-6">
+                <Card className="p-8 bg-card/50 backdrop-blur-xl border-primary/20 rounded-[2rem] shadow-elegant space-y-8">
+                  <div className="space-y-4">
+                    <Label htmlFor="title" className="text-xs font-black uppercase tracking-widest text-muted-foreground">Session Identifier</Label>
                     <Input
-                      id="duration"
-                      type="number"
-                      min="15"
-                      max="180"
-                      value={formData.duration_minutes}
-                      onChange={(e) => handleChange('duration_minutes', parseInt(e.target.value))}
+                      id="title"
+                      value={formData.title}
+                      onChange={(e) => handleChange('title', e.target.value)}
+                      placeholder="e.g., Lead Systems Engineer - Q3 Intake"
+                      className="h-16 text-xl font-bold bg-transparent border-b-2 border-x-0 border-t-0 border-border rounded-none px-0 focus-visible:ring-0 focus-visible:border-primary transition-all"
+                      required
                     />
                   </div>
 
-                  <div>
-                    <Label htmlFor="questions">Number of Questions</Label>
-                    <Input
-                      id="questions"
-                      type="number"
-                      min="5"
-                      max="30"
-                      value={formData.question_count}
-                      onChange={(e) => handleChange('question_count', parseInt(e.target.value))}
+                  <div className="space-y-4">
+                    <Label htmlFor="description" className="text-xs font-black uppercase tracking-widest text-muted-foreground">Contextual Metadata</Label>
+                    <Textarea
+                      id="description"
+                      value={formData.description}
+                      onChange={(e) => handleChange('description', e.target.value)}
+                      placeholder="Specify team needs, specific tech stacks, or project goals..."
+                      className="min-h-[120px] bg-secondary/20 border-border/50 rounded-2xl p-4 focus:ring-primary/20"
                     />
                   </div>
-                </div>
 
-                <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <Sparkles className="h-5 w-5 text-primary mt-0.5" />
-                    <div>
-                      <p className="font-medium text-sm mb-1">AI-Powered Generation</p>
-                      <p className="text-sm text-muted-foreground">
-                        Questions will be automatically generated based on the role and difficulty level.
-                        This includes {Math.floor(formData.question_count * 0.6)} MCQs and {formData.question_count - Math.floor(formData.question_count * 0.6)} coding challenges.
-                      </p>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Job Archetype</Label>
+                      <Select
+                        value={formData.job_role}
+                        onValueChange={(value) => handleChange('job_role', value)}
+                      >
+                        <SelectTrigger className="h-14 rounded-xl font-bold">
+                          <SelectValue placeholder="Select role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {IT_ROLES.map(role => (
+                            <SelectItem key={role} value={role} className="font-bold">
+                              {role}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-4">
+                      <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Cognitive Depth</Label>
+                      <Select
+                        value={formData.difficulty}
+                        onValueChange={(value) => handleChange('difficulty', value)}
+                      >
+                        <SelectTrigger className="h-14 rounded-xl font-bold">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="easy" className="text-green-500 font-bold">Standard</SelectItem>
+                          <SelectItem value="medium" className="text-amber-500 font-bold">Advanced</SelectItem>
+                          <SelectItem value="hard" className="text-red-500 font-bold">Expert (Senior+)</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
-                </div>
+                </Card>
+              </div>
 
-                <div className="flex gap-3">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => navigate('/ai-interview')}
-                    disabled={loading}
-                  >
-                    Cancel
-                  </Button>
+              {/* Sidebar Config */}
+              <div className="md:col-span-4 space-y-6">
+                <Card className="p-6 bg-primary/5 border border-primary/20 rounded-3xl space-y-6">
+                  <div className="flex items-center gap-2">
+                    <Target size={16} className="text-primary" />
+                    <span className="text-[10px] font-black tracking-widest uppercase text-muted-foreground">Precision Controls</span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase text-muted-foreground">Session Minutes</Label>
+                      <Input
+                        type="number"
+                        value={formData.duration_minutes}
+                        onChange={(e) => handleChange('duration_minutes', parseInt(e.target.value))}
+                        className="bg-background border-border/50 font-black h-12"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase text-muted-foreground">Inquiry Count</Label>
+                      <Input
+                        type="number"
+                        value={formData.question_count}
+                        onChange={(e) => handleChange('question_count', parseInt(e.target.value))}
+                        className="bg-background border-border/50 font-black h-12"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-primary/10 rounded-2xl space-y-2 border border-primary/20">
+                    <div className="flex items-center gap-2 text-primary">
+                      <Layers size={14} />
+                      <span className="text-[10px] font-black uppercase">Payload Mix</span>
+                    </div>
+                    <p className="text-[10px] font-bold text-muted-foreground leading-snug">
+                      {Math.floor(formData.question_count * 0.6)} MCQ Synthetics <br />
+                      {formData.question_count - Math.floor(formData.question_count * 0.6)} Deep Coding Tasks
+                    </p>
+                  </div>
+
                   <Button
                     type="submit"
                     disabled={loading || generating}
-                    className="flex-1"
+                    className="w-full h-16 rounded-2xl font-black text-lg gradient-primary border-0 shadow-glow transition-all active:scale-95"
                   >
-                    {generating ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Generating Questions...
-                      </>
-                    ) : loading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Creating...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="mr-2 h-4 w-4" />
-                        Create Interview
-                      </>
-                    )}
+                    {loading ? <Loader2 className="animate-spin" /> : <><Sparkles size={20} className="mr-2" /> Sync with AI</>}
                   </Button>
-                </div>
-              </form>
-            </Card>
-          </div>
+                </Card>
+
+                <p className="text-[10px] font-bold text-center text-muted-foreground uppercase tracking-widest px-4">
+                  By synthesizing, you agree to our <span className="text-primary underline">AI Ethics & Bias Policy</span>.
+                </p>
+              </div>
+            </form>
+          </motion.div>
         </main>
 
         <Footer />

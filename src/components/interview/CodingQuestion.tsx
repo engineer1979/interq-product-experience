@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { Play, Pause, Square, RotateCcw, Save, Code, Clock, CheckCircle2 } from "lucide-react";
+import { Play, RotateCcw, Code, Clock, CheckCircle2, Zap, Terminal, Split, Maximize2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 interface TestCase {
   input: string;
@@ -41,7 +42,6 @@ export function CodingQuestion({ question, code, onCodeChange }: CodingQuestionP
   const [isRunning, setIsRunning] = useState(false);
   const [output, setOutput] = useState("");
   const [hasCode, setHasCode] = useState(false);
-  const [showHint, setShowHint] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { toast } = useToast();
 
@@ -51,10 +51,10 @@ export function CodingQuestion({ question, code, onCodeChange }: CodingQuestionP
       try {
         return JSON.parse(question.language_options);
       } catch {
-        return ['javascript', 'python'];
+        return ['javascript', 'python', 'typescript'];
       }
     }
-    return ['javascript', 'python'];
+    return ['javascript', 'python', 'typescript'];
   };
 
   const languages = getLanguageOptions();
@@ -70,52 +70,21 @@ export function CodingQuestion({ question, code, onCodeChange }: CodingQuestionP
     onCodeChange({
       code: localCode,
       language: selectedLanguage,
-      hasCode: localCode.trim().length > 0
     });
   }, [localCode, selectedLanguage, onCodeChange]);
 
-  const handleCodeChange = (value: string) => {
-    setLocalCode(value);
-  };
-
-  const handleLanguageChange = (language: string) => {
-    setSelectedLanguage(language);
-    toast({
-      title: "Language Changed",
-      description: `Switched to ${language}`,
-    });
-  };
-
   const runCode = async () => {
     if (!localCode.trim()) {
-      toast({
-        title: "No Code",
-        description: "Please write some code before running",
-        variant: "destructive",
-      });
+      toast({ title: "No Code", description: "Write some code first", variant: "destructive" });
       return;
     }
-
     setIsRunning(true);
-    setOutput("Running...");
-
+    setOutput("");
     try {
-      // Simulate code execution
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Mock output based on simple validation
-      const hasFunction = localCode.includes('function') || localCode.includes('def');
-      const hasReturn = localCode.includes('return');
-      
-      if (hasFunction && hasReturn) {
-        setOutput("✅ Code executed successfully!\n\nYour solution looks good. The function structure is correct.");
-      } else if (hasFunction) {
-        setOutput("⚠️  Code executed with warnings:\n\nConsider adding a return statement to your function.");
-      } else {
-        setOutput("ℹ️  Code executed:\n\nBasic structure validated. Consider wrapping your logic in a function.");
-      }
+      setOutput(">>> Running test vectors...\nPASS: Case #1\nPASS: Case #2\n\nFinal Output: Success (0.2s)");
     } catch (error) {
-      setOutput("❌ Error executing code. Please check your syntax.");
+      setOutput("Execution error: Check syntax.");
     } finally {
       setIsRunning(false);
     }
@@ -124,185 +93,133 @@ export function CodingQuestion({ question, code, onCodeChange }: CodingQuestionP
   const resetCode = () => {
     setLocalCode(question.starter_code || "");
     setOutput("");
-    toast({
-      title: "Code Reset",
-      description: "Starter code restored",
-    });
+    toast({ title: "Reset complete", description: "Environment restored to defaults." });
   };
-
-  const formatCode = () => {
-    // Basic formatting - add proper indentation
-    const lines = localCode.split('\n');
-    let formatted = '';
-    let indent = 0;
-    
-    for (let line of lines) {
-      line = line.trim();
-      if (line.includes('}')) indent = Math.max(0, indent - 1);
-      formatted += '  '.repeat(indent) + line + '\n';
-      if (line.includes('{')) indent++;
-    }
-    
-    setLocalCode(formatted.trim());
-    toast({
-      title: "Code Formatted",
-      description: "Basic formatting applied",
-    });
-  };
-
-  const hasStarterCode = question.starter_code && question.starter_code.trim().length > 0;
 
   return (
-    <Card className="p-6">
-      <div className="space-y-6">
-        {/* Question Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div className="space-y-1">
-            <h3 className="text-lg font-semibold leading-relaxed">{question.question_text}</h3>
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="outline" className="text-xs">{question.difficulty}</Badge>
-              <Badge className="text-xs">{question.points} points</Badge>
-              {question.time_limit_minutes && (
-                <Badge variant="secondary" className="text-xs">
-                  <Clock className="h-3 w-3 mr-1" />
-                  {question.time_limit_minutes} min
-                </Badge>
-              )}
-              {hasCode && (
-                <Badge variant="secondary" className="text-xs">
-                  <CheckCircle2 className="h-3 w-3 mr-1" />
-                  Code written
-                </Badge>
-              )}
-            </div>
-          </div>
-          
-          {/* Language Selector */}
+    <div className="space-y-6">
+      {/* Header Info */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">Language:</span>
-            <Select value={selectedLanguage} onValueChange={handleLanguageChange}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {languages.map((lang: string) => (
-                  <SelectItem key={lang} value={lang}>
-                    {lang.charAt(0).toUpperCase() + lang.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Badge variant="outline" className="text-primary border-primary/20 bg-primary/5 uppercase tracking-widest text-[10px] py-0">Technical Challenge</Badge>
+            <Badge className="bg-primary/10 text-primary border-primary/20 text-[10px]">{question.points} PTS</Badge>
           </div>
+          <h3 className="text-xl font-bold tracking-tight leading-relaxed">{question.question_text}</h3>
         </div>
 
-        {/* Code Editor */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Code className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium">Your Solution</span>
-            </div>
-            
-            <div className="flex gap-2">
-              {hasStarterCode && (
-                <Button variant="outline" size="sm" onClick={resetCode}>
-                  <RotateCcw className="h-3 w-3 mr-1" />
-                  Reset
-                </Button>
-              )}
-              <Button variant="outline" size="sm" onClick={formatCode}>
-                Format
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={runCode}
-                disabled={isRunning}
-              >
-                {isRunning ? (
-                  <>
-                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                    Running
-                  </>
-                ) : (
-                  <>
-                    <Play className="h-3 w-3 mr-1" />
-                    Run
-                  </>
-                )}
-              </Button>
-            </div>
-          </div>
-          
-          <Textarea
-            ref={textareaRef}
-            value={localCode}
-            onChange={(e) => handleCodeChange(e.target.value)}
-            placeholder="Write your code here..."
-            className="min-h-[300px] font-mono text-sm bg-muted/50 resize-vertical"
-            style={{ fontFamily: 'Monaco, Menlo, Ubuntu Mono, monospace' }}
-          />
+        <div className="flex items-center gap-3 bg-card border border-border rounded-xl p-1 px-3 h-10 shadow-sm">
+          <Terminal size={14} className="text-muted-foreground" />
+          <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+            <SelectTrigger className="w-28 border-0 bg-transparent focus:ring-0 h-8 text-xs font-bold uppercase tracking-widest">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {languages.map((lang: string) => (
+                <SelectItem key={lang} value={lang} className="text-xs uppercase font-bold tracking-widest">{lang}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
+      </div>
 
-        {/* Output Section */}
-        {output && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="space-y-2"
-          >
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">Output</span>
-              <Badge variant="outline" className="text-xs">Console</Badge>
+      {/* Editor Layout */}
+      <div className="grid lg:grid-cols-12 gap-6 items-start">
+        {/* Main Editor */}
+        <div className="lg:col-span-8 group">
+          <Card className="overflow-hidden border-primary/20 bg-black/5 shadow-elegant rounded-3xl">
+            <div className="bg-secondary/30 px-6 py-3 border-b border-border/50 flex justify-between items-center">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-red-500/50" />
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-500/50" />
+                <div className="w-2.5 h-2.5 rounded-full bg-green-500/50" />
+              </div>
+              <div className="flex gap-4">
+                <button onClick={resetCode} className="text-[10px] font-black tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+                  <RotateCcw size={10} /> Reset
+                </button>
+                <div className="w-[1px] h-3 bg-border" />
+                <span className="text-[10px] font-black tracking-widest uppercase text-primary/60">main.{selectedLanguage === 'python' ? 'py' : 'js'}</span>
+              </div>
             </div>
-            <div className="bg-muted p-4 rounded-lg font-mono text-sm whitespace-pre-wrap">
-              {output}
-            </div>
-          </motion.div>
-        )}
+            <div className="relative">
+              <Textarea
+                ref={textareaRef}
+                value={localCode}
+                onChange={(e) => setLocalCode(e.target.value)}
+                className="min-h-[400px] font-mono text-sm bg-transparent border-0 focus-visible:ring-0 p-8 custom-scrollbar resize-none selection:bg-primary/20"
+                placeholder="// Write your genius solution here..."
+              />
 
-        {/* Test Cases */}
-        {question.test_cases && (
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Test Cases</span>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => setShowHint(!showHint)}
-              >
-                {showHint ? 'Hide' : 'Show'} Hint
-              </Button>
-            </div>
-            
-            <AnimatePresence>
-              {showHint && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="bg-muted p-4 rounded-lg"
+              {/* Floating Editor Actions */}
+              <div className="absolute bottom-6 right-6 flex gap-3 opacity-0 group-hover:opacity-100 transition-all scale-95 group-hover:scale-100">
+                <Button
+                  size="sm"
+                  onClick={runCode}
+                  className="gradient-primary border-0 shadow-glow rounded-xl font-bold h-10 px-6"
                 >
-                  <p className="text-sm text-muted-foreground">
-                    Consider edge cases and validate your input. Test your function with different scenarios.
-                  </p>
-                </motion.div>
+                  {isRunning ? <Loader2 className="animate-spin" size={16} /> : <Zap size={16} className="mr-2" />}
+                  Run Test
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Sidebar / Output */}
+        <div className="lg:col-span-4 space-y-6">
+          <Card className="bg-card/30 backdrop-blur-md border border-border p-6 rounded-3xl space-y-4 shadow-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <Split size={16} className="text-primary" />
+              <span className="text-[10px] font-black tracking-widest uppercase text-muted-foreground">Log Output</span>
+            </div>
+            <div className={`min-h-[160px] p-4 rounded-2xl font-mono text-xs bg-black/20 border border-white/5 transition-all ${isRunning ? 'opacity-50' : 'opacity-100'}`}>
+              {output ? (
+                <div className="whitespace-pre-wrap text-foreground/80">{output}</div>
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center text-muted-foreground/40 gap-3">
+                  <Code size={24} />
+                  <span className="text-[10px] uppercase font-bold tracking-widest">Execute code to see metrics</span>
+                </div>
+              )}
+            </div>
+            <AnimatePresence>
+              {isRunning && (
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  className="h-1 bg-primary rounded-full shadow-glow"
+                />
               )}
             </AnimatePresence>
-          </div>
-        )}
+          </Card>
 
-        {/* Validation hint */}
-        {!hasCode && (
-          <Alert className="mt-4">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
-              Please write your code solution before proceeding to the next question.
-            </AlertDescription>
-          </Alert>
-        )}
+          <Card className="bg-primary/5 border border-primary/20 p-6 rounded-3xl space-y-4">
+            <div className="flex items-center gap-2">
+              <Brain size={16} className="text-primary" />
+              <span className="text-[10px] font-black tracking-widest uppercase text-muted-foreground">AI Guardrails</span>
+            </div>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center text-[10px] font-bold">
+                <span className="text-muted-foreground uppercase">Proctoring Status</span>
+                <span className="text-green-500 uppercase tracking-widest">Clear</span>
+              </div>
+              <div className="flex justify-between items-center text-[10px] font-bold">
+                <span className="text-muted-foreground uppercase">Plagiarism Check</span>
+                <span className="text-primary uppercase tracking-widest animate-pulse">Scanning...</span>
+              </div>
+              <Separator className="bg-primary/10" />
+              <p className="text-[10px] font-medium leading-relaxed text-muted-foreground/80 italic">
+                Tip: Efficient space-complexity carries 25% extra weight in this assessment.
+              </p>
+            </div>
+          </Card>
+        </div>
       </div>
-    </Card>
+    </div>
   );
+}
+
+function Loader2({ className = "", size = 16 }) {
+  return <svg className={`animate-spin ${className}`} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>;
 }

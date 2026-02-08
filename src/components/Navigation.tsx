@@ -30,9 +30,9 @@ const Navigation = () => {
     { label: "Assessments", href: "/assessments" },
     { label: "AI Interviewing", href: "/ai-interview" },
     { label: "Live Interview", href: "/live-interview" },
-    { label: "Solutions", href: "/solutions" },
+    { label: "Solution Analysis", href: "/solutions" },
     { label: "Pricing", href: "/pricing" },
-    { label: "About", href: "/about" },
+    { label: "Recruitment Automation", href: "/recruitment-automation" },
   ];
 
   // Check if user is admin
@@ -76,7 +76,7 @@ const Navigation = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8">
+            <div className="hidden lg:flex items-center space-x-8 ml-12">
               {navLinks.map((link) => (
                 <Link
                   key={link.label}
@@ -122,7 +122,7 @@ const Navigation = () => {
                   </Link>
                   <Link to="/auth">
                     <Button variant="default" className="gradient-primary text-sm shadow-soft hover:shadow-glow transition-all duration-300">
-                      Start Free Trial
+                      Book a Demo
                     </Button>
                   </Link>
                 </>

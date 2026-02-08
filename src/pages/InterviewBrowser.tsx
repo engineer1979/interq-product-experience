@@ -9,18 +9,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { 
-  Search, 
-  Filter, 
-  Clock, 
-  Code, 
-  BarChart3, 
-  Play, 
+import {
+  Search,
+  Filter,
+  Clock,
+  Code,
+  BarChart3,
+  Play,
   Calendar,
   Users,
   TrendingUp,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  Mic
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -31,7 +32,7 @@ interface Interview {
   title: string;
   description: string;
   job_role: string;
-  difficulty: string;
+  difficulty?: string;
   duration_minutes: number;
   question_count: number;
   is_published: boolean;
@@ -52,7 +53,7 @@ interface InterviewStats {
 export default function InterviewBrowser() {
   const navigate = useNavigate();
   const { toast } = useToast();
-  
+
   const [interviews, setInterviews] = useState<Interview[]>([]);
   const [filteredInterviews, setFilteredInterviews] = useState<Interview[]>([]);
   const [loading, setLoading] = useState(true);
@@ -67,25 +68,32 @@ export default function InterviewBrowser() {
   const fetchInterviews = async () => {
     try {
       setLoading(true);
-      
+
       const { data: interviewsData, error } = await supabase
         .from('interviews')
         .select(`
           *,
           interview_questions(count),
-          interview_results(count, avg:overall_score)
+          interview_results(overall_score)
         `)
         .eq('is_published', true)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
 
-      const enhancedInterviews = (interviewsData || []).map(interview => ({
-        ...interview,
-        question_count: interview.interview_questions?.[0]?.count || 0,
-        completion_rate: interview.interview_results?.[0]?.count || 0,
-        average_score: interview.interview_results?.[0]?.avg || 0,
-      }));
+      const enhancedInterviews = (interviewsData || []).map(interview => {
+        const results = interview.interview_results || [];
+        const count = results.length;
+        const totalScore = results.reduce((sum: number, r: any) => sum + (r.overall_score || 0), 0);
+        const average_score = count > 0 ? totalScore / count : 0;
+
+        return {
+          ...interview,
+          question_count: interview.interview_questions?.[0]?.count || 0,
+          completion_rate: count,
+          average_score: average_score,
+        };
+      });
 
       setInterviews(enhancedInterviews);
       setFilteredInterviews(enhancedInterviews);
@@ -99,12 +107,12 @@ export default function InterviewBrowser() {
       if (statsData) {
         const totalCompleted = statsData.length;
         const avgScore = statsData.reduce((sum, result) => sum + (result.overall_score || 0), 0) / totalCompleted || 0;
-        
+
         setStats({
           total_interviews: enhancedInterviews.length,
           completed_interviews: totalCompleted,
           average_score: avgScore,
-          total_questions_answered: statsData.reduce((sum, result) => sum + (result.total_questions || 0), 0),
+          total_questions_answered: statsData.reduce((sum, result) => sum + (result.overall_score > 0 ? 1 : 0), 0),
         });
       }
 
@@ -221,8 +229,8 @@ export default function InterviewBrowser() {
   };
 
   // Get difficulty color
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
+  const getDifficultyColor = (difficulty?: string) => {
+    switch (difficulty?.toLowerCase()) {
       case 'easy': return 'bg-green-100 text-green-800';
       case 'medium': return 'bg-yellow-100 text-yellow-800';
       case 'hard': return 'bg-red-100 text-red-800';
@@ -265,7 +273,7 @@ export default function InterviewBrowser() {
     <ProtectedRoute>
       <div className="min-h-screen flex flex-col bg-background">
         <Navigation />
-        
+
         <main className="flex-grow container mx-auto px-4 py-8">
           {/* Header */}
           <div className="mb-8">
@@ -276,7 +284,7 @@ export default function InterviewBrowser() {
                   Browse and practice with AI-generated interview questions
                 </p>
               </div>
-              
+
               {/* Quick Stats */}
               {stats && (
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -311,7 +319,7 @@ export default function InterviewBrowser() {
                   className="pl-10"
                 />
               </div>
-              
+
               <Select value={selectedRole} onValueChange={setSelectedRole}>
                 <SelectTrigger className="w-full lg:w-48">
                   <SelectValue placeholder="All Roles" />
@@ -323,7 +331,7 @@ export default function InterviewBrowser() {
                   ))}
                 </SelectContent>
               </Select>
-              
+
               <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
                 <SelectTrigger className="w-full lg:w-40">
                   <SelectValue placeholder="All Difficulties" />
@@ -335,7 +343,7 @@ export default function InterviewBrowser() {
                   <SelectItem value="hard">Hard</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-full lg:w-40">
                   <SelectValue placeholder="Sort by" />
@@ -366,7 +374,7 @@ export default function InterviewBrowser() {
                     {interview.description}
                   </CardDescription>
                 </CardHeader>
-                
+
                 <CardContent>
                   <div className="space-y-3">
                     {/* Stats */}
@@ -400,8 +408,8 @@ export default function InterviewBrowser() {
                             <span>{Math.round(interview.average_score)}%</span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-primary h-2 rounded-full" 
+                            <div
+                              className="bg-primary h-2 rounded-full"
                               style={{ width: `${interview.average_score}%` }}
                             />
                           </div>
@@ -432,7 +440,7 @@ export default function InterviewBrowser() {
                       onClick={() => startInterview(interview.id, 'voice')}
                     >
                       <Mic className="h-3 w-3 mr-1" />
-                      Voice
+                      Live
                     </Button>
                   </div>
                 </CardContent>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CheckCircle2, Shield, Award, Lock } from "lucide-react";
 import Navigation from "@/components/Navigation";
@@ -17,7 +17,6 @@ const GetStarted = () => {
     email: "",
     company: "",
     password: "",
-    phone: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -53,7 +52,7 @@ const GetStarted = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 gradient-hero">
         <div className="container mx-auto max-w-7xl">
@@ -200,20 +199,6 @@ const GetStarted = () => {
                       onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                       className="h-12"
                       placeholder="Create a password"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="phone" className="text-sm font-medium mb-2 block">
-                      Phone Number (Optional)
-                    </Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="h-12"
-                      placeholder="+1 (555) 000-0000"
                     />
                   </div>
 

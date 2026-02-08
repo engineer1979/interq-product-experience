@@ -33,7 +33,7 @@ const steps = [
 
 const HowItWorks: React.FC = () => {
     return (
-        <section className="container mx-auto px-4 py-24">
+        <section id="how-it-works" className="container mx-auto px-4 lg:px-8 py-24">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">How It Works</h2>
 
             <div className="relative max-w-4xl mx-auto">

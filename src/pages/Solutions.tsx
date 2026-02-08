@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 import { Building2, Briefcase, Rocket, Users } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const Solutions = () => {
   const navigate = useNavigate();
@@ -72,7 +73,7 @@ const Solutions = () => {
       useCases: [
         "Founding team hiring",
         "Rapid team scaling",
-        "Remote hiring",
+        "Strategic Global Hiring",
         "Freelancer evaluation",
       ],
     },
@@ -103,7 +104,7 @@ const Solutions = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      {/* Hero Section with Remote Hiring Image */}
+      {/* Hero Section with Strategic Global Hiring Image */}
       <section className="pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-7xl">
           <motion.div
@@ -112,25 +113,26 @@ const Solutions = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <div className="relative mb-8 rounded-2xl overflow-hidden shadow-2xl max-w-4xl mx-auto">
+            <div className="relative mb-8 rounded-[2.5rem] overflow-hidden shadow-elegant max-w-5xl mx-auto border border-white/10">
               <img
-                src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                alt="Remote Hiring Made Easy - Professional team meeting"
-                className="w-full h-64 md:h-96 object-cover"
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"
+                alt="Strategic Global Hiring - Professional Team Collaboration"
+                className="w-full h-72 md:h-[500px] object-cover"
                 loading="lazy"
                 decoding="async"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 text-white">
-                <h2 className="text-2xl md:text-4xl font-bold mb-2">Remote Hiring Made Easy</h2>
-                <p className="text-lg md:text-xl opacity-90">Connect with top talent anywhere in the world</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+              <div className="absolute bottom-10 left-10 right-10 text-left">
+                <Badge variant="outline" className="bg-primary/20 text-primary border-primary/40 backdrop-blur-md mb-4 uppercase tracking-[0.2em] font-black text-[10px]">Institutional Solution</Badge>
+                <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-2">Strategic Global Hiring</h2>
+                <p className="text-lg md:text-xl text-muted-foreground font-medium max-w-2xl">Connect with elite talent through our boundaryless meritocratic engine.</p>
               </div>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Solutions for <span className="gradient-primary bg-clip-text text-transparent">Every</span> Organization
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6">
+              Solutions for <span className="gradient-primary bg-clip-text text-transparent">Every</span> Archetype
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Whether you're a startup, recruitment agency, or organizational hiring - we have the perfect solution for your hiring needs
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-medium">
+              From hyper-growth startups to institutional global enterprises, InterQ provides the cognitive infrastructure to scale your workforce with mathematical precision.
             </p>
           </motion.div>
 
@@ -141,15 +143,13 @@ const Solutions = () => {
                 key={key}
                 onClick={() => setSelectedSolution(key)}
                 aria-pressed={selectedSolution === key}
-                className={`p-4 md:p-6 rounded-xl border transition-smooth text-left w-full ${
-                  selectedSolution === key
-                    ? "border-primary bg-primary/5 shadow-elegant"
-                    : "border-border bg-card hover:border-primary/50 hover:shadow-soft"
-                }`}
+                className={`p-4 md:p-6 rounded-xl border transition-smooth text-left w-full ${selectedSolution === key
+                  ? "border-primary bg-primary/5 shadow-elegant"
+                  : "border-border bg-card hover:border-primary/50 hover:shadow-soft"
+                  }`}
               >
-                <solution.icon className={`w-6 h-6 md:w-8 md:h-8 mb-2 md:mb-3 ${
-                  selectedSolution === key ? "text-primary" : "text-muted-foreground"
-                }`} />
+                <solution.icon className={`w-6 h-6 md:w-8 md:h-8 mb-2 md:mb-3 ${selectedSolution === key ? "text-primary" : "text-muted-foreground"
+                  }`} />
                 <h3 className="font-semibold text-sm md:text-base mb-1">{solution.title.replace(/^For |^Organizational hiring /, "")}</h3>
               </button>
             ))}
@@ -174,8 +174,8 @@ const Solutions = () => {
                 <h3 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6">Key Benefits</h3>
                 <ul className="space-y-3 md:space-y-4">
                   {currentSolution.benefits.map((benefit, index) => (
-                    <motion.li 
-                      key={benefit} 
+                    <motion.li
+                      key={benefit}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
@@ -190,15 +190,15 @@ const Solutions = () => {
                 </ul>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-                <Button onClick={() => navigate('/get-started')} size="lg" className="w-full sm:w-auto h-12 sm:h-14 px-7 sm:px-9 text-base sm:text-lg">Book Demo</Button>
-                <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 sm:h-14 px-7 sm:px-9 text-base sm:text-lg" onClick={() => navigate('/product')}>Learn More</Button>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-start items-stretch sm:items-center">
+                <Button onClick={() => navigate('/get-started')} size="lg" className="w-full sm:w-auto h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg">Book Demo</Button>
+                <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg" onClick={() => navigate('/product')}>Learn More</Button>
                 {selectedSolution === 'enterprise' && (
-                  <Button 
-                    onClick={() => navigate('/get-started')} 
-                    size="lg" 
+                  <Button
+                    onClick={() => navigate('/get-started')}
+                    size="lg"
                     variant="secondary"
-                    className="w-full sm:w-auto h-12 sm:h-14 px-7 sm:px-9 text-base sm:text-lg bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="w-full sm:w-auto h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     For Organizational Hiring
                   </Button>
@@ -211,8 +211,8 @@ const Solutions = () => {
                 <h3 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6">Perfect For</h3>
                 <div className="space-y-3 md:space-y-4">
                   {currentSolution.useCases.map((useCase, index) => (
-                    <motion.div 
-                      key={useCase} 
+                    <motion.div
+                      key={useCase}
                       initial={{ opacity: 0, x: 10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
@@ -236,7 +236,7 @@ const Solutions = () => {
           </motion.div>
 
           {/* ROI Calculator */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -249,21 +249,21 @@ const Solutions = () => {
                 See how much time and money you can save with InterQ
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
-                <motion.div 
+                <motion.div
                   whileHover={{ scale: 1.05 }}
                   className="bg-card rounded-xl p-5 md:p-6 shadow-soft"
                 >
                   <div className="text-3xl md:text-4xl font-bold text-primary mb-2">70%</div>
                   <div className="text-xs md:text-sm text-muted-foreground">Time Saved</div>
                 </motion.div>
-                <motion.div 
+                <motion.div
                   whileHover={{ scale: 1.05 }}
                   className="bg-card rounded-xl p-5 md:p-6 shadow-soft"
                 >
                   <div className="text-3xl md:text-4xl font-bold text-primary mb-2">$50K+</div>
                   <div className="text-xs md:text-sm text-muted-foreground">Annual Savings</div>
                 </motion.div>
-                <motion.div 
+                <motion.div
                   whileHover={{ scale: 1.05 }}
                   className="bg-card rounded-xl p-5 md:p-6 shadow-soft"
                 >
