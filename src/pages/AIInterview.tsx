@@ -13,6 +13,16 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter
+} from "@/components/ui/dialog";
+import { Check } from "lucide-react";
 import { InteractiveInterview } from "@/components/interview/InteractiveInterview";
 
 interface InterviewResult {
@@ -74,36 +84,56 @@ const AIInterview = () => {
     }
   };
 
+  const [selectedFeature, setSelectedFeature] = useState<typeof features[0] | null>(null);
+
   const features = [
     {
       icon: Brain,
       title: "AI Analysis",
       description: "Real-time analysis using advanced NLP",
+      longDescription: "Our proprietary NLP engine analyzes speech patterns, keyword density, and sentiment in real-time to provide immediate, actionable feedback on candidate performance. It identifies strengths, areas for improvement, and potential red flags.",
+      benefits: ["Sentiment Analysis", "Keyword Matching", "Tone Detection"],
+      cta: "See Analysis Demo"
     },
     {
       icon: Video,
       title: "HD Video",
       description: "Secure capture with quality checks",
+      longDescription: "Crystal clear video recording ensures every non-verbal cue is captured. Supports up to 4K resolution with adaptive bitrate streaming for low-bandwidth environments, ensuring a smooth experience for all candidates.",
+      benefits: ["4K Resolution Support", "Adaptive Bitrate", "Low Latency"],
+      cta: "Test Video"
     },
     {
       icon: Shield,
       title: "Fraud Detection",
       description: "Behavior analysis & proctoring",
+      longDescription: "Advanced proctoring algorithms monitor eye movement, screen activity, and audio environment to ensure the integrity of every assessment session. Flag suspicious behavior automatically for review.",
+      benefits: ["Eye Tracking", "Environment Scan", "Plagiarism Check"],
+      cta: "Learn Security"
     },
     {
       icon: TrendingUp,
       title: "Smart Scoring",
       description: "Multi-dimensional performance metrics",
+      longDescription: "Multi-dimensional scoring rubric evaluates technical accuracy, soft skills, and cultural fit, calibrated against industry benchmarks. Get a comprehensive scorecard that goes beyond simple pass/fail.",
+      benefits: ["Benchmarking", "Soft Skills Score", "Technical Rating"],
+      cta: "View Sample Report"
     },
     {
       icon: Clock,
       title: "On-Demand",
-      description: "Take interviews anytime, 24/7"
+      description: "Take interviews anytime, 24/7",
+      longDescription: "Candidates can complete interviews on their schedule, reducing time-to-hire by 50% through asynchronous evaluation workflows. No more scheduling conflicts or timezone headaches.",
+      benefits: ["Asynchronous", "Global Access", "Time-Zone Agnostic"],
+      cta: "Start Anytime"
     },
     {
       icon: User,
       title: "No Sign-up",
-      description: "Start practicing immediately"
+      description: "Start practicing immediately",
+      longDescription: "Frictionless candidate experience. One-click access via secure magic links eliminates barriers and improves completion rates. Candidates can start demonstrating their skills in seconds.",
+      benefits: ["Frictionless Entry", "Magic Links", "Higher Completion"],
+      cta: "Try Now"
     }
   ];
 
@@ -172,15 +202,53 @@ const AIInterview = () => {
                   <h2 className="text-2xl font-bold mb-6">Key Interview Features</h2>
                   <div className="grid sm:grid-cols-2 gap-6">
                     {features.map((feature, i) => (
-                      <div key={i} className="flex items-start gap-4 p-4 rounded-xl border border-border bg-card/50 hover:bg-card transition-colors">
-                        <div className="p-2 rounded-lg bg-primary/10 text-primary mt-1">
-                          <feature.icon className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold mb-1">{feature.title}</h4>
-                          <p className="text-sm text-muted-foreground">{feature.description}</p>
-                        </div>
-                      </div>
+                      <Dialog key={i}>
+                        <DialogTrigger asChild>
+                          <div
+                            className="flex items-start gap-4 p-4 rounded-xl border border-border bg-card/50 hover:bg-card hover:border-primary/50 hover:shadow-md transition-all cursor-pointer group"
+                            onClick={() => setSelectedFeature(feature)}
+                          >
+                            <div className="p-2 rounded-lg bg-primary/10 text-primary mt-1 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                              <feature.icon className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold mb-1 group-hover:text-primary transition-colors">{feature.title}</h4>
+                              <p className="text-sm text-muted-foreground">{feature.description}</p>
+                            </div>
+                          </div>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <div className="flex items-center gap-3 mb-4">
+                              <div className="p-3 rounded-xl bg-primary/10 text-primary">
+                                <feature.icon className="w-6 h-6" />
+                              </div>
+                              <DialogTitle className="text-xl">{feature.title}</DialogTitle>
+                            </div>
+                            <DialogDescription className="text-base text-foreground/80 leading-relaxed">
+                              {feature.longDescription}
+                            </DialogDescription>
+                          </DialogHeader>
+
+                          <div className="py-4">
+                            <h4 className="text-sm font-semibold mb-3 uppercase tracking-wider text-muted-foreground">Key Benefits</h4>
+                            <div className="grid gap-2">
+                              {feature.benefits.map((benefit, idx) => (
+                                <div key={idx} className="flex items-center gap-2">
+                                  <Check className="w-4 h-4 text-green-500" />
+                                  <span className="text-sm">{benefit}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <DialogFooter>
+                            <Button onClick={() => navigate('/create-interview')} className="w-full sm:w-auto">
+                              {feature.cta} <ArrowRight className="ml-2 w-4 h-4" />
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
                     ))}
                   </div>
                 </div>

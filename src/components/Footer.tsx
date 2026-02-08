@@ -1,15 +1,19 @@
-import { Mail, Phone, MapPin, Linkedin, Twitter, Facebook, Instagram } from "lucide-react";
+import { Mail, Linkedin, Twitter, Facebook, Instagram, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useNavigate, Link } from "react-router-dom";
 
 const Footer = () => {
   const navigate = useNavigate();
+  const currentYear = new Date().getFullYear();
+
   const footerLinks = {
     Product: ["Features", "Assessments", "AI Interviewing", "Pricing", "Integrations"],
     Solutions: ["For Recruiters", "For Organizational hiring", "For SMEs", "Industry Solutions"],
     Resources: ["Blog", "Documentation", "Case Studies", "Help Center", "API"],
     Company: ["About Us", "Careers", "Press Kit", "Partners", "Contact"],
   };
+
   const linkMapping: Record<string, string> = {
     // Product
     "Features": "/features",
@@ -37,35 +41,55 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-foreground text-background py-16">
+    <footer className="bg-slate-900 text-slate-200 pt-20 pb-10 border-t border-slate-800">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-12 mb-12">
-          {/* Brand Column */}
-          <div className="lg:col-span-2">
-            <div className="text-3xl font-bold mb-4">
-              Inter<span className="text-primary">Q</span>
+
+        {/* Top Section: Brand & Newsletter */}
+        <div className="grid lg:grid-cols-3 gap-12 mb-16 border-b border-slate-800 pb-12">
+          <div className="lg:col-span-1 space-y-6">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-xl">I</div>
+              <span className="text-2xl font-bold text-white tracking-tight">InterQ</span>
             </div>
-            <p className="text-background/70 mb-6 text-sm leading-relaxed">
-              Redefining recruitment with AI-driven interviews and assessments across North America, Middle East and beyond.
+            <p className="text-slate-400 leading-relaxed max-w-sm">
+              The enterprise-grade AI interviewing platform. Empowering hiring teams with data-driven insights and autonomous workflows.
             </p>
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-sm">
-                <Mail className="h-4 w-4 text-primary" />
-                <span>contact@interq.com</span>
-              </div>
+            <div className="flex gap-4">
+              <Link to="#" className="p-2 rounded-full bg-slate-800 hover:bg-primary/20 hover:text-primary transition-colors"><Linkedin size={18} /></Link>
+              <Link to="#" className="p-2 rounded-full bg-slate-800 hover:bg-primary/20 hover:text-primary transition-colors"><Twitter size={18} /></Link>
+              <Link to="#" className="p-2 rounded-full bg-slate-800 hover:bg-primary/20 hover:text-primary transition-colors"><Facebook size={18} /></Link>
+              <Link to="#" className="p-2 rounded-full bg-slate-800 hover:bg-primary/20 hover:text-primary transition-colors"><Instagram size={18} /></Link>
             </div>
           </div>
 
-          {/* Link Columns */}
+          <div className="lg:col-span-2 flex flex-col lg:items-end justify-center">
+            <div className="bg-slate-800/50 rounded-2xl p-6 md:p-8 w-full max-w-2xl border border-slate-700">
+              <h3 className="text-xl font-bold text-white mb-2">Subscribe to our newsletter</h3>
+              <p className="text-slate-400 mb-6 text-sm">Get the latest insights on AI recruitment and hiring trends dedicated to you.</p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Input
+                  placeholder="Enter your email"
+                  className="bg-slate-900/50 border-slate-700 text-white placeholder:text-slate-500 focus-visible:ring-primary h-11"
+                />
+                <Button className="h-11 px-6 bg-primary hover:bg-primary/90 text-white font-medium shrink-0">
+                  Subscribe <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Links Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16">
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
-              <h3 className="font-semibold text-lg mb-4">{category}</h3>
-              <ul className="space-y-2">
+              <h3 className="font-bold text-white mb-6 uppercase tracking-wider text-xs">{category}</h3>
+              <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link}>
                     <Link
                       to={linkMapping[link] || `/${link.toLowerCase().replace(/\s+/g, '-')}`}
-                      className="text-background/70 hover:text-primary transition-smooth text-sm"
+                      className="text-slate-400 hover:text-primary transition-colors text-sm font-medium block hover:translate-x-1 duration-200"
                     >
                       {link}
                     </Link>
@@ -76,63 +100,27 @@ const Footer = () => {
           ))}
         </div>
 
-        {/* CTA Section */}
-        <div className="border-t border-background/20 pt-12 mb-12">
-          <div className="bg-primary/10 rounded-2xl p-8 md:p-12 text-center">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Ready to Transform Your Hiring?
-            </h3>
-            <p className="text-background/70 mb-6 max-w-2xl mx-auto">
-              Join hundreds of companies using InterQ to build exceptional teams
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button onClick={() => navigate('/get-started')} size="lg" className="gradient-primary w-full sm:w-auto h-12 sm:h-14 px-7 sm:px-9 text-base sm:text-lg">
-                Book Demo
-              </Button>
-              <Button onClick={() => navigate('/auth')} size="lg" variant="outline" className="border-background/20 hover:bg-background/10 w-full sm:w-auto h-12 sm:h-14 px-7 sm:px-9 text-base sm:text-lg text-primary font-semibold">
-                Start Free Trial
-              </Button>
-            </div>
-          </div>
-        </div>
-
         {/* Bottom Section */}
-        <div className="border-t border-background/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-sm text-background/60">
-            © 2025 InterQ Technologies Inc. All rights reserved.
+        <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-slate-500 text-sm">
+            © {currentYear} InterQ Technologies Inc. All rights reserved.
           </div>
 
-          <div className="flex items-center gap-6">
-            <a href="https://linkedin.com/company/interq" target="_blank" rel="noopener noreferrer" className="text-background/60 hover:text-primary transition-smooth">
-              <Linkedin className="h-5 w-5" />
-            </a>
-            <a href="https://twitter.com/interq" target="_blank" rel="noopener noreferrer" className="text-background/60 hover:text-primary transition-smooth">
-              <Twitter className="h-5 w-5" />
-            </a>
-            <a href="https://facebook.com/interq" target="_blank" rel="noopener noreferrer" className="text-background/60 hover:text-primary transition-smooth">
-              <Facebook className="h-5 w-5" />
-            </a>
-            <a href="https://instagram.com/interq" target="_blank" rel="noopener noreferrer" className="text-background/60 hover:text-primary transition-smooth">
-              <Instagram className="h-5 w-5" />
-            </a>
-          </div>
-
-          <div className="flex gap-6 text-sm">
-            <Link to="/privacy-policy" className="text-background/60 hover:text-primary transition-smooth">
+          <div className="flex flex-wrap justify-center gap-6 text-sm">
+            <Link to="/privacy-policy" className="text-slate-500 hover:text-white transition-colors">
               Privacy Policy
             </Link>
-            <Link to="/terms-of-service" className="text-background/60 hover:text-primary transition-smooth">
+            <Link to="/terms-of-service" className="text-slate-500 hover:text-white transition-colors">
               Terms of Service
             </Link>
+            <Link to="/security" className="text-slate-500 hover:text-white transition-colors">
+              Security
+            </Link>
+            <div className="flex items-center gap-2 ml-4 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs text-green-500 font-medium">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              All Systems Operational
+            </div>
           </div>
-        </div>
-
-        {/* Trust Badges */}
-        <div className="border-t border-background/20 mt-8 pt-8 flex flex-wrap items-center justify-center gap-4">
-          <div className="px-3 py-2 rounded-md border border-background/30 text-xs">SOC 2 Certified</div>
-          <div className="px-3 py-2 rounded-md border border-background/30 text-xs">ISO 27001</div>
-          <div className="px-3 py-2 rounded-md border border-background/30 text-xs">GDPR Compliant</div>
-          <div className="px-3 py-2 rounded-md border border-background/30 text-xs">AES-256 Encryption</div>
         </div>
       </div>
     </footer>

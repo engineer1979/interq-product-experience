@@ -3,74 +3,74 @@
 @tailwind utilities;
 
 /* 
-  TURQUOISE WAVE THEME 
-  Palette: Ethereal White, Turquoise, Dark Blue, Sky Blue
+  PROFESSIONAL CORPORATE THEME 
+  Palette: Slate, Deep Teal, White, Subtle Gradients
 */
 
 @layer base {
   :root {
     color-scheme: light;
 
-    /* Light Mode - Turquoise Wave */
+    /* Light Mode - Professional Slate & Teal */
     --background: 210 40% 98%;
-    /* Very light blue tint */
-    --foreground: 215 60% 15%;
-    /* Dark Blue text */
+    /* Slightly cool off-white */
+    --foreground: 222 47% 11%;
+    /* Deep slate for high contrast text */
 
     --card: 0 0% 100%;
-    --card-foreground: 215 60% 15%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 60% 15%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 188 90% 45%;
-    /* Vibrant Turquoise (Logo Primary) */
-    --primary-foreground: 0 0% 100%;
+    --primary: 199 89% 48%;
+    /* Sophisticated Tech Blue */
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 195 85% 90%;
-    /* Light Blue (Secondary) */
-    --secondary-foreground: 215 60% 15%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 30% 50%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Slate-500 equivalent */
 
-    --accent: 215 80% 30%;
-    /* Dark Blue (Accent) */
-    --accent-foreground: 0 0% 100%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 210 20% 90%;
-    --input: 210 20% 90%;
-    --ring: 188 90% 45%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 199 89% 48%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
+    /* Slightly tighter radius for professional feel */
 
-    /* Gradients - Turquoise Theme */
-    --gradient-primary: linear-gradient(135deg, hsl(188 90% 45%) 0%, hsl(215 80% 30%) 100%);
-    --gradient-hero: linear-gradient(180deg, hsl(188 90% 45% / 0.08) 0%, hsl(210 40% 98%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(215 80% 30%) 0%, hsl(188 90% 45%) 100%);
-    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
-    --gradient-aurora: radial-gradient(circle at 15% 50%, hsl(188 90% 45% / 0.15), transparent 40%),
-      radial-gradient(circle at 85% 30%, hsl(215 80% 30% / 0.15), transparent 40%),
-      radial-gradient(circle at 50% 80%, hsl(195 85% 85% / 0.3), transparent 40%);
+    /* Premium Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(199 89% 48%) 0%, hsl(217 91% 60%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(210 40% 98%) 0%, white 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(222 47% 11%) 0%, hsl(217 91% 60%) 100%);
+    --gradient-glass: linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.45) 100%);
+    --gradient-aurora: radial-gradient(circle at 50% -20%, hsl(199 89% 48% / 0.08), transparent 40%),
+      radial-gradient(circle at 0% 30%, hsl(217 91% 60% / 0.05), transparent 40%),
+      radial-gradient(circle at 100% 30%, hsl(199 89% 48% / 0.05), transparent 40%);
 
-    /* Shadows (Tinted Turquoise) */
-    --shadow-elegant: 0 20px 40px -10px rgba(34, 211, 238, 0.15);
-    --shadow-soft: 0 10px 30px -5px rgba(15, 23, 42, 0.03);
-    --shadow-glow: 0 0 25px rgba(34, 211, 238, 0.4);
+    /* Sophisticated Shadows */
+    --shadow-elegant: 0 20px 40px -10px rgba(0, 0, 0, 0.06), 0 0 20px -5px rgba(0, 0, 0, 0.03);
+    --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    --shadow-glow: 0 0 20px rgba(14, 165, 233, 0.25);
 
-    --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 210 40% 98%;
-    --sidebar-foreground: 215 60% 15%;
-    --sidebar-primary: 215 60% 15%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 199 89% 48%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 195 85% 90%;
-    --sidebar-accent-foreground: 215 60% 15%;
-    --sidebar-border: 210 20% 90%;
-    --sidebar-ring: 188 90% 45%;
+    --sidebar-accent: 210 40% 96.1%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217 91% 60%;
   }
 }
 
@@ -80,11 +80,12 @@
   }
 
   body {
-    @apply bg-background text-foreground min-h-screen;
-    background-color: hsl(210 40% 98%) !important;
-    font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+    @apply bg-background text-foreground min-h-screen antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     background-image: var(--gradient-aurora);
-    background-attachment: scroll;
+    background-attachment: fixed;
+    letter-spacing: -0.015em;
+    /* Slightly tighter letter spacing for modern look */
   }
 
   h1,
@@ -93,7 +94,12 @@
   h4,
   h5,
   h6 {
-    @apply font-bold tracking-tight;
+    font-family: 'Outfit', sans-serif;
+    @apply font-bold tracking-tight text-foreground;
+  }
+
+  h1 {
+    letter-spacing: -0.03em;
   }
 }
 
@@ -135,32 +141,42 @@
 
   /* Glassmorphism Utilities */
   .glass {
-    background: var(--gradient-glass);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.5);
   }
 
+  .glass-dark {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
   .glass-card {
-    @apply glass rounded-2xl shadow-soft hover:shadow-elegant transition-smooth hover:-translate-y-1;
+    @apply glass rounded-xl shadow-soft hover:shadow-elegant transition-smooth border border-white/50;
   }
 
   .glass-button {
-    @apply glass px-6 py-3 rounded-xl font-semibold hover:bg-white/80 transition-smooth active:scale-95 text-foreground;
+    @apply glass px-6 py-2.5 rounded-lg font-medium hover:bg-white/90 transition-smooth active:scale-95 text-foreground shadow-sm;
+  }
+
+  /* Container utility for consistent max-width */
+  .container-width {
+    @apply container mx-auto px-4 max-w-7xl;
   }
 
   /* Animations */
   @keyframes float {
-    0% {
+
+    0%,
+    100% {
       transform: translateY(0px);
     }
 
     50% {
       transform: translateY(-10px);
-    }
-
-    100% {
-      transform: translateY(0px);
     }
   }
 
@@ -168,46 +184,19 @@
     animation: float 6s ease-in-out infinite;
   }
 
-  /* Aurora animated orbs (Turquoise/Blue versions) */
-  @keyframes orbMove {
-    0% {
-      transform: translate(0, 0) scale(1);
-      opacity: 0.35;
+  @keyframes pulse-subtle {
+
+    0%,
+    100% {
+      opacity: 0.5;
     }
 
     50% {
-      transform: translate(40px, -30px) scale(1.2);
-      opacity: 0.6;
-    }
-
-    100% {
-      transform: translate(0, 0) scale(1);
-      opacity: 0.35;
+      opacity: 0.8;
     }
   }
 
-  .aurora-orb {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(80px);
-    mix-blend-mode: multiply;
-    /* Better for light mode blending */
-    will-change: transform, opacity;
-    animation: orbMove 14s ease-in-out infinite;
-  }
-
-  .aurora-orb.violet {
-    background: radial-gradient(circle, hsl(215 80% 30% / 0.4), transparent 60%);
-    /* Dark Blue */
-  }
-
-  .aurora-orb.cyan {
-    background: radial-gradient(circle, hsl(188 90% 45% / 0.4), transparent 60%);
-    /* Turquoise */
-  }
-
-  .aurora-orb.pink {
-    background: radial-gradient(circle, hsl(195 85% 85% / 0.6), transparent 60%);
-    /* Light Blue */
+  .animate-pulse-subtle {
+    animation: pulse-subtle 3s ease-in-out infinite;
   }
 }
