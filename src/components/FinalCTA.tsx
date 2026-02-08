@@ -65,7 +65,7 @@ const FinalCTA = () => {
                         <Button
                             onClick={() => navigate('/solutions?view=enterprise')}
                             size="lg"
-                            className="h-16 px-8 text-lg bg-gradient-to-r from-primary to-accent text-white hover:from-primary/90 hover:to-accent/90 border border-white/20 shadow-xl w-full md:w-auto hover:-translate-y-1 transition-transform"
+                            className="h-16 px-8 text-lg bg-gradient-to-r from-primary to-accent text-white hover:from-primary/90 hover:to-accent/90 border border-white/20 shadow-xl hover:shadow-2xl w-full md:w-auto hover:-translate-y-1 transition-all duration-300"
                         >
                             <Building2 className="mr-2 w-5 h-5" />
                             For Organizational Hiring

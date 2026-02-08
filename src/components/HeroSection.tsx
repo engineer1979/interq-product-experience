@@ -118,7 +118,7 @@ const HeroSection = () => {
                   onClick={() => navigate('/solutions?view=enterprise')}
                   size="lg"
                   variant="secondary"
-                  className="w-full sm:w-auto h-14 px-8 text-lg rounded-xl shadow-sm hover:shadow-md hover:translate-y-[-2px] transition-all duration-300 bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                  className="w-full sm:w-auto h-14 px-8 text-lg rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 bg-secondary text-secondary-foreground hover:bg-secondary/80"
                 >
                   For Organizational Hiring
                 </Button>

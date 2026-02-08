@@ -198,7 +198,7 @@ const Solutions = () => {
                     onClick={() => navigate('/get-started')} 
                     size="lg" 
                     variant="secondary"
-                    className="w-full sm:w-auto h-12 sm:h-14 px-7 sm:px-9 text-base sm:text-lg bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white border-0 shadow-lg"
+                    className="w-full sm:w-auto h-12 sm:h-14 px-7 sm:px-9 text-base sm:text-lg bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     For Organizational Hiring
                   </Button>
