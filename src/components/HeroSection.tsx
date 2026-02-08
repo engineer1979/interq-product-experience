@@ -112,6 +112,17 @@ const HeroSection = () => {
                   See How It Works
                 </Button>
               </motion.div>
+
+              <motion.div variants={buttonVariants} className="w-full sm:w-auto">
+                <Button
+                  onClick={() => navigate('/solutions?view=enterprise')}
+                  size="lg"
+                  variant="secondary"
+                  className="w-full sm:w-auto h-14 px-8 text-lg rounded-xl shadow-sm hover:shadow-md hover:translate-y-[-2px] transition-all duration-300 bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                >
+                  For Organizational Hiring
+                </Button>
+              </motion.div>
             </motion.div>
           </motion.div>
 

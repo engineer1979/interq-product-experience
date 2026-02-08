@@ -193,6 +193,16 @@ const Solutions = () => {
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                 <Button onClick={() => navigate('/get-started')} size="lg" className="w-full sm:w-auto h-12 sm:h-14 px-7 sm:px-9 text-base sm:text-lg">Book Demo</Button>
                 <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 sm:h-14 px-7 sm:px-9 text-base sm:text-lg" onClick={() => navigate('/product')}>Learn More</Button>
+                {selectedSolution === 'enterprise' && (
+                  <Button 
+                    onClick={() => navigate('/get-started')} 
+                    size="lg" 
+                    variant="secondary"
+                    className="w-full sm:w-auto h-12 sm:h-14 px-7 sm:px-9 text-base sm:text-lg bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white border-0 shadow-lg"
+                  >
+                    For Organizational Hiring
+                  </Button>
+                )}
               </div>
             </div>
 
