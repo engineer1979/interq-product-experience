@@ -194,9 +194,9 @@ export function CodingQuestion({ question, code, onCodeChange }: CodingQuestionP
             </AnimatePresence>
           </Card>
 
-          <Card className="bg-primary/5 border border-primary/20 p-6 rounded-3xl space-y-4">
+           <Card className="bg-primary/5 border border-primary/20 p-6 rounded-3xl space-y-4">
             <div className="flex items-center gap-2">
-              <Brain size={16} className="text-primary" />
+              <Zap size={16} className="text-primary" />
               <span className="text-[10px] font-black tracking-widest uppercase text-muted-foreground">AI Guardrails</span>
             </div>
             <div className="space-y-3">

@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      assessment_answers: {
+        Row: {
+          answer: string | null
+          created_at: string
+          id: string
+          question_id: string
+          session_id: string
+          updated_at: string
+        }
+        Insert: {
+          answer?: string | null
+          created_at?: string
+          id?: string
+          question_id: string
+          session_id: string
+          updated_at?: string
+        }
+        Update: {
+          answer?: string | null
+          created_at?: string
+          id?: string
+          question_id?: string
+          session_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assessment_answers_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assessment_questions: {
         Row: {
           assessment_id: string
@@ -429,6 +471,65 @@ export type Database = {
           },
         ]
       }
+      interview_sessions: {
+        Row: {
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string
+          current_question_index: number | null
+          final_score: number | null
+          id: string
+          interview_id: string
+          interview_type: string | null
+          responses: Json | null
+          start_time: string | null
+          status: string | null
+          time_remaining_seconds: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          current_question_index?: number | null
+          final_score?: number | null
+          id?: string
+          interview_id: string
+          interview_type?: string | null
+          responses?: Json | null
+          start_time?: string | null
+          status?: string | null
+          time_remaining_seconds?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          current_question_index?: number | null
+          final_score?: number | null
+          id?: string
+          interview_id?: string
+          interview_type?: string | null
+          responses?: Json | null
+          start_time?: string | null
+          status?: string | null
+          time_remaining_seconds?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_sessions_interview_id_fkey"
+            columns: ["interview_id"]
+            isOneToOne: false
+            referencedRelation: "interviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interviews: {
         Row: {
           created_at: string
@@ -463,6 +564,87 @@ export type Database = {
           is_published?: boolean | null
           job_role?: string
           questions?: Json
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      job_assessments: {
+        Row: {
+          created_at: string
+          id: string
+          interview_id: string
+          job_id: string
+          stage: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          interview_id: string
+          job_id: string
+          stage?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          interview_id?: string
+          job_id?: string
+          stage?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_assessments_interview_id_fkey"
+            columns: ["interview_id"]
+            isOneToOne: false
+            referencedRelation: "interviews"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_assessments_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          created_at: string
+          created_by: string
+          department: string | null
+          description: string | null
+          employment_type: string | null
+          id: string
+          location: string | null
+          status: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          department?: string | null
+          description?: string | null
+          employment_type?: string | null
+          id?: string
+          location?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          department?: string | null
+          description?: string | null
+          employment_type?: string | null
+          id?: string
+          location?: string | null
+          status?: string | null
+          tags?: string[] | null
           title?: string
           updated_at?: string
         }

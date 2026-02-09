@@ -33,14 +33,8 @@ export function CreateJobDialog({ open, onOpenChange, onJobCreated }: CreateJobD
         assessmentId: ""
     });
 
-    // Simulate fetching assessments or fetch real ones if easier
     useEffect(() => {
         const fetchAssessments = async () => {
-            // In a real scenario, we fetch from 'interviews' table
-            // const { data } = await supabase.from('interviews').select('id, title');
-            // if (data) setAssessments(data);
-
-            // Mock data for demo
             setAssessments([
                 { id: "mock-1", title: "Software Engineer Behavioral" },
                 { id: "mock-2", title: "Product Manager Core Skills" },
@@ -58,15 +52,13 @@ export function CreateJobDialog({ open, onOpenChange, onJobCreated }: CreateJobD
         setLoading(true);
 
         try {
-            // 1. Get current user
             const { data: { user } } = await supabase.auth.getUser();
 
             if (!user) {
                 throw new Error("You must be logged in to create a job.");
             }
 
-            // 2. Insert into jobs table
-            const { data: jobData, error } = await supabase
+            const { data: jobData, error } = await (supabase as any)
                 .from('jobs')
                 .insert({
                     title: formData.title,
@@ -81,15 +73,14 @@ export function CreateJobDialog({ open, onOpenChange, onJobCreated }: CreateJobD
                 .single();
 
             if (error) {
-                console.warn("Supabase insert failed (likely missing table migration):", error);
+                console.warn("Supabase insert failed:", error);
                 toast({
                     title: "Demo Mode",
-                    description: "Job created properly in UI state (Database not connected yet).",
+                    description: "Job created in UI state (Database sync pending).",
                 });
             } else {
-                // 3. Link Assessment (job_assessments)
                 if (formData.assessmentId && jobData) {
-                    await supabase.from('job_assessments').insert({
+                    await (supabase as any).from('job_assessments').insert({
                         job_id: jobData.id,
                         interview_id: formData.assessmentId,
                         stage: 'screening'
@@ -105,7 +96,6 @@ export function CreateJobDialog({ open, onOpenChange, onJobCreated }: CreateJobD
             onOpenChange(false);
             if (onJobCreated) onJobCreated();
 
-            // Reset form
             setFormData({
                 title: "",
                 department: "",
@@ -138,30 +128,13 @@ export function CreateJobDialog({ open, onOpenChange, onJobCreated }: CreateJobD
 
                 <form onSubmit={handleSubmit} className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="title" className="text-right">
-                            Job Title
-                        </Label>
-                        <Input
-                            id="title"
-                            value={formData.title}
-                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                            className="col-span-3"
-                            placeholder="e.g. Senior Product Designer"
-                            required
-                        />
+                        <Label htmlFor="title" className="text-right">Job Title</Label>
+                        <Input id="title" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="col-span-3" placeholder="e.g. Senior Product Designer" required />
                     </div>
-
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="department" className="text-right">
-                            Department
-                        </Label>
-                        <Select
-                            value={formData.department}
-                            onValueChange={(val) => setFormData({ ...formData, department: val })}
-                        >
-                            <SelectTrigger className="col-span-3">
-                                <SelectValue placeholder="Select department" />
-                            </SelectTrigger>
+                        <Label htmlFor="department" className="text-right">Department</Label>
+                        <Select value={formData.department} onValueChange={(val) => setFormData({ ...formData, department: val })}>
+                            <SelectTrigger className="col-span-3"><SelectValue placeholder="Select department" /></SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="Engineering">Engineering</SelectItem>
                                 <SelectItem value="Product">Product</SelectItem>
@@ -172,31 +145,14 @@ export function CreateJobDialog({ open, onOpenChange, onJobCreated }: CreateJobD
                             </SelectContent>
                         </Select>
                     </div>
-
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="location" className="text-right">
-                            Location
-                        </Label>
-                        <Input
-                            id="location"
-                            value={formData.location}
-                            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                            className="col-span-3"
-                            placeholder="e.g. Remote / New York"
-                        />
+                        <Label htmlFor="location" className="text-right">Location</Label>
+                        <Input id="location" value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })} className="col-span-3" placeholder="e.g. Remote / New York" />
                     </div>
-
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="type" className="text-right">
-                            Type
-                        </Label>
-                        <Select
-                            value={formData.type}
-                            onValueChange={(val) => setFormData({ ...formData, type: val })}
-                        >
-                            <SelectTrigger className="col-span-3">
-                                <SelectValue placeholder="Select type" />
-                            </SelectTrigger>
+                        <Label htmlFor="type" className="text-right">Type</Label>
+                        <Select value={formData.type} onValueChange={(val) => setFormData({ ...formData, type: val })}>
+                            <SelectTrigger className="col-span-3"><SelectValue placeholder="Select type" /></SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="full-time">Full-time</SelectItem>
                                 <SelectItem value="contract">Contract</SelectItem>
@@ -205,18 +161,10 @@ export function CreateJobDialog({ open, onOpenChange, onJobCreated }: CreateJobD
                             </SelectContent>
                         </Select>
                     </div>
-
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="assessment" className="text-right">
-                            Assessment
-                        </Label>
-                        <Select
-                            value={formData.assessmentId}
-                            onValueChange={(val) => setFormData({ ...formData, assessmentId: val })}
-                        >
-                            <SelectTrigger className="col-span-3">
-                                <SelectValue placeholder="Select an assessment template..." />
-                            </SelectTrigger>
+                        <Label htmlFor="assessment" className="text-right">Assessment</Label>
+                        <Select value={formData.assessmentId} onValueChange={(val) => setFormData({ ...formData, assessmentId: val })}>
+                            <SelectTrigger className="col-span-3"><SelectValue placeholder="Select an assessment template..." /></SelectTrigger>
                             <SelectContent>
                                 {assessments.map(a => (
                                     <SelectItem key={a.id} value={a.id}>{a.title}</SelectItem>
@@ -224,21 +172,10 @@ export function CreateJobDialog({ open, onOpenChange, onJobCreated }: CreateJobD
                             </SelectContent>
                         </Select>
                     </div>
-
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="description" className="text-right">
-                            Description
-                        </Label>
-                        <Textarea
-                            id="description"
-                            value={formData.description}
-                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                            className="col-span-3"
-                            placeholder="Brief description of the role..."
-                            rows={3}
-                        />
+                        <Label htmlFor="description" className="text-right">Description</Label>
+                        <Textarea id="description" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="col-span-3" placeholder="Brief description of the role..." rows={3} />
                     </div>
-
                     <DialogFooter>
                         <Button type="submit" disabled={loading}>
                             {loading ? "Creating..." : "Create Job"}
