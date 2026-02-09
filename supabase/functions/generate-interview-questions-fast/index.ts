@@ -35,7 +35,7 @@ serve(async (req) => {
     await supabaseAdmin.from('interview_questions').delete().eq('interview_id', interviewId)
 
     // Insert questions into database
-    const mcqPromises = questions.mcqs.map((mcq, index) => 
+    const mcqPromises = questions.mcqs.map((mcq: any, index: number) => 
       supabaseAdmin.from('interview_questions').insert({
         interview_id: interviewId,
         question_type: 'mcq',
@@ -48,7 +48,7 @@ serve(async (req) => {
       })
     )
 
-    const codingPromises = questions.coding.map((coding, index) => 
+    const codingPromises = questions.coding.map((coding: any, index: number) => 
       supabaseAdmin.from('interview_questions').insert({
         interview_id: interviewId,
         question_type: 'coding',
@@ -87,7 +87,7 @@ serve(async (req) => {
     
     return new Response(
       JSON.stringify({ 
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to generate interview questions. Please try again.'
       }),
       { 

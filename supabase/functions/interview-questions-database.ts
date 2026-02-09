@@ -835,7 +835,7 @@ export function getQuestionsForRole(jobRole: string, difficulty: string, questio
     return getFallbackQuestions(jobRole, difficulty, questionCount);
   }
   
-  const difficultyData = roleData[difficulty as keyof typeof roleData.easy];
+  const difficultyData = (roleData as any)[difficulty];
   if (!difficultyData) {
     return getFallbackQuestions(jobRole, difficulty, questionCount);
   }
