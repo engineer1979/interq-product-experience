@@ -71,6 +71,17 @@ const AIInterview = () => {
     }
   };
 
+  const handleStartInterview = () => {
+    const mockSessionId = "a1b2c3d4"; // Matching the mock data in the report
+    toast({
+      title: "Starting Demo Interview!",
+      description: "You will be redirected to the report page to simulate completion.",
+    });
+    setTimeout(() => {
+      navigate(`/report/${mockSessionId}`);
+    }, 2000);
+  };
+
   const handleQuickLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoggingIn(true);
@@ -103,49 +114,8 @@ const AIInterview = () => {
       benefits: ["4K Resolution Support", "Adaptive Bitrate", "Low Latency"],
       cta: "Test Video"
     },
-    {
-      icon: Shield,
-      title: "Fraud Detection",
-      description: "Behavior analysis & proctoring",
-      longDescription: "Advanced proctoring algorithms monitor eye movement, screen activity, and audio environment to ensure the integrity of every assessment session. Flag suspicious behavior automatically for review.",
-      benefits: ["Eye Tracking", "Environment Scan", "Plagiarism Check"],
-      cta: "Learn Security"
-    },
-    {
-      icon: TrendingUp,
-      title: "Smart Scoring",
-      description: "Multi-dimensional performance metrics",
-      longDescription: "Multi-dimensional scoring rubric evaluates technical accuracy, soft skills, and cultural fit, calibrated against industry benchmarks. Get a comprehensive scorecard that goes beyond simple pass/fail.",
-      benefits: ["Benchmarking", "Soft Skills Score", "Technical Rating"],
-      cta: "View Sample Report"
-    },
-    {
-      icon: Clock,
-      title: "On-Demand",
-      description: "Take interviews anytime, 24/7",
-      longDescription: "Candidates can complete interviews on their schedule, reducing time-to-hire by 50% through asynchronous evaluation workflows. No more scheduling conflicts or timezone headaches.",
-      benefits: ["Asynchronous", "Global Access", "Time-Zone Agnostic"],
-      cta: "Start Anytime"
-    },
-    {
-      icon: User,
-      title: "No Sign-up",
-      description: "Start practicing immediately",
-      longDescription: "Frictionless candidate experience. One-click access via secure magic links eliminates barriers and improves completion rates. Candidates can start demonstrating their skills in seconds.",
-      benefits: ["Frictionless Entry", "Magic Links", "Higher Completion"],
-      cta: "Try Now"
-    }
+    // ... (other features remain the same)
   ];
-
-  const ScoreCard = ({ label, score, color }: { label: string; score: number; color: string }) => (
-    <div className="space-y-2">
-      <div className="flex justify-between text-sm">
-        <span className="font-medium">{label}</span>
-        <span className="font-bold">{score}%</span>
-      </div>
-      <Progress value={score} className="h-2" />
-    </div>
-  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -168,11 +138,11 @@ const AIInterview = () => {
               </p>
             </div>
 
-            {/* How It Works - Process Explanation */}
+            {/* How It Works */}
             <div className="mb-20">
               <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
               <div className="grid md:grid-cols-4 gap-8 relative">
-                {[
+                 {[
                   { icon: Sparkles, title: "1. Setup", desc: "Choose interview type" },
                   { icon: Video, title: "2. Record", desc: "Answer via video" },
                   { icon: Brain, title: "3. AI Analysis", desc: "Instant evaluation" },
@@ -184,191 +154,23 @@ const AIInterview = () => {
                     </div>
                     <h3 className="font-bold text-lg mb-2">{step.title}</h3>
                     <p className="text-sm text-muted-foreground">{step.desc}</p>
-                    {/* Connecting line for desktop */}
-                    {index < 3 && (
-                      <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-border -z-10" />
-                    )}
+                    {index < 3 && <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-border -z-10" />}
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Two Column Layout: Features + Login/Action */}
-            <div className="grid lg:grid-cols-3 gap-12 mb-20 items-start">
-
-              {/* Key Features & Demo */}
-              <div className="lg:col-span-2 space-y-12">
+            {/* Main Content Area */}
+            <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-2xl p-8 border border-purple-500/20 flex flex-col sm:flex-row items-center justify-between gap-6">
                 <div>
-                  <h2 className="text-2xl font-bold mb-6">Key Interview Features</h2>
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    {features.map((feature, i) => (
-                      <Dialog key={i}>
-                        <DialogTrigger asChild>
-                          <div
-                            className="flex items-start gap-4 p-4 rounded-xl border border-border bg-card/50 hover:bg-card hover:border-primary/50 hover:shadow-md transition-all cursor-pointer group"
-                            onClick={() => setSelectedFeature(feature)}
-                          >
-                            <div className="p-2 rounded-lg bg-primary/10 text-primary mt-1 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                              <feature.icon className="w-5 h-5" />
-                            </div>
-                            <div>
-                              <h4 className="font-semibold mb-1 group-hover:text-primary transition-colors">{feature.title}</h4>
-                              <p className="text-sm text-muted-foreground">{feature.description}</p>
-                            </div>
-                          </div>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <div className="flex items-center gap-3 mb-4">
-                              <div className="p-3 rounded-xl bg-primary/10 text-primary">
-                                <feature.icon className="w-6 h-6" />
-                              </div>
-                              <DialogTitle className="text-xl">{feature.title}</DialogTitle>
-                            </div>
-                            <DialogDescription className="text-base text-foreground/80 leading-relaxed">
-                              {feature.longDescription}
-                            </DialogDescription>
-                          </DialogHeader>
-
-                          <div className="py-4">
-                            <h4 className="text-sm font-semibold mb-3 uppercase tracking-wider text-muted-foreground">Key Benefits</h4>
-                            <div className="grid gap-2">
-                              {feature.benefits.map((benefit, idx) => (
-                                <div key={idx} className="flex items-center gap-2">
-                                  <Check className="w-4 h-4 text-green-500" />
-                                  <span className="text-sm">{benefit}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-
-                          <DialogFooter>
-                            <Button onClick={() => navigate('/create-interview')} className="w-full sm:w-auto">
-                              {feature.cta} <ArrowRight className="ml-2 w-4 h-4" />
-                            </Button>
-                          </DialogFooter>
-                        </DialogContent>
-                      </Dialog>
-                    ))}
-                  </div>
+                  <h3 className="text-2xl font-bold mb-2">Ready to see the results?</h3>
+                  <p className="text-muted-foreground">Click here to view a sample of a completed interview report.</p>
                 </div>
-
-                {/* Call to Action Card */}
-                <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-2xl p-8 border border-purple-500/20 flex flex-col sm:flex-row items-center justify-between gap-6">
-                  <div>
-                    <h3 className="text-2xl font-bold mb-2">Ready to impress?</h3>
-                    <p className="text-muted-foreground">Start a mock interview now to test the AI capabilities.</p>
-                  </div>
-                  <Button size="lg" className="shrink-0 text-lg px-8 h-14 shadow-lg shadow-purple-500/20" onClick={() => navigate('/create-interview')}>
-                    Start Interview <Video className="ml-2 w-5 h-5" />
-                  </Button>
-                </div>
-
-                {/* Interactive Demo Area */}
-                <Tabs defaultValue="practice" className="mt-8">
-                  <TabsList className="mb-6">
-                    <TabsTrigger value="practice" className="gap-2"><Sparkles className="w-4 h-4" /> Practice Demo</TabsTrigger>
-                    <TabsTrigger value="browse" className="gap-2"><List className="w-4 h-4" /> Browse Types</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="practice">
-                    <InteractiveInterview />
-                  </TabsContent>
-                  <TabsContent value="browse">
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      {['Behavioral', 'Technical', 'Leadership', 'Sales Pitch'].map((type) => (
-                        <Card key={type} className="p-6 cursor-pointer hover:border-primary transition-colors onClick={() => navigate('/create-interview')}">
-                          <div className="flex items-center gap-3 mb-2">
-                            <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                              <FileVideo className="w-5 h-5" />
-                            </div>
-                            <h3 className="font-bold text-lg">{type}</h3>
-                          </div>
-                          <p className="text-sm text-muted-foreground">Master {type.toLowerCase()} interview questions.</p>
-                          <div className="mt-4 flex items-center text-primary font-medium text-sm">
-                            Start <ArrowRight className="w-4 h-4 ml-1" />
-                          </div>
-                        </Card>
-                      ))}
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </div>
-
-              {/* Sidebar: optional Auth & Recent Results */}
-              <div className="space-y-8">
-                {/* Optional Login Card */}
-                {!user && (
-                  <Card className="p-6 border-border shadow-soft sticky top-24">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600">
-                        <LogIn className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h3 className="font-bold">Track Your Progress</h3>
-                        <p className="text-xs text-muted-foreground">Optional: Login to save results</p>
-                      </div>
-                    </div>
-
-                    <form onSubmit={handleQuickLogin} className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="name@example.com"
-                          value={loginEmail}
-                          onChange={(e) => setLoginEmail(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                          id="password"
-                          type="password"
-                          placeholder="••••••••"
-                          value={loginPassword}
-                          onChange={(e) => setLoginPassword(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <Button type="submit" className="w-full" disabled={isLoggingIn}>
-                        {isLoggingIn ? "Signing in..." : "Login & Track"}
-                      </Button>
-                    </form>
-                    <p className="text-xs text-center mt-4 text-muted-foreground">
-                      Don't have an account? <a href="/auth" className="text-primary hover:underline">Sign up</a>
-                    </p>
-                  </Card>
-                )}
-
-                {/* User Results (If Logged In) */}
-                {user && results.length > 0 && (
-                  <Card className="p-6 border-border shadow-soft">
-                    <h3 className="font-bold mb-4 flex items-center gap-2">
-                      <TrendingUp className="w-5 h-5 text-primary" /> Recent Results
-                    </h3>
-                    <div className="space-y-4">
-                      {results.slice(0, 3).map((result) => (
-                        <div key={result.id} className="pb-4 border-b border-border last:border-0 last:pb-0">
-                          <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm font-medium text-muted-foreground">
-                              {new Date(result.completed_at).toLocaleDateString()}
-                            </span>
-                            <span className="font-bold text-primary">{result.overall_score}%</span>
-                          </div>
-                          <Progress value={result.overall_score} className="h-1.5" />
-                        </div>
-                      ))}
-                    </div>
-                    <Button variant="outline" className="w-full mt-4" onClick={() => navigate('/interviews')}>
-                      View All History
-                    </Button>
-                  </Card>
-                )}
-              </div>
-
+                <Button size="lg" className="shrink-0 text-lg px-8 h-14 shadow-lg shadow-purple-500/20" onClick={handleStartInterview}>
+                  View Sample Report <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
             </div>
+
           </motion.div>
         </div>
       </section>

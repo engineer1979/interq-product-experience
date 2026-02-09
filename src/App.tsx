@@ -19,6 +19,7 @@ const InterviewBrowser = lazy(() => import("./pages/InterviewBrowser"));
 const CreateInterview = lazy(() => import("./pages/CreateInterview"));
 const TakeInterview = lazy(() => import("./pages/TakeInterview"));
 const LiveInterview = lazy(() => import("./pages/LiveInterview"));
+const InterviewReport = lazy(() => import("./pages/InterviewReport"));
 const Solutions = lazy(() => import("./pages/Solutions"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const About = lazy(() => import("./pages/About"));
@@ -68,6 +69,7 @@ const App = () => (
               <Route path="/create-interview" element={<CreateInterview />} />
               <Route path="/interview/:id" element={<TakeInterview />} />
               <Route path="/live-interview" element={<LiveInterview />} />
+              <Route path="/report/:sessionId" element={<InterviewReport />} />
               <Route path="/integrations" element={<Integrations />} />
               <Route path="/solutions" element={<Solutions />} />
               <Route path="/solutions/recruiters" element={<Solutions />} />
