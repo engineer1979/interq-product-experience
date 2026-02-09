@@ -50,12 +50,12 @@ const Assessments = () => {
       setAssessments(data || []);
     } catch (error: any) {
       // Create some dummy data if fetch fails (e.g. RLS blocks anon)
-      const dummyData = [
+      const dummyData: Assessment[] = [
         { id: "1", title: "Frontend Challenge", description: "Test your React and CSS skills", category: "Engineering", difficulty: "medium", duration_minutes: 30, is_published: true },
         { id: "2", title: "Product Design", description: "UX/UI principles assessment", category: "Design", difficulty: "easy", duration_minutes: 20, is_published: true },
         { id: "3", title: "Backend Systems", description: "Database and API knowledge", category: "Engineering", difficulty: "hard", duration_minutes: 45, is_published: true },
       ];
-      setAssessments((data && data.length > 0) ? data : dummyData);
+      setAssessments(dummyData);
     } finally {
       setLoading(false);
     }
@@ -109,17 +109,21 @@ const Assessments = () => {
               <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
               <div className="grid md:grid-cols-5 gap-8 relative">
                 {[
-                  { icon: Search, title: "1. Select", desc: "Choose an assessment" },
-                  { icon: FileQuestion, title: "2. Instructions", desc: "Read guidelines" },
-                  { icon: Play, title: "3. Start", desc: "Begin immediately" },
-                  { icon: Clock, title: "4. Complete", desc: "Submit answers" },
-                  { icon: Award, title: "5. Results", desc: "Get feedback" },
+                  { icon: Search, title: "1. Select", desc: "Choose an assessment", action: () => document.getElementById('assessment-list')?.scrollIntoView({ behavior: 'smooth' }) },
+                  { icon: FileQuestion, title: "2. Instructions", desc: "Read guidelines", action: () => { const id = assessments[0]?.id || "1"; navigate(`/assessment/${id}`); } },
+                  { icon: Play, title: "3. Start", desc: "Begin immediately", action: () => { const id = assessments[0]?.id || "1"; navigate(`/assessment/${id}`); } },
+                  { icon: Clock, title: "4. Complete", desc: "Submit answers", action: () => { const id = assessments[0]?.id || "1"; navigate(`/assessment/${id}`); } },
+                  { icon: Award, title: "5. Results", desc: "Get feedback", action: () => navigate('/admin/results') },
                 ].map((step, index) => (
-                  <div key={index} className="flex flex-col items-center text-center relative z-10">
-                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 text-primary shadow-sm">
+                  <div 
+                    key={index} 
+                    className="flex flex-col items-center text-center relative z-10 cursor-pointer group"
+                    onClick={step.action}
+                  >
+                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 text-primary shadow-sm group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-200">
                       <step.icon className="w-8 h-8" />
                     </div>
-                    <h3 className="font-bold text-lg mb-2">{step.title}</h3>
+                    <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">{step.title}</h3>
                     <p className="text-sm text-muted-foreground">{step.desc}</p>
                     {/* Connecting line for desktop */}
                     {index < 4 && (
@@ -222,7 +226,7 @@ const Assessments = () => {
             </div>
 
             {/* Assessment List */}
-            <div className="space-y-6">
+            <div id="assessment-list" className="space-y-6">
               <div className="flex flex-col md:flex-row justify-between items-end gap-4 border-b border-border pb-4">
                 <h3 className="text-2xl font-bold">Available Assessments</h3>
 
