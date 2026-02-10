@@ -28,7 +28,7 @@ interface Assessment {
 interface Question {
   id: string;
   question_text: string;
-  question_type: string;
+  question_type: 'mcq' | 'coding';
   options?: string[];
   correct_answer?: string;
   points: number;

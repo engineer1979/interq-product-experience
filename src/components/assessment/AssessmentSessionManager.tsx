@@ -26,10 +26,10 @@ export function AssessmentSessionManager({
     const manageSession = async () => {
       try {
         // Check for existing active sessions
-        const { data: existingSessions, error: checkError } = await supabase
+        const { data: existingSessions, error: checkError } = await (supabase as any)
           .from('interview_sessions')
           .select('*')
-          .eq('assessment_id', assessmentId)
+          .eq('interview_id', assessmentId)
           .eq('user_id', userId)
           .eq('completed', false);
 
