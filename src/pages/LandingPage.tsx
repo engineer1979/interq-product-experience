@@ -2,7 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet-async";
 import HowItWorks from "@/components/HowItWorks";
 import ServiceOverview from "@/components/ServiceOverview";
-import InterviewSummary from "@/components/InterviewSummary";
+
 import ServiceDetails from "@/components/ServiceDetails";
 import AdditionalSections from "@/components/AdditionalSections";
 
