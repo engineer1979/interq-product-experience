@@ -55,10 +55,6 @@ const EnhancedNavigation = () => {
       label: "Pricing",
       href: "/pricing",
     },
-    {
-      label: "Recruitment Automation",
-      href: "/recruitment-automation",
-    }
   ];
 
   // Check if user is admin

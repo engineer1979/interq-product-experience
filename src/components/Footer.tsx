@@ -18,7 +18,7 @@ const Footer = () => {
     // Product
     "Features": "/features",
     "Assessments": "/assessments",
-    "AI Interviewing": "/ai-interview",
+    
     "Pricing": "/pricing",
     "Integrations": "/integrations",
     // Solutions
