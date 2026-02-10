@@ -165,14 +165,9 @@ const CompanyOverview = () => {
                       <img
                         src="/saima-huma-ceo.png"
                         alt="Saima Huma, CEO"
-                        className="team-image w-full h-full object-contain transition-all duration-500 group-hover:scale-105 group-hover:brightness-110"
+                        className="team-image"
                         loading="eager"
                         decoding="async"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.classList.remove('team-image');
-                          target.classList.add('team-image-cover');
-                        }}
                       />
                     </div>
                   </div>
