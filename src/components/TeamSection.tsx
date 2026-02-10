@@ -85,66 +85,54 @@ const TeamSection = () => {
                     </motion.div>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-stretch">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {team.map((member, index) => (
                         <motion.div
                             key={member.name}
-                            initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                            transition={{ 
-                                delay: index * 0.15, 
-                                duration: 0.7,
-                                ease: "easeOut"
-                            }}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.12, duration: 0.6, ease: "easeOut" }}
                             viewport={{ once: true, margin: "-50px" }}
                             className="h-full"
-                            whileHover={{ y: -5, scale: 1.02 }}
+                            whileHover={{ y: -5 }}
                         >
-                            <Card className="team-member-card h-full bg-white/95 hover:bg-white backdrop-blur-sm border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 flex flex-col items-center text-center p-8">
-                                {/* Image Container - Professional clean white background */}
-                                <div className="team-member-image-wrapper relative mb-8">
+                            <Card className="team-member-card h-full shadow-lg hover:shadow-xl transition-all duration-500 flex flex-col items-center text-center p-8">
+                                <div className="team-member-image-wrapper relative">
                                     <div className="team-image-container w-full h-full relative group">
                                         <img
                                             src={member.image}
                                             alt={member.name}
-                                            className="team-image w-full h-full object-contain transition-all duration-500 group-hover:scale-105 group-hover:brightness-110"
+                                            className="team-image"
                                             loading="eager"
                                             decoding="async"
-                                            onError={(e) => {
-                                                const target = e.target as HTMLImageElement;
-                                                target.classList.remove('team-image');
-                                                target.classList.add('team-image-cover');
-                                            }}
                                         />
                                     </div>
                                 </div>
 
-                                {/* Content */}
                                 <div className="flex-1 flex flex-col w-full">
-                                    <h3 className="text-2xl font-bold mb-2 text-slate-800 tracking-tight">{member.name}</h3>
-                                    <p className="text-primary font-semibold text-sm mb-6 uppercase tracking-wider px-4 border-b pb-4 border-slate-200">
+                                    <h3 className="text-xl font-bold mb-1 text-slate-800 tracking-tight">{member.name}</h3>
+                                    <p className="text-primary font-semibold text-xs mb-4 uppercase tracking-wider">
                                         {member.role}
                                     </p>
 
-                                    <p className="text-slate-600 leading-relaxed mb-6 px-2 text-base">
+                                    <p className="text-slate-600 leading-relaxed mb-4 text-sm">
                                         {member.bio}
                                     </p>
 
-                                    <div className="mt-auto pt-4 flex flex-col items-center gap-4">
-                                        <p className="italic text-base text-slate-700 font-medium leading-relaxed max-w-xs">"{member.quote}"</p>
+                                    <div className="mt-auto pt-3 flex flex-col items-center gap-3">
+                                        <p className="italic text-sm text-slate-500 font-medium leading-relaxed">"{member.quote}"</p>
 
-                                        <div className="flex gap-3 mt-2">
+                                        <div className="flex gap-3">
                                             {member.socials.linkedin && (
-                                                <a href={member.socials.linkedin} className="text-slate-500 hover:text-blue-600 transition-all duration-300 bg-white/80 hover:bg-white shadow-sm hover:shadow-md p-3 rounded-full group border border-slate-200 hover:border-blue-300">
-                                                    <Linkedin className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                                                <a href={member.socials.linkedin} className="text-slate-400 hover:text-blue-600 transition-colors p-2 rounded-full hover:bg-blue-50">
+                                                    <Linkedin className="w-4 h-4" />
                                                 </a>
                                             )}
                                             {member.socials.twitter && (
-                                                <a href={member.socials.twitter} className="text-slate-500 hover:text-sky-500 transition-all duration-300 bg-white/80 hover:bg-white shadow-sm hover:shadow-md p-3 rounded-full group border border-slate-200 hover:border-sky-300">
-                                                    <Twitter className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                                                <a href={member.socials.twitter} className="text-slate-400 hover:text-sky-500 transition-colors p-2 rounded-full hover:bg-sky-50">
+                                                    <Twitter className="w-4 h-4" />
                                                 </a>
                                             )}
-                                            {/* Github was mainly for engineers, can re-add if needed for specific roles */}
                                         </div>
                                     </div>
                                 </div>
