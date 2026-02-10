@@ -111,7 +111,7 @@ export function AssessmentSessionManager({
 
         // Check for timeout (assuming 2x the assessment duration)
         const maxInactiveTime = (session.time_remaining_seconds || 3600) * 2 * 1000; // 2x duration in ms
-        const timeSinceLastActivity = Date.now() - new Date(session.last_activity_at).getTime();
+        const timeSinceLastActivity = Date.now() - new Date(session.updated_at).getTime();
         
         if (timeSinceLastActivity > maxInactiveTime) {
           toast({
