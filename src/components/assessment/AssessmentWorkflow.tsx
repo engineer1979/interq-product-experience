@@ -18,7 +18,7 @@ interface Assessment {
   duration_minutes: number;
   passing_score: number;
   total_questions: number;
-  difficulty: string;
+  difficulty: 'easy' | 'medium' | 'hard';
   category: string;
   tags: string[];
   is_active: boolean;

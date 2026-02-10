@@ -135,29 +135,28 @@ export function AssessmentSessionManager({
   const createNewSession = async (assessmentId: string, userId: string, timeRemaining: number) => {
     try {
       // First, check for existing incomplete sessions
-      const { data: existingSessions } = await supabase
+      const { data: existingSessions } = await (supabase as any)
         .from('interview_sessions')
         .select('id')
-        .eq('assessment_id', assessmentId)
+        .eq('interview_id', assessmentId)
         .eq('user_id', userId)
         .eq('completed', false);
 
       if (existingSessions && existingSessions.length > 0) {
-        // Use existing session
         return existingSessions[0].id;
       }
 
-      // Create new session with upsert to prevent duplicates
-      const { data: newSession, error } = await supabase
+      const { data: newSession, error } = await (supabase as any)
         .from('interview_sessions')
-        .upsert({
-          assessment_id: assessmentId,
+        .insert({
+          interview_id: assessmentId,
           user_id: userId,
           time_remaining_seconds: timeRemaining,
           current_question_index: 0,
-          last_activity_at: new Date().toISOString(),
           completed: false
-        }, {
+        })
+        .select('id')
+        .single();
           onConflict: 'assessment_id,user_id'
         })
         .select()

@@ -177,7 +177,7 @@ export function AssessmentInstructions({
                   <div className="flex items-center space-x-2">
                     <h4 className="font-semibold text-gray-900">{guideline.title}</h4>
                     {guideline.important && (
-                      <Badge variant="destructive" className="text-xs">Important</Badge>
+                      <span className="text-xs bg-destructive text-destructive-foreground px-2 py-0.5 rounded-full">Important</span>
                     )}
                   </div>
                   <p className="text-gray-600 mt-1">{guideline.description}</p>
