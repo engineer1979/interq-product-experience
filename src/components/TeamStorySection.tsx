@@ -10,7 +10,7 @@ const TeamStorySection = () => {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-slate-50 to-white rounded-full blur-3xl opacity-60" />
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10 max-w-6xl">
+      <div className="container mx-auto px-4 lg:px-8 relative z-10 max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
