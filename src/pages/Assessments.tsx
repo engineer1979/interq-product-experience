@@ -282,6 +282,57 @@ const Assessments = () => {
               )}
             </div>
 
+            {/* Live Interview Section */}
+            <div className="mt-20 pt-16 border-t border-border">
+              <div className="text-center mb-12">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4">Coming Next</span>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Live <span className="text-gradient">Interview</span>
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  After completing your assessment, take the next step with an AI-powered live interview session.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-8">
+                {[
+                  {
+                    icon: User,
+                    title: "Face-to-Face with AI",
+                    desc: "Engage in a realistic interview simulation powered by advanced AI that adapts to your responses in real-time.",
+                  },
+                  {
+                    icon: Timer,
+                    title: "Timed & Structured",
+                    desc: "Experience structured interview rounds with time management, just like a real professional interview.",
+                  },
+                  {
+                    icon: BarChart,
+                    title: "Detailed Analytics",
+                    desc: "Receive comprehensive feedback on communication, technical accuracy, and confidence scores.",
+                  },
+                ].map((item, i) => (
+                  <Card key={i} className="p-6 text-center border-border hover:border-primary/40 transition-all duration-300 group">
+                    <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      <item.icon className="w-7 h-7" />
+                    </div>
+                    <h3 className="text-lg font-bold mb-2">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground">{item.desc}</p>
+                  </Card>
+                ))}
+              </div>
+
+              <div className="mt-10 text-center">
+                <Button
+                  size="lg"
+                  className="text-lg px-10 h-14 shadow-lg shadow-primary/20"
+                  onClick={() => navigate("/assessment-workflow")}
+                >
+                  Start Live Interview <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </div>
+            </div>
+
           </motion.div>
         </div>
       </section>
