@@ -48,14 +48,6 @@ const EnhancedNavigation = () => {
       href: "/assessments",
     },
     {
-      label: "AI Interviewing",
-      href: "/ai-interview",
-    },
-    {
-      label: "Live Interview",
-      href: "/live-interview",
-    },
-    {
       label: "Solution Analysis",
       href: "/solutions",
     },
