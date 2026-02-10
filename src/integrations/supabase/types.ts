@@ -14,6 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
+      Analytics: {
+        Row: {
+          accuracy_score: number | null
+          clarity_score: number | null
+          confidence_score: number | null
+          filler_word_count: number | null
+          id: number
+          relevance_score: number | null
+          response_id: number | null
+          sentiment_score: number | null
+          skill_tags_identified: Json | null
+          time_to_answer_sec: number | null
+        }
+        Insert: {
+          accuracy_score?: number | null
+          clarity_score?: number | null
+          confidence_score?: number | null
+          filler_word_count?: number | null
+          id?: number
+          relevance_score?: number | null
+          response_id?: number | null
+          sentiment_score?: number | null
+          skill_tags_identified?: Json | null
+          time_to_answer_sec?: number | null
+        }
+        Update: {
+          accuracy_score?: number | null
+          clarity_score?: number | null
+          confidence_score?: number | null
+          filler_word_count?: number | null
+          id?: number
+          relevance_score?: number | null
+          response_id?: number | null
+          sentiment_score?: number | null
+          skill_tags_identified?: Json | null
+          time_to_answer_sec?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Analytics_response_id_fkey"
+            columns: ["response_id"]
+            isOneToOne: false
+            referencedRelation: "Responses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assessment_answers: {
         Row: {
           answer: string | null
@@ -569,6 +616,51 @@ export type Database = {
         }
         Relationships: []
       }
+      InterviewSessions: {
+        Row: {
+          completed_at: string | null
+          final_score: number | null
+          id: string
+          role_id: number | null
+          started_at: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          final_score?: number | null
+          id?: string
+          role_id?: number | null
+          started_at?: string | null
+          status: string
+          user_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          final_score?: number | null
+          id?: string
+          role_id?: number | null
+          started_at?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "InterviewSessions_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "Roles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "InterviewSessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       job_assessments: {
         Row: {
           created_at: string
@@ -722,6 +814,141 @@ export type Database = {
         }
         Relationships: []
       }
+      Questions: {
+        Row: {
+          difficulty: string | null
+          id: number
+          question_text: string
+          role_id: number | null
+          skill_tags: string[] | null
+        }
+        Insert: {
+          difficulty?: string | null
+          id?: number
+          question_text: string
+          role_id?: number | null
+          skill_tags?: string[] | null
+        }
+        Update: {
+          difficulty?: string | null
+          id?: number
+          question_text?: string
+          role_id?: number | null
+          skill_tags?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Questions_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "Roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Reports: {
+        Row: {
+          generated_at: string | null
+          id: string
+          pdf_url: string | null
+          session_id: string | null
+          summary_data: Json | null
+        }
+        Insert: {
+          generated_at?: string | null
+          id?: string
+          pdf_url?: string | null
+          session_id?: string | null
+          summary_data?: Json | null
+        }
+        Update: {
+          generated_at?: string | null
+          id?: string
+          pdf_url?: string | null
+          session_id?: string | null
+          summary_data?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Reports_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: true
+            referencedRelation: "InterviewSessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Responses: {
+        Row: {
+          audio_duration_sec: number | null
+          audio_url: string | null
+          full_transcript: string | null
+          id: number
+          question_id: number | null
+          session_id: string | null
+        }
+        Insert: {
+          audio_duration_sec?: number | null
+          audio_url?: string | null
+          full_transcript?: string | null
+          id?: number
+          question_id?: number | null
+          session_id?: string | null
+        }
+        Update: {
+          audio_duration_sec?: number | null
+          audio_url?: string | null
+          full_transcript?: string | null
+          id?: number
+          question_id?: number | null
+          session_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Responses_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "Questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Responses_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "InterviewSessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Roles: {
+        Row: {
+          created_by: string | null
+          description: string | null
+          id: number
+          role_name: string
+        }
+        Insert: {
+          created_by?: string | null
+          description?: string | null
+          id?: number
+          role_name: string
+        }
+        Update: {
+          created_by?: string | null
+          description?: string | null
+          id?: number
+          role_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Roles_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -740,6 +967,24 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      Users: {
+        Row: {
+          avatar_url: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          full_name?: string | null
+          id?: string
         }
         Relationships: []
       }

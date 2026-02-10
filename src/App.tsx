@@ -14,12 +14,6 @@ const Features = lazy(() => import("./pages/Features"));
 const Integrations = lazy(() => import("./pages/Integrations"));
 const Assessments = lazy(() => import("./pages/Assessments"));
 const TakeAssessment = lazy(() => import("./pages/TakeAssessment"));
-const AIInterview = lazy(() => import("./pages/AIInterview"));
-const InterviewBrowser = lazy(() => import("./pages/InterviewBrowser"));
-const CreateInterview = lazy(() => import("./pages/CreateInterview"));
-const TakeInterview = lazy(() => import("./pages/TakeInterview"));
-const LiveInterview = lazy(() => import("./pages/LiveInterview"));
-const InterviewReport = lazy(() => import("./pages/InterviewReport"));
 const Solutions = lazy(() => import("./pages/Solutions"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const About = lazy(() => import("./pages/About"));
@@ -64,12 +58,6 @@ const App = () => (
               <Route path="/assessment/:id" element={<TakeAssessment />} />
               <Route path="/assessment-workflow" element={<AssessmentWorkflowPage />} />
               <Route path="/create-assessment" element={<CreateAssessment />} />
-              <Route path="/ai-interview" element={<AIInterview />} />
-              <Route path="/interviews" element={<InterviewBrowser />} />
-              <Route path="/create-interview" element={<CreateInterview />} />
-              <Route path="/interview/:id" element={<TakeInterview />} />
-              <Route path="/live-interview" element={<LiveInterview />} />
-              <Route path="/report/:sessionId" element={<InterviewReport />} />
               <Route path="/integrations" element={<Integrations />} />
               <Route path="/solutions" element={<Solutions />} />
               <Route path="/solutions/recruiters" element={<Solutions />} />
@@ -80,8 +68,6 @@ const App = () => (
               <Route path="/for-smes" element={<Solutions />} />
               <Route path="/solutions/industry" element={<Solutions />} />
               <Route path="/industry-solutions" element={<Solutions />} />
-              <Route path="/ai-interviewing" element={<AIInterview />} />
-              <Route path="/recruitment-automation" element={<AIInterview />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/about" element={<About />} />
               <Route path="/press-kit" element={<PressKit />} />

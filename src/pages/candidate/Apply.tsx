@@ -93,7 +93,7 @@ export default function ApplyPage() {
             const resumeUrl = uploadData?.path;
 
             // 2. Create Application Record
-            const { data: appData, error: appError } = await supabase
+            const { data: appData, error: appError } = await (supabase as any)
                 .from('applications')
                 .insert({
                     job_id: jobId,

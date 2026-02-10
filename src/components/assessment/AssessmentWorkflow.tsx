@@ -18,7 +18,7 @@ interface Assessment {
   duration_minutes: number;
   passing_score: number;
   total_questions: number;
-  difficulty: string;
+  difficulty: 'easy' | 'medium' | 'hard';
   category: string;
   tags: string[];
   is_active: boolean;
@@ -28,7 +28,7 @@ interface Assessment {
 interface Question {
   id: string;
   question_text: string;
-  question_type: string;
+  question_type: 'mcq' | 'coding';
   options?: string[];
   correct_answer?: string;
   points: number;

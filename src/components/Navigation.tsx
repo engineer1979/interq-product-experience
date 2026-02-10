@@ -28,11 +28,8 @@ const Navigation = () => {
   const navLinks = [
     { label: "Product", href: "/product" },
     { label: "Assessments", href: "/assessments" },
-    { label: "AI Interviewing", href: "/ai-interview" },
-    { label: "Live Interview", href: "/live-interview" },
     { label: "Solution Analysis", href: "/solutions" },
     { label: "Pricing", href: "/pricing" },
-    { label: "Recruitment Automation", href: "/recruitment-automation" },
   ];
 
   // Check if user is admin

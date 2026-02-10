@@ -64,8 +64,7 @@ const Product = () => {
                 onClick={() => {
                   setActiveTab(feature.tab);
                   if (feature.tab === "assessments") navigate('/assessments');
-                  if (feature.tab === "interviews") navigate('/ai-interview');
-                  if (feature.tab === "analytics") navigate('/interviews');
+                  if (feature.tab === "assessments") navigate('/assessments');
                 }}
                 className="bg-card border border-border rounded-xl p-6 shadow-soft hover:shadow-elegant transition-smooth cursor-pointer group"
               >

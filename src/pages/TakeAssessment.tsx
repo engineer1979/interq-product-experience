@@ -378,7 +378,7 @@ export default function TakeAssessment() {
         description: `You scored ${totalScore}/${totalPoints} (${Math.round(percentage)}%). ${passed ? 'Passed!' : 'Failed.'}`,
       });
 
-      navigate('/ai-interview');
+      navigate('/assessments');
     } catch (error: any) {
       console.error('Error submitting assessment:', error);
       toast({

@@ -72,7 +72,7 @@ export default function JobsPage() {
                 console.warn("Using mock data due to DB error:", error);
                 setJobs(MOCK_JOBS);
             } else {
-                setJobs(data || []);
+                setJobs((data || []) as Job[]);
             }
         } catch (err) {
             console.error("Fetch error:", err);

@@ -26,10 +26,10 @@ export function AssessmentSessionManager({
     const manageSession = async () => {
       try {
         // Check for existing active sessions
-        const { data: existingSessions, error: checkError } = await supabase
+        const { data: existingSessions, error: checkError } = await (supabase as any)
           .from('interview_sessions')
           .select('*')
-          .eq('assessment_id', assessmentId)
+          .eq('interview_id', assessmentId)
           .eq('user_id', userId)
           .eq('completed', false);
 
@@ -41,9 +41,9 @@ export function AssessmentSessionManager({
           onSessionUpdate(activeSession.id);
           
           // Update last activity
-          await supabase
+          await (supabase as any)
             .from('interview_sessions')
-            .update({ last_activity_at: new Date().toISOString() })
+            .update({ updated_at: new Date().toISOString() })
             .eq('id', activeSession.id);
         }
 
@@ -66,9 +66,9 @@ export function AssessmentSessionManager({
 
     const activityInterval = setInterval(async () => {
       try {
-        await supabase
+        await (supabase as any)
           .from('interview_sessions')
-          .update({ last_activity_at: new Date().toISOString() })
+          .update({ updated_at: new Date().toISOString() })
           .eq('id', sessionId);
         
         setLastActivity(Date.now());
@@ -111,7 +111,7 @@ export function AssessmentSessionManager({
 
         // Check for timeout (assuming 2x the assessment duration)
         const maxInactiveTime = (session.time_remaining_seconds || 3600) * 2 * 1000; // 2x duration in ms
-        const timeSinceLastActivity = Date.now() - new Date(session.last_activity_at).getTime();
+        const timeSinceLastActivity = Date.now() - new Date(session.updated_at).getTime();
         
         if (timeSinceLastActivity > maxInactiveTime) {
           toast({
@@ -135,32 +135,27 @@ export function AssessmentSessionManager({
   const createNewSession = async (assessmentId: string, userId: string, timeRemaining: number) => {
     try {
       // First, check for existing incomplete sessions
-      const { data: existingSessions } = await supabase
+      const { data: existingSessions } = await (supabase as any)
         .from('interview_sessions')
         .select('id')
-        .eq('assessment_id', assessmentId)
+        .eq('interview_id', assessmentId)
         .eq('user_id', userId)
         .eq('completed', false);
 
       if (existingSessions && existingSessions.length > 0) {
-        // Use existing session
         return existingSessions[0].id;
       }
 
-      // Create new session with upsert to prevent duplicates
-      const { data: newSession, error } = await supabase
+      const { data: newSession, error } = await (supabase as any)
         .from('interview_sessions')
-        .upsert({
-          assessment_id: assessmentId,
+        .insert({
+          interview_id: assessmentId,
           user_id: userId,
           time_remaining_seconds: timeRemaining,
           current_question_index: 0,
-          last_activity_at: new Date().toISOString(),
           completed: false
-        }, {
-          onConflict: 'assessment_id,user_id'
         })
-        .select()
+        .select('id')
         .single();
 
       if (error) throw error;

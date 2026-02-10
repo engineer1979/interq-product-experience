@@ -48,14 +48,6 @@ const EnhancedNavigation = () => {
       href: "/assessments",
     },
     {
-      label: "AI Interviewing",
-      href: "/ai-interview",
-    },
-    {
-      label: "Live Interview",
-      href: "/live-interview",
-    },
-    {
       label: "Solution Analysis",
       href: "/solutions",
     },
@@ -63,10 +55,6 @@ const EnhancedNavigation = () => {
       label: "Pricing",
       href: "/pricing",
     },
-    {
-      label: "Recruitment Automation",
-      href: "/recruitment-automation",
-    }
   ];
 
   // Check if user is admin
