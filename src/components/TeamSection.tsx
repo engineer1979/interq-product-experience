@@ -62,13 +62,7 @@ const team = [
 const TeamSection = () => {
     return (
         <section className="py-24 bg-gradient-to-br from-slate-50 via-white to-slate-100 text-foreground relative overflow-hidden">
-            {/* Clean background decoration */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-white to-slate-50 rounded-full blur-3xl opacity-60" />
-                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-slate-50 to-white rounded-full blur-3xl opacity-60" />
-            </div>
-            
-            <div className="container mx-auto px-4 lg:px-8 relative z-10">
+            <div className="container mx-auto px-4 lg:px-8 max-w-7xl relative z-10">
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}

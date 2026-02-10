@@ -23,7 +23,7 @@ const TeamStorySection = () => {
               <img
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
                 alt="InterQ Team Collaboration"
-                className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"
+                className="w-full h-72 object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
           </motion.div>

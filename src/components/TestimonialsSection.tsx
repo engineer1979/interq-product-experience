@@ -4,7 +4,7 @@ import { Quote } from "lucide-react";
 const TestimonialsSection = () => {
     return (
         <section className="py-20 bg-background">
-            <div className="container mx-auto px-4 lg:px-8">
+            <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
                 <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">What Our Users Say</h2>
 
                 <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
