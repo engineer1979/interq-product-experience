@@ -59,7 +59,7 @@ const WhoWeServe = () => {
                         whileHover={{ y: -5 }}
                         className="bg-card border border-border rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all relative"
                     >
-                        <div className="h-56 overflow-hidden relative">
+                        <div className="h-52 overflow-hidden relative">
                             <div className="absolute inset-0 bg-green-900/10 group-hover:bg-transparent transition-colors z-10" />
                             <img
                                 src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80"
