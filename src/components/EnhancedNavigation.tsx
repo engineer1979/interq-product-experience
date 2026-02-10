@@ -128,144 +128,47 @@ const EnhancedNavigation = () => {
 
   return (
     <>
-      <motion.nav
+      <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-          ? "bg-background/95 backdrop-blur-md shadow-sm py-2"
-          : "bg-background/80 backdrop-blur-md py-4"
-          }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-background/95 backdrop-blur-md shadow-sm"
+            : "bg-background/80 backdrop-blur-md"
+        }`}
       >
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link
-              to="/"
-              className="flex items-center gap-3 group transition-smooth"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
+          {/* Row 1: Logo + Auth */}
+          <div className="flex items-center justify-between py-3">
+            <Link to="/" className="flex items-center gap-3 group transition-smooth" onClick={() => setIsMobileMenuOpen(false)}>
               <div className="bg-transparent rounded-md p-1">
-                <img
-                  src="/interq-logo.png"
-                  alt="InterQ Logo"
-                  className="h-10 sm:h-12 w-auto max-w-full"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <img src="/interq-logo.png" alt="InterQ Logo" className="h-10 sm:h-12 w-auto max-w-full" loading="lazy" decoding="async" />
               </div>
               <span className="text-2xl font-bold text-gradient group-hover:opacity-80 transition-smooth">
                 InterQ
               </span>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-6 ml-12" ref={dropdownRef}>
-              {navigationItems.map((item) => (
-                <div key={item.label} className="relative">
-                  <button
-                    onClick={() => handleNavItemClick(item)}
-                    className={`flex items-center gap-1 text-sm font-medium transition-smooth py-2 px-3 rounded-lg hover:bg-muted/50 ${item.children?.some(child => isActive(child.href))
-                      ? "text-primary bg-primary/10"
-                      : "text-foreground/80 hover:text-primary"
-                      }`}
-                    aria-expanded={activeDropdown === item.label}
-                    aria-haspopup={item.children ? "true" : "false"}
-                  >
-                    {item.label}
-                    {item.children && (
-                      <ChevronDown
-                        size={16}
-                        className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""
-                          }`}
-                      />
-                    )}
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  {item.children && (
-                    <AnimatePresence>
-                      {activeDropdown === item.label && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          className="absolute top-full left-0 mt-2 w-64 bg-background border border-border rounded-lg shadow-xl z-50"
-                        >
-                          <div className="p-2">
-                            {item.children.map((child) => (
-                              <button
-                                key={child.label}
-                                onClick={() => trackNavigation(child.label, child.href)}
-                                className={`w-full flex items-center gap-3 p-3 text-left rounded-md transition-smooth hover:bg-muted/50 ${isActive(child.href)
-                                  ? "text-primary bg-primary/10"
-                                  : "text-foreground/80 hover:text-primary"
-                                  }`}
-                              >
-                                {child.icon && <child.icon size={18} className="text-primary" />}
-                                <div>
-                                  <div className="font-medium text-sm">{child.label}</div>
-                                  {child.description && (
-                                    <div className="text-xs text-muted-foreground mt-0.5">
-                                      {child.description}
-                                    </div>
-                                  )}
-                                </div>
-                              </button>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
-                </div>
-              ))}
-
-              {isAdmin && (
-                <Link
-                  to="/admin"
-                  className={`text-sm font-medium transition-smooth py-2 px-3 rounded-lg hover:bg-muted/50 ${isActive("/admin")
-                    ? "text-primary bg-primary/10"
-                    : "text-foreground/80 hover:text-primary"
-                    }`}
-                >
-                  Admin
-                </Link>
-              )}
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="hidden lg:flex items-center space-x-4">
+            {/* Desktop Auth */}
+            <div className="hidden lg:flex items-center space-x-3">
               {user ? (
                 <div className="flex items-center space-x-3">
                   <Link to="/settings">
                     <Button variant="ghost" size="sm" className="hover:bg-muted/50">
-                      <Settings size={16} className="mr-1" />
-                      Settings
+                      <Settings size={16} className="mr-1" /> Settings
                     </Button>
                   </Link>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={signOut}
-                    className="hover:bg-muted/50 text-red-500"
-                  >
+                  <Button variant="ghost" size="sm" onClick={signOut} className="hover:bg-muted/50 text-destructive">
                     Sign Out
                   </Button>
                 </div>
               ) : (
                 <div className="flex items-center space-x-3">
                   <Link to="/auth">
-                    <Button variant="ghost" className="text-sm font-medium hover:bg-muted/50">
-                      Sign In
-                    </Button>
+                    <Button variant="ghost" className="text-sm font-medium hover:bg-muted/50">Sign In</Button>
                   </Link>
                   <Link to="/get-started">
-                    <Button
-                      variant="default"
-                      className="text-sm shadow-soft hover:shadow-glow transition-all duration-300"
-                    >
-                      Book Demo
-                    </Button>
+                    <Button variant="default" className="text-sm shadow-soft hover:shadow-glow transition-all duration-300">Book Demo</Button>
                   </Link>
                 </div>
               )}
@@ -280,23 +183,86 @@ const EnhancedNavigation = () => {
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
+
+          {/* Row 2: Nav links in a centered strip */}
+          <nav className="hidden lg:flex items-center justify-center gap-1 pb-3 border-t border-border/40 pt-3" ref={dropdownRef}>
+            {navigationItems.map((item) => (
+              <div key={item.label} className="relative">
+                <button
+                  onClick={() => handleNavItemClick(item)}
+                  className={`flex items-center gap-1 px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActive(item.href) || item.children?.some(child => isActive(child.href))
+                      ? "bg-primary/10 text-primary shadow-sm"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                  }`}
+                  aria-expanded={activeDropdown === item.label}
+                  aria-haspopup={item.children ? "true" : "false"}
+                >
+                  {item.label}
+                  {item.children && (
+                    <ChevronDown size={14} className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`} />
+                  )}
+                </button>
+
+                {/* Dropdown */}
+                {item.children && (
+                  <AnimatePresence>
+                    {activeDropdown === item.label && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="absolute top-full left-0 mt-2 w-64 bg-popover border border-border rounded-lg shadow-xl z-50"
+                      >
+                        <div className="p-2">
+                          {item.children.map((child) => (
+                            <button
+                              key={child.label}
+                              onClick={() => trackNavigation(child.label, child.href)}
+                              className={`w-full flex items-center gap-3 p-3 text-left rounded-md transition-all duration-200 hover:bg-muted/50 ${
+                                isActive(child.href) ? "text-primary bg-primary/10" : "text-foreground/80 hover:text-primary"
+                              }`}
+                            >
+                              {child.icon && <child.icon size={18} className="text-primary" />}
+                              <div>
+                                <div className="font-medium text-sm">{child.label}</div>
+                                {child.description && <div className="text-xs text-muted-foreground mt-0.5">{child.description}</div>}
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                )}
+              </div>
+            ))}
+
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive("/admin") ? "bg-primary/10 text-primary shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                }`}
+              >
+                Admin
+              </Link>
+            )}
+          </nav>
         </div>
 
-        {/* Mobile Menu Overlay */}
+        {/* Mobile Menu */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <>
-              {/* Backdrop */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[40] lg:hidden"
-                style={{ top: "var(--nav-height, 80px)" }}
+                style={{ top: "72px" }}
               />
-
-              {/* Menu Content */}
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
@@ -304,7 +270,7 @@ const EnhancedNavigation = () => {
                 className="lg:hidden bg-background border-b border-border shadow-soft overflow-hidden fixed left-0 right-0 z-50"
                 style={{ top: "72px" }}
               >
-                <div className="container mx-auto px-4 py-6 space-y-4 max-h-[80vh] overflow-y-auto">
+                <div className="container mx-auto px-4 py-6 space-y-2 max-h-[80vh] overflow-y-auto">
                   {navigationItems.map((item) => (
                     <div key={item.label} className="space-y-2">
                       <button
@@ -312,39 +278,20 @@ const EnhancedNavigation = () => {
                         className="w-full flex items-center justify-between p-3 text-left rounded-lg transition-smooth hover:bg-muted/50"
                       >
                         <span className="font-medium">{item.label}</span>
-                        {item.children && (
-                          <ChevronDown
-                            size={20}
-                            className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""
-                              }`}
-                          />
-                        )}
+                        {item.children && <ChevronDown size={20} className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`} />}
                       </button>
-
                       {item.children && activeDropdown === item.label && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          className="pl-4 space-y-1"
-                        >
+                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="pl-4 space-y-1">
                           {item.children.map((child) => (
                             <button
                               key={child.label}
                               onClick={() => trackNavigation(child.label, child.href)}
-                              className={`w-full flex items-center gap-3 p-3 text-left rounded-md transition-smooth hover:bg-muted/50 ${isActive(child.href)
-                                ? "text-primary bg-primary/10"
-                                : "text-foreground/80 hover:text-primary"
-                                }`}
+                              className={`w-full flex items-center gap-3 p-3 text-left rounded-md transition-smooth hover:bg-muted/50 ${isActive(child.href) ? "text-primary bg-primary/10" : "text-foreground/80 hover:text-primary"}`}
                             >
                               {child.icon && <child.icon size={16} className="text-primary" />}
                               <div>
                                 <div className="font-medium text-sm">{child.label}</div>
-                                {child.description && (
-                                  <div className="text-xs text-muted-foreground mt-0.5">
-                                    {child.description}
-                                  </div>
-                                )}
+                                {child.description && <div className="text-xs text-muted-foreground mt-0.5">{child.description}</div>}
                               </div>
                             </button>
                           ))}
@@ -352,44 +299,19 @@ const EnhancedNavigation = () => {
                       )}
                     </div>
                   ))}
-
                   {isAdmin && (
-                    <Link
-                      to="/admin"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`block p-3 rounded-lg transition-smooth hover:bg-muted/50 ${isActive("/admin")
-                        ? "text-primary bg-primary/10"
-                        : "text-foreground/80 hover:text-primary"
-                        }`}
-                    >
+                    <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)} className={`block p-3 rounded-lg transition-smooth hover:bg-muted/50 ${isActive("/admin") ? "text-primary bg-primary/10" : "text-foreground/80 hover:text-primary"}`}>
                       Admin Dashboard
                     </Link>
                   )}
-
                   <div className="h-px bg-border my-4" />
-
                   <div className="space-y-3">
                     {user ? (
-                      <Button
-                        variant="ghost"
-                        size="lg"
-                        className="w-full justify-start text-red-500 hover:bg-red-500/10"
-                        onClick={() => { signOut(); setIsMobileMenuOpen(false); }}
-                      >
-                        Sign Out
-                      </Button>
+                      <Button variant="ghost" size="lg" className="w-full justify-start text-destructive hover:bg-destructive/10" onClick={() => { signOut(); setIsMobileMenuOpen(false); }}>Sign Out</Button>
                     ) : (
                       <div className="grid gap-3">
-                        <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
-                          <Button variant="outline" size="lg" className="w-full justify-center">
-                            Sign In
-                          </Button>
-                        </Link>
-                        <Link to="/get-started" onClick={() => setIsMobileMenuOpen(false)}>
-                          <Button variant="default" size="lg" className="w-full justify-center">
-                            Book Demo
-                          </Button>
-                        </Link>
+                        <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}><Button variant="outline" size="lg" className="w-full justify-center">Sign In</Button></Link>
+                        <Link to="/get-started" onClick={() => setIsMobileMenuOpen(false)}><Button variant="default" size="lg" className="w-full justify-center">Book Demo</Button></Link>
                       </div>
                     )}
                   </div>
@@ -398,9 +320,7 @@ const EnhancedNavigation = () => {
             </>
           )}
         </AnimatePresence>
-      </motion.nav>
-      {/* Spacer to prevent content jump since nav is fixed */}
-      {/* <div className="h-20" /> */}
+      </motion.header>
     </>
   );
 };
