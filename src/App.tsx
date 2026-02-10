@@ -58,12 +58,6 @@ const App = () => (
               <Route path="/assessment/:id" element={<TakeAssessment />} />
               <Route path="/assessment-workflow" element={<AssessmentWorkflowPage />} />
               <Route path="/create-assessment" element={<CreateAssessment />} />
-              <Route path="/ai-interview" element={<AIInterview />} />
-              <Route path="/interviews" element={<InterviewBrowser />} />
-              <Route path="/create-interview" element={<CreateInterview />} />
-              <Route path="/interview/:id" element={<TakeInterview />} />
-              <Route path="/live-interview" element={<LiveInterview />} />
-              <Route path="/report/:sessionId" element={<InterviewReport />} />
               <Route path="/integrations" element={<Integrations />} />
               <Route path="/solutions" element={<Solutions />} />
               <Route path="/solutions/recruiters" element={<Solutions />} />
