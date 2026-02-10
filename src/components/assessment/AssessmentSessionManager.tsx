@@ -157,10 +157,6 @@ export function AssessmentSessionManager({
         })
         .select('id')
         .single();
-          onConflict: 'assessment_id,user_id'
-        })
-        .select()
-        .single();
 
       if (error) throw error;
       return newSession.id;
