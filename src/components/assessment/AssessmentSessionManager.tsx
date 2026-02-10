@@ -41,9 +41,9 @@ export function AssessmentSessionManager({
           onSessionUpdate(activeSession.id);
           
           // Update last activity
-          await supabase
+          await (supabase as any)
             .from('interview_sessions')
-            .update({ last_activity_at: new Date().toISOString() })
+            .update({ updated_at: new Date().toISOString() })
             .eq('id', activeSession.id);
         }
 
