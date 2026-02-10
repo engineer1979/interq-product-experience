@@ -54,15 +54,19 @@ const Navigation = () => {
 
   return (
     <>
-      <motion.nav
+      {/* Top Bar with Logo + Auth */}
+      <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-background/95 backdrop-blur-md shadow-sm py-2" : "bg-background/80 backdrop-blur-md py-4"
-          }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-background/95 backdrop-blur-md shadow-sm"
+            : "bg-background/80 backdrop-blur-md"
+        }`}
       >
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
+          {/* Row 1: Logo + Auth */}
+          <div className="flex items-center justify-between py-3">
             <Link to="/" className="flex items-center gap-3 group transition-smooth" onClick={() => setIsMobileMenuOpen(false)}>
               <div className="bg-transparent rounded-md p-1">
                 <img src="/interq-logo.png" alt="InterQ Logo" className="h-10 sm:h-12 w-auto max-w-full" loading="lazy" decoding="async" />
@@ -72,55 +76,20 @@ const Navigation = () => {
               </span>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8 ml-12">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  to={link.href}
-                  className={`text-sm font-medium transition-smooth relative py-1 hover:text-primary ${location.pathname === link.href
-                    ? "text-primary after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-primary"
-                    : "text-foreground/80"
-                    }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              {isAdmin && (
-                <Link
-                  to="/settings"
-                  className={`text-sm font-medium transition-smooth ${location.pathname === "/settings"
-                    ? "text-primary"
-                    : "text-foreground/80 hover:text-primary"
-                    }`}
-                >
-                  Settings
-                </Link>
-              )}
-            </div>
-
-            {/* CTA Buttons */}
+            {/* Desktop Auth */}
             <div className="hidden lg:flex items-center space-x-4">
               {user ? (
                 <>
-                  <span className="text-sm text-muted-foreground">
-                    Welcome back!
-                  </span>
-                  <Button variant="ghost" size="sm" onClick={signOut}>
-                    Sign Out
-                  </Button>
+                  <span className="text-sm text-muted-foreground">Welcome back!</span>
+                  <Button variant="ghost" size="sm" onClick={signOut}>Sign Out</Button>
                 </>
               ) : (
                 <>
                   <Link to="/auth">
-                    <Button variant="ghost" className="text-sm font-medium hover:text-primary hover:bg-primary/5">
-                      Sign In
-                    </Button>
+                    <Button variant="ghost" className="text-sm font-medium hover:text-primary hover:bg-primary/5">Sign In</Button>
                   </Link>
                   <Link to="/auth">
-                    <Button variant="default" className="gradient-primary text-sm shadow-soft hover:shadow-glow transition-all duration-300">
-                      Book a Demo
-                    </Button>
+                    <Button variant="default" className="gradient-primary text-sm shadow-soft hover:shadow-glow transition-all duration-300">Book a Demo</Button>
                   </Link>
                 </>
               )}
@@ -135,40 +104,86 @@ const Navigation = () => {
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
+
+          {/* Row 2: Vertical-style nav links displayed as a refined horizontal strip */}
+          <nav className="hidden lg:flex items-center justify-center gap-1 pb-3 border-t border-border/40 pt-3">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                to={link.href}
+                className={`relative px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  location.pathname === link.href
+                    ? "bg-primary/10 text-primary shadow-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                }`}
+              >
+                {link.label}
+                {location.pathname === link.href && (
+                  <motion.span
+                    layoutId="nav-indicator"
+                    className="absolute bottom-0 left-2 right-2 h-0.5 bg-primary rounded-full"
+                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                  />
+                )}
+              </Link>
+            ))}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  location.pathname.startsWith("/admin")
+                    ? "bg-primary/10 text-primary shadow-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                }`}
+              >
+                Admin
+              </Link>
+            )}
+            {isAdmin && (
+              <Link
+                to="/settings"
+                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  location.pathname === "/settings"
+                    ? "bg-primary/10 text-primary shadow-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                }`}
+              >
+                Settings
+              </Link>
+            )}
+          </nav>
         </div>
 
         {/* Mobile Menu Overlay */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <>
-              {/* Backdrop */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[40] lg:hidden"
-                style={{ top: "var(--nav-height, 80px)" }}
+                style={{ top: "72px" }}
               />
-
-              {/* Menu Content */}
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 className="lg:hidden bg-background border-b border-border shadow-soft overflow-hidden fixed left-0 right-0 z-50"
-                style={{ top: "72px" }} // Align below header
+                style={{ top: "72px" }}
               >
-                <div className="container mx-auto px-4 py-6 space-y-4 max-h-[80vh] overflow-y-auto">
+                <div className="container mx-auto px-4 py-6 space-y-2 max-h-[80vh] overflow-y-auto">
                   {navLinks.map((link) => (
                     <Link
                       key={link.label}
                       to={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`block text-lg font-medium p-3 rounded-lg transition-colors ${location.pathname === link.href
-                        ? "bg-primary/10 text-primary"
-                        : "text-foreground/80 hover:bg-muted hover:text-primary"
-                        }`}
+                      className={`block text-lg font-medium p-3 rounded-lg transition-colors ${
+                        location.pathname === link.href
+                          ? "bg-primary/10 text-primary"
+                          : "text-foreground/80 hover:bg-muted hover:text-primary"
+                      }`}
                     >
                       {link.label}
                     </Link>
@@ -176,20 +191,16 @@ const Navigation = () => {
                   <div className="h-px bg-border my-4" />
                   <div className="space-y-3">
                     {user ? (
-                      <Button variant="ghost" size="lg" className="w-full justify-start text-red-500" onClick={() => { signOut(); setIsMobileMenuOpen(false); }}>
+                      <Button variant="ghost" size="lg" className="w-full justify-start text-destructive" onClick={() => { signOut(); setIsMobileMenuOpen(false); }}>
                         Sign Out
                       </Button>
                     ) : (
                       <div className="grid gap-3">
                         <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
-                          <Button variant="outline" size="lg" className="w-full justify-center">
-                            Sign In
-                          </Button>
+                          <Button variant="outline" size="lg" className="w-full justify-center">Sign In</Button>
                         </Link>
                         <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
-                          <Button variant="default" size="lg" className="w-full justify-center gradient-primary shadow-lg">
-                            Start Free Trial
-                          </Button>
+                          <Button variant="default" size="lg" className="w-full justify-center gradient-primary shadow-lg">Start Free Trial</Button>
                         </Link>
                       </div>
                     )}
@@ -199,9 +210,7 @@ const Navigation = () => {
             </>
           )}
         </AnimatePresence>
-      </motion.nav>
-      {/* Spacer to prevent content jump since nav is fixed */}
-      {/* <div className="h-20" /> */}
+      </motion.header>
     </>
   );
 };
