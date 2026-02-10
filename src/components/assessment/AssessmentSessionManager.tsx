@@ -66,9 +66,9 @@ export function AssessmentSessionManager({
 
     const activityInterval = setInterval(async () => {
       try {
-        await supabase
+        await (supabase as any)
           .from('interview_sessions')
-          .update({ last_activity_at: new Date().toISOString() })
+          .update({ updated_at: new Date().toISOString() })
           .eq('id', sessionId);
         
         setLastActivity(Date.now());
