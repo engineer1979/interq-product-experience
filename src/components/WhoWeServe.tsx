@@ -4,7 +4,7 @@ import { Briefcase, UserCheck, Users, Calendar, Video, FileText, Lock, Award, Co
 const WhoWeServe = () => {
     return (
         <section className="py-24 bg-secondary/20">
-            <div className="container mx-auto px-4 lg:px-8">
+            <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">Who We Serve</h2>
                     <p className="text-muted-foreground text-lg">
@@ -18,7 +18,7 @@ const WhoWeServe = () => {
                         whileHover={{ y: -5 }}
                         className="bg-card border border-border rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all"
                     >
-                        <div className="h-56 overflow-hidden relative">
+                        <div className="h-52 overflow-hidden relative">
                             <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-colors z-10" />
                             <img
                                 src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80"
@@ -59,7 +59,7 @@ const WhoWeServe = () => {
                         whileHover={{ y: -5 }}
                         className="bg-card border border-border rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all relative"
                     >
-                        <div className="h-56 overflow-hidden relative">
+                        <div className="h-52 overflow-hidden relative">
                             <div className="absolute inset-0 bg-green-900/10 group-hover:bg-transparent transition-colors z-10" />
                             <img
                                 src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80"
@@ -100,7 +100,7 @@ const WhoWeServe = () => {
                         whileHover={{ y: -5 }}
                         className="bg-card border border-border rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all"
                     >
-                        <div className="h-56 overflow-hidden relative">
+                        <div className="h-52 overflow-hidden relative">
                             <div className="absolute inset-0 bg-purple-900/10 group-hover:bg-transparent transition-colors z-10" />
                             <img
                                 src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80"

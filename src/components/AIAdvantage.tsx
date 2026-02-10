@@ -52,7 +52,7 @@ const AIAdvantage = () => {
             {/* Background Decoration */}
             <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10" />
 
-            <div className="container mx-auto px-4 lg:px-8">
+            <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">
                         The <span className="text-gradient">AI-Powered</span> Advantage
