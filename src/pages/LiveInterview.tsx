@@ -1,15 +1,17 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Mic, Square, CheckCircle2, Loader2, ArrowRight, Video, Settings, UserCheck, X, Ear, Briefcase, Tag, Award, AlertCircle
+  Mic, CheckCircle2, Loader2, ArrowRight, Video, Settings, UserCheck, Ear, Briefcase, Tag, Award, AlertCircle
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import EnhancedNavigation from "@/components/EnhancedNavigation";
 import EnhancedFooter from "@/components/EnhancedFooter";
-import { interviewTypes, questionPool, type InterviewQuestion } from "@/data/interview-questions";
+import { newQuestionPool } from "@/data/new-interview-questions"; // Using the new, larger pool
+import { type InterviewQuestion, interviewTypes } from "@/data/interview-questions";
 import { OpenEndedInteraction } from "@/components/interview/OpenEndedInteraction";
 import { MultipleChoiceInteraction } from "@/components/interview/MultipleChoiceInteraction";
 import { CodingInteraction } from "@/components/interview/CodingInteraction";
@@ -64,76 +66,100 @@ export default function LiveInterview() {
   const [setup, setSetup] = useState<SetupState>({ step: 'role', role: null, category: null, seniority: null });
   const audioStreamRef = useRef<MediaStream | null>(null);
 
-  const changeStep = (newStep: number, newStatus: LiveInterviewState['status']) => {
-    setState(prev => ({ ...prev, currentStep: newStep, status: newStatus, highestCompletedStep: Math.max(prev.highestCompletedStep, newStep -1) }));
+  // --- Core Interview Logic ---
+
+  useEffect(() => {
+    // On initial load, check for an in-progress interview in sessionStorage
+    const savedState = sessionStorage.getItem('liveInterviewState');
+    if (savedState) {
+      try {
+        const restoredState = JSON.parse(savedState);
+        if (restoredState.status !== 'completed' && restoredState.questions.length > 0) {
+          // If microphone permission was granted, we need to re-request it because the stream is not persisted.
+          if (restoredState.hasMicrophonePermission) {
+            restoredState.hasMicrophonePermission = false;
+            restoredState.techCheckStatus = 'idle';
+          }
+          setState(restoredState);
+          toast({ title: "Interview Resumed", description: "Your previous session has been loaded." });
+        } else {
+           sessionStorage.removeItem('liveInterviewState');
+        }
+      } catch (error) {
+        console.error("Could not restore interview state:", error);
+        sessionStorage.removeItem('liveInterviewState');
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    // Persist state to sessionStorage whenever it changes, if the interview has started
+    if (state.status !== 'setup' && state.questions.length > 0) {
+      sessionStorage.setItem('liveInterviewState', JSON.stringify(state));
+    }
+  }, [state]);
+
+  // Utility to shuffle an array
+  const shuffle = (array: any[]) => {
+    return [...array].sort(() => Math.random() - 0.5);
   };
 
-  const handleStepClick = (stepId: number) => {
-    if (stepId > state.highestCompletedStep + 1) return;
-    let status: LiveInterviewState['status'] = 'setup';
-    if (stepId === 1) status = 'setup';
-    else if (stepId === 2) status = 'tech-check';
-    else if (stepId === 3) status = 'question';
-    changeStep(stepId, status);
+  const generateInterview = () => {
+    const { role } = setup; // Only role is needed for the new logic
+    if (!role) {
+      toast({ title: "Setup Incomplete", description: "Please select a role to start the interview.", variant: "destructive"});
+      return;
+    }
+
+    const allQuestionsForRole = newQuestionPool.filter(q => q.role === role);
+
+    if (allQuestionsForRole.length < 20) {
+        toast({ 
+            title: "Warning: Limited Question Bank", 
+            description: "The question bank for this role is very small. The interview will proceed, but some questions may be repeated or AI-generated.",
+            variant: "destructive"
+        });
+    } else if (allQuestionsForRole.length < 100) {
+        toast({ 
+            title: "Warning: Limited Question Bank", 
+            description: "This interview will use a smaller set of questions. Some AI-generated questions may be used.",
+        });
+    }
+
+    const easyTech = allQuestionsForRole.filter(q => q.seniority === 'easy' && (q.category === 'technical' || q.category === 'coding'));
+    const mediumTech = allQuestionsForRole.filter(q => q.seniority === 'medium' && (q.category === 'technical' || q.category === 'coding'));
+    const hardTech = allQuestionsForRole.filter(q => q.seniority === 'hard' && (q.category === 'technical' || q.category === 'coding'));
+    const behavioral = allQuestionsForRole.filter(q => q.category === 'behavioral');
+
+    // Select questions based on the desired distribution, but don't fail if we can't meet it
+    const selectedQuestions = [
+        ...shuffle(easyTech).slice(0, 5),
+        ...shuffle(mediumTech).slice(0, 8),
+        ...shuffle(hardTech).slice(0, 5),
+        ...shuffle(behavioral).slice(0, 2),
+    ];
+
+    const finalQuestions = shuffle(selectedQuestions).slice(0, 20); // Ensure we have exactly 20 questions if possible
+
+    if (finalQuestions.length === 0) {
+        toast({ title: "Error Generating Test", description: "Could not load any questions. Please contact an admin.", variant: "destructive" });
+        return;
+    }
+
+    setState(prev => ({ ...prev, questions: finalQuestions, answers: [], currentQuestionIndex: 0 }));
+    changeStep(2, 'tech-check');
+    toast({ title: "Interview Generated!", description: `Successfully loaded ${finalQuestions.length} questions.` });
+  };
+
+
+  const changeStep = (newStep: number, newStatus: LiveInterviewState['status']) => {
+    setState(prev => ({ ...prev, currentStep: newStep, status: newStatus, highestCompletedStep: Math.max(prev.highestCompletedStep, newStep -1) }));
   };
 
   const handleSetupSelection = (type: keyof SetupState, value: string) => {
     setSetup(prev => ({ ...prev, [type]: value }));
     if (setup.step === 'role') setSetup(prev => ({...prev, step: 'category'}));
     else if (setup.step === 'category') setSetup(prev => ({...prev, step: 'seniority'}));
-  };
-
-  const generateInterview = () => {
-    const { role, category, seniority } = setup;
-    if (!role || !category || !seniority) {
-      toast({ title: "Setup Incomplete", description: "Please select a role, category, and seniority level.", variant: "destructive"});
-      return;
-    }
-
-    // 1. Precise filter
-    let potentialQuestions = questionPool.filter(q => 
-      q.role === role && q.category === category && q.seniority === seniority
-    );
-
-    // 2. Broaden search if not enough questions
-    if (potentialQuestions.length < 20) {
-      // Add questions matching role and category, regardless of seniority
-      const roleAndCategoryQuestions = questionPool.filter(q => 
-        q.role === role && q.category === category && !potentialQuestions.find(pq => pq.id === q.id)
-      );
-      potentialQuestions.push(...roleAndCategoryQuestions);
-    }
-
-    if (potentialQuestions.length < 20) {
-        // Add behavioral/situational questions for that role and seniority
-        const behavioralSituational = questionPool.filter(q => 
-            q.role === role && (q.category === 'behavioral' || q.category === 'situational') && q.seniority === seniority && !potentialQuestions.find(pq => pq.id === q.id)
-        );
-        potentialQuestions.push(...behavioralSituational);
-    }
-
-    if (potentialQuestions.length < 20) {
-        // Add any questions from the selected category and seniority
-        const categoryAndSeniority = questionPool.filter(q => 
-            q.category === category && q.seniority === seniority && !potentialQuestions.find(pq => pq.id === q.id)
-        );
-        potentialQuestions.push(...categoryAndSeniority);
-    }
-    
-    // 3. Shuffle the collected questions
-    const shuffledQuestions = [...potentialQuestions].sort(() => Math.random() - 0.5);
-
-    // 4. Select up to 20 questions
-    const selectedQuestions = shuffledQuestions.slice(0, 20);
-
-    // 5. Final fallback (should be rare after data is fixed)
-    const questions = selectedQuestions.length > 0 
-      ? selectedQuestions 
-      : [{id: 'fallback', type: 'open_ended', question_text: 'Tell me about yourself.', category:'behavioral', role:'frontend', seniority:'junior'}];
-
-    setState(prev => ({ ...prev, questions, answers: [] }));
-    changeStep(2, 'tech-check');
-    toast({ title: "Interview Generated!", description: `Loaded ${questions.length} questions.` });
   };
 
   const requestMicrophonePermission = async () => {
@@ -163,23 +189,28 @@ export default function LiveInterview() {
   const submitInterview = () => {
     const mockSessionId = "a1b2c3d4";
     toast({ title: "Interview Complete!", description: "Generating your report..."});
+    sessionStorage.removeItem('liveInterviewState');
     setTimeout(() => navigate(`/report/${mockSessionId}`), 2500);
   };
 
   const handleAnswer = (answer: any) => {
-    setState(prev => ({ ...prev, answers: [...prev.answers, { questionId: prev.questions[prev.currentQuestionIndex].id, answer }]}));
-    nextQuestion();
+    const nextState = {
+        ...state,
+        answers: [...state.answers, { questionId: state.questions[state.currentQuestionIndex].id, answer }],
+    };
+    setState(nextState);
+    nextQuestion(nextState); // Pass nextState directly to avoid stale state issues
   };
 
-  const nextQuestion = () => {
-    if (state.currentQuestionIndex < state.questions.length - 1) {
+  const nextQuestion = (currentState: LiveInterviewState) => {
+    if (currentState.currentQuestionIndex < currentState.questions.length - 1) {
       setState(prev => ({ ...prev, currentQuestionIndex: prev.currentQuestionIndex + 1, status: 'question' }));
     } else {
       changeStep(4, 'completed');
       submitInterview();
     }
   };
-
+  
   const startRecording = () => {
     if(state.hasMicrophonePermission) {
       setState(prev => ({ ...prev, isRecording: true, status: 'listening' }));
@@ -188,9 +219,9 @@ export default function LiveInterview() {
       changeStep(2, 'tech-check');
     }
   }
+
   const stopRecording = () => {
     setState(prev => ({ ...prev, isRecording: false, status: 'processing' }));
-    // Simulate processing delay
     setTimeout(() => {
       handleAnswer("Recorded audio answer");
     }, 1500);
@@ -199,6 +230,7 @@ export default function LiveInterview() {
   // --- RENDER FUNCTIONS ---
   
   const renderSetupWizard = () => {
+    const { role, category, seniority } = setup;
     const renderOptions = (options: {id: string, name: string}[], type: keyof SetupState, icon: React.ElementType) => (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {options.map(option => (
@@ -235,7 +267,7 @@ export default function LiveInterview() {
                  <h2 className="text-3xl font-bold">Select Seniority Level</h2>
                  <p className="text-muted-foreground">Finally, choose your experience level.</p>
                 {renderOptions(interviewTypes.seniority, 'seniority', UserCheck)}
-                <div className="mt-8"><Button size="lg" onClick={generateInterview} disabled={!setup.role || !setup.category || !setup.seniority}>Generate Interview <ArrowRight className="ml-2"/></Button></div>
+                <div className="mt-8"><Button size="lg" onClick={generateInterview} disabled={!role || !category || !seniority}>Generate Interview <ArrowRight className="ml-2"/></Button></div>
               </div>
             )}
           </motion.div>
@@ -273,28 +305,18 @@ export default function LiveInterview() {
   );
 
   const renderSession = () => {
+    if (!state.questions || state.questions.length === 0) return <div className="text-center"><Loader2 className="animate-spin mx-auto"/> <p className="mt-2">Loading interview...</p></div>;
     const currentQuestion = state.questions[state.currentQuestionIndex];
-    if (!currentQuestion) return <div className="text-center"><p>No questions loaded. Please restart.</p></div>;
+    if (!currentQuestion) return <div className="text-center"><p>Error: Question not found. Please restart.</p></div>;
 
     const renderInteraction = () => {
       switch (currentQuestion.type) {
         case 'open_ended':
-          return <OpenEndedInteraction 
-                    status={state.status as any} 
-                    startRecording={startRecording} 
-                    stopRecording={stopRecording} 
-                    stream={audioStreamRef.current}
-                  />;
+          return <OpenEndedInteraction status={state.status as any} startRecording={startRecording} stopRecording={stopRecording} stream={audioStreamRef.current}/>;
         case 'multiple_choice':
-          return <MultipleChoiceInteraction 
-                    question={currentQuestion} 
-                    onAnswer={(answer) => handleAnswer(answer)}
-                  />;
+          return <MultipleChoiceInteraction question={currentQuestion} onAnswer={(answer) => handleAnswer(answer)}/>;
         case 'coding':
-          return <CodingInteraction 
-                    question={currentQuestion} 
-                    onComplete={() => handleAnswer("Submitted code solution")}
-                  />;
+          return <CodingInteraction question={currentQuestion} onComplete={() => handleAnswer("Submitted code solution")}/>;
         default:
           return <p>Unsupported question type.</p>;
       }
@@ -335,7 +357,8 @@ export default function LiveInterview() {
       case 'listening':
       case 'processing': return renderSession();
       case 'completed': return renderCompleted();
-      default: return <div>Loading...</div>;
+      case 'error': return <div className="text-center text-destructive"><AlertCircle className="mx-auto w-12 h-12 mb-4"/>An error occurred. Please refresh and try again.</div>;
+      default: return <div className="text-center"><Loader2 className="animate-spin mx-auto"/></div>;
     }
   };
   
@@ -347,13 +370,13 @@ export default function LiveInterview() {
             <div className="w-full max-w-3xl mx-auto">
                 <div className="flex justify-between items-start">
                     {LIVE_STEPS.map((step, index) => (
-                        <div key={step.id} className="flex-1 flex flex-col items-center text-center relative">
-                            <div className={`flex items-center justify-center w-12 h-12 rounded-full ${state.currentStep > step.id ? 'bg-green-500 text-white' : state.currentStep === step.id ? 'bg-primary text-primary-foreground' : 'bg-card-foreground/10'}`}>
+                        <div key={step.id} className="flex-1 flex flex-col items-center text-center relative cursor-pointer" >
+                            <div className={`flex items-center justify-center w-12 h-12 rounded-full transition-colors ${state.currentStep > step.id ? 'bg-green-500 text-white' : state.currentStep === step.id ? 'bg-primary text-primary-foreground' : 'bg-card-foreground/10'}`}>
                                 {state.currentStep > step.id ? <CheckCircle2/> : <step.icon/>}
                             </div>
-                            <p className={`mt-2 font-bold ${state.currentStep >= step.id ? 'text-foreground' : 'text-muted-foreground'}`}>{step.title}</p>
+                            <p className={`mt-2 font-bold transition-colors ${state.currentStep >= step.id ? 'text-foreground' : 'text-muted-foreground'}`}>{step.title}</p>
                             <p className="text-sm text-muted-foreground">{step.description}</p>
-                            {index < LIVE_STEPS.length - 1 && <div className={`absolute top-6 left-1/2 w-full h-0.5 ${state.currentStep > step.id ? 'bg-green-500' : 'bg-card-foreground/10'}`} style={{ transform: 'translateX(50%)' }}/>}
+                            {index < LIVE_STEPS.length - 1 && <div className={`absolute top-6 left-1/2 w-full h-0.5 transition-colors ${state.currentStep > step.id ? 'bg-green-500' : 'bg-card-foreground/10'}`} style={{ transform: 'translateX(50%)' }}/>}
                         </div>
                     ))}
                 </div>

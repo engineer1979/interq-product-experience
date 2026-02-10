@@ -27,7 +27,7 @@ export function AssessmentSessionManager({
       try {
         // Check for existing active sessions
         const { data: existingSessions, error: checkError } = await supabase
-          .from('assessment_sessions')
+          .from('interview_sessions')
           .select('*')
           .eq('assessment_id', assessmentId)
           .eq('user_id', userId)
@@ -42,7 +42,7 @@ export function AssessmentSessionManager({
           
           // Update last activity
           await supabase
-            .from('assessment_sessions')
+            .from('interview_sessions')
             .update({ last_activity_at: new Date().toISOString() })
             .eq('id', activeSession.id);
         }
@@ -67,7 +67,7 @@ export function AssessmentSessionManager({
     const activityInterval = setInterval(async () => {
       try {
         await supabase
-          .from('assessment_sessions')
+          .from('interview_sessions')
           .update({ last_activity_at: new Date().toISOString() })
           .eq('id', sessionId);
         
@@ -87,7 +87,7 @@ export function AssessmentSessionManager({
     const checkSessionValidity = async () => {
       try {
         const { data: session, error } = await supabase
-          .from('assessment_sessions')
+          .from('interview_sessions')
           .select('*')
           .eq('id', sessionId)
           .single();
@@ -136,7 +136,7 @@ export function AssessmentSessionManager({
     try {
       // First, check for existing incomplete sessions
       const { data: existingSessions } = await supabase
-        .from('assessment_sessions')
+        .from('interview_sessions')
         .select('id')
         .eq('assessment_id', assessmentId)
         .eq('user_id', userId)
@@ -149,7 +149,7 @@ export function AssessmentSessionManager({
 
       // Create new session with upsert to prevent duplicates
       const { data: newSession, error } = await supabase
-        .from('assessment_sessions')
+        .from('interview_sessions')
         .upsert({
           assessment_id: assessmentId,
           user_id: userId,
