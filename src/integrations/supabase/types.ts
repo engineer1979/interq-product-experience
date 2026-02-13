@@ -343,6 +343,158 @@ export type Database = {
         }
         Relationships: []
       }
+      ats_screenings: {
+        Row: {
+          bonus_score: number | null
+          candidate_id: string
+          created_at: string
+          decision: string
+          decision_reason: string | null
+          education_score: number | null
+          experience_score: number | null
+          id: string
+          industry_score: number | null
+          job_id: string | null
+          knockout_details: Json | null
+          knockout_failed: boolean | null
+          notes: string | null
+          progression_score: number | null
+          screened_by: string
+          skills_score: number | null
+          total_score: number | null
+          updated_at: string
+        }
+        Insert: {
+          bonus_score?: number | null
+          candidate_id: string
+          created_at?: string
+          decision?: string
+          decision_reason?: string | null
+          education_score?: number | null
+          experience_score?: number | null
+          id?: string
+          industry_score?: number | null
+          job_id?: string | null
+          knockout_details?: Json | null
+          knockout_failed?: boolean | null
+          notes?: string | null
+          progression_score?: number | null
+          screened_by: string
+          skills_score?: number | null
+          total_score?: number | null
+          updated_at?: string
+        }
+        Update: {
+          bonus_score?: number | null
+          candidate_id?: string
+          created_at?: string
+          decision?: string
+          decision_reason?: string | null
+          education_score?: number | null
+          experience_score?: number | null
+          id?: string
+          industry_score?: number | null
+          job_id?: string | null
+          knockout_details?: Json | null
+          knockout_failed?: boolean | null
+          notes?: string | null
+          progression_score?: number | null
+          screened_by?: string
+          skills_score?: number | null
+          total_score?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ats_screenings_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ats_screenings_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      candidates: {
+        Row: {
+          created_at: string
+          created_by: string
+          current_title: string | null
+          education_level: string | null
+          email: string
+          full_name: string
+          id: string
+          industry: string | null
+          is_blind_screening: boolean | null
+          job_id: string | null
+          location: string | null
+          phone: string | null
+          resume_text: string | null
+          resume_url: string | null
+          skills: string[] | null
+          status: string
+          updated_at: string
+          work_eligibility: string | null
+          years_experience: number | null
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          current_title?: string | null
+          education_level?: string | null
+          email: string
+          full_name: string
+          id?: string
+          industry?: string | null
+          is_blind_screening?: boolean | null
+          job_id?: string | null
+          location?: string | null
+          phone?: string | null
+          resume_text?: string | null
+          resume_url?: string | null
+          skills?: string[] | null
+          status?: string
+          updated_at?: string
+          work_eligibility?: string | null
+          years_experience?: number | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          current_title?: string | null
+          education_level?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          industry?: string | null
+          is_blind_screening?: boolean | null
+          job_id?: string | null
+          location?: string | null
+          phone?: string | null
+          resume_text?: string | null
+          resume_url?: string | null
+          skills?: string[] | null
+          status?: string
+          updated_at?: string
+          work_eligibility?: string | null
+          years_experience?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidates_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interview_questions: {
         Row: {
           correct_answer: string | null
@@ -741,6 +893,47 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      knockout_questions: {
+        Row: {
+          created_at: string
+          created_by: string
+          expected_answer: string
+          id: string
+          is_eliminating: boolean | null
+          job_id: string
+          order_index: number | null
+          question_text: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          expected_answer?: string
+          id?: string
+          is_eliminating?: boolean | null
+          job_id: string
+          order_index?: number | null
+          question_text: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          expected_answer?: string
+          id?: string
+          is_eliminating?: boolean | null
+          job_id?: string
+          order_index?: number | null
+          question_text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knockout_questions_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       module_permissions: {
         Row: {
