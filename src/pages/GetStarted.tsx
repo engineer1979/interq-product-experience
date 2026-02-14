@@ -3,6 +3,9 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CheckCircle2, Shield, Award, Lock } from "lucide-react";
 import Navigation from "@/components/Navigation";
+import xiLogo from "@/assets/client-xi-website.png";
+import sBrandLogo from "@/assets/client-s-brand.png";
+import sharkLogo from "@/assets/client-shark-electronics.png";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,11 +39,9 @@ const GetStarted = () => {
   ];
 
   const companyLogos = [
-    { name: "Company 1" },
-    { name: "Company 2" },
-    { name: "Company 3" },
-    { name: "Company 4" },
-    { name: "Company 5" },
+    { name: "Xi Website (Pvt) Ltd", logo: xiLogo },
+    { name: "S-Brand", logo: sBrandLogo },
+    { name: "The Shark Electronics", logo: sharkLogo },
   ];
 
   const badges = [
@@ -103,13 +104,13 @@ const GetStarted = () => {
                 <h4 className="text-foreground font-semibold mb-6">
                   Trusted by 5,000+ Recruiters Worldwide
                 </h4>
-                <div className="grid grid-cols-3 gap-6 items-center">
+                <div className="grid grid-cols-3 gap-6 items-stretch">
                   {companyLogos.map((logo, index) => (
                     <div
                       key={index}
-                      className="bg-card border border-border rounded-lg p-4 h-20 flex items-center justify-center shadow-soft"
+                      className="bg-card border border-border rounded-xl p-4 h-20 flex items-center justify-center shadow-soft hover:shadow-md hover:scale-[1.03] transition-all duration-300"
                     >
-                      <span className="text-muted-foreground text-sm">{logo.name}</span>
+                      <img src={logo.logo} alt={logo.name} className="max-h-12 w-auto object-contain" loading="lazy" />
                     </div>
                   ))}
                 </div>
