@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   ChatMessage,
   QuickAction,
@@ -17,6 +17,13 @@ import {
   companyFetchPipeline,
   getCompanyIdForUser,
   adminFetchResults,
+  uploadFileToResumes,
+  verifyCertificate,
+  updateProfileVisibility,
+  companyMoveCandidateStage,
+  sendCandidateNotification,
+  getActiveAssessmentSession,
+  createSupportTicket,
 } from "@/services/chatbot/actions";
 
 function uid() {
@@ -28,12 +35,21 @@ const STORAGE_KEY = "interq_chatbot_conversation";
 export function ChatbotWidget() {
   const { session, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [open, setOpen] = useState(false);
   const [unread, setUnread] = useState(0);
   const [typing, setTyping] = useState(false);
   const [role, setRole] = useState<UserRole>("guest");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
+  const [fullscreen, setFullscreen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [scheduleISO, setScheduleISO] = useState("");
+  const [language, setLanguage] = useState<"en" | "ur" | "ar">("en");
+  const [supportMode, setSupportMode] = useState(false);
+  const [issueType, setIssueType] = useState<"login" | "assessment" | "interview" | "results" | "billing" | "other">("assessment");
+  const [issueText, setIssueText] = useState("");
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,6 +59,7 @@ export function ChatbotWidget() {
         const data = JSON.parse(raw);
         setMessages(data.messages ?? []);
         setRole(data.role ?? "guest");
+        if (data.language) setLanguage(data.language);
       } catch {}
     } else {
       setMessages([
@@ -58,8 +75,8 @@ export function ChatbotWidget() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ messages, role }));
-  }, [messages, role]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ messages, role, language }));
+  }, [messages, role, language]);
 
   useEffect(() => {
     async function detect() {
@@ -83,6 +100,18 @@ export function ChatbotWidget() {
   };
   const pushUser = (text: string) => setMessages((prev) => [...prev, { id: uid(), role: "user", text, timestamp: Date.now() }]);
 
+  useEffect(() => {
+    if (!open) return;
+    const p = location.pathname;
+    if (p.includes("/assessments")) {
+      pushBot("You’re on the Assessments page. Start or view guidelines?");
+    } else if (p.includes("/company")) {
+      pushBot("You’re on Company pages. Need pipeline or test builder help?");
+    } else if (p.includes("/admin")) {
+      pushBot("Admin view detected. Need results, logs, or settings?");
+    }
+  }, [open]);
+
   async function handleSend(text: string) {
     if (!text.trim()) return;
     pushUser(text);
@@ -92,6 +121,18 @@ export function ChatbotWidget() {
       if (t.includes("assessment") && t.includes("start")) {
         pushBot("Opening assessments…");
         navigate("/assessments");
+      } else if (t.includes("resume") && t.includes("attempt")) {
+        if (!user) {
+          pushBot("Sign in to resume your last attempt.");
+        } else {
+          const sess = await getActiveAssessmentSession(user.id);
+          if (sess) {
+            pushBot(`Resuming your session. Time remaining: ${sess.time_remaining_seconds ?? 0}s.`);
+            navigate(`/assessment/${sess.assessment_id}`);
+          } else {
+            pushBot("No active session found.");
+          }
+        }
       } else if (t.includes("result")) {
         if (!user) {
           pushBot("Please sign in to view your results.");
@@ -102,6 +143,26 @@ export function ChatbotWidget() {
           } else {
             pushBot("No results found yet.");
           }
+        }
+      } else if (t.includes("verify") && t.includes("certificate")) {
+        const code = text.split(" ").find((x) => x.length >= 8) ?? "";
+        if (!code) {
+          pushBot("Provide a certificate code to verify.");
+        } else {
+          const found = await verifyCertificate(code);
+          if (found) {
+            pushBot("Certificate verified.");
+          } else {
+            pushBot("Certificate not found.");
+          }
+        }
+      } else if (t.includes("visibility")) {
+        if (!user) {
+          pushBot("Sign in to manage profile visibility.");
+        } else {
+          const on = t.includes("on");
+          await updateProfileVisibility(on);
+          pushBot(`Profile visibility ${on ? "enabled" : "disabled"}.`);
         }
       } else if (t.includes("certificate")) {
         if (!user) {
@@ -136,11 +197,7 @@ export function ChatbotWidget() {
             pushBot("No assessments available right now.");
           } else {
             const top = items.slice(0, 3);
-            pushBot(
-              `Here are some assessments:\n${top
-                .map((a: any) => `• ${a.title} (${a.duration_minutes ?? 30} min)`)
-                .join("\n")}\nOpening the assessments page…`
-            );
+            pushBot("Here are some assessments:", { type: "cards", items: top });
             navigate("/assessments");
           }
           break;
@@ -198,8 +255,8 @@ export function ChatbotWidget() {
           break;
         }
         case "support_escalation": {
-          pushBot("Opening Help Center…");
-          navigate("/help-center");
+          setSupportMode(true);
+          pushBot("Tell me about your issue and I’ll create a support ticket.");
           break;
         }
         // Company
@@ -229,12 +286,12 @@ export function ChatbotWidget() {
             break;
           }
           const pipeline = await companyFetchPipeline(companyId);
-          pushBot(
-            pipeline.length
-              ? `Pipeline has ${pipeline.length} candidate(s). Opening candidates view…`
-              : "No candidates in your pipeline yet."
-          );
-          navigate("/company/candidates");
+          if (pipeline.length) {
+            pushBot(`Pipeline has ${pipeline.length} candidate(s).`, { type: "table", rows: pipeline });
+            navigate("/company/candidates");
+          } else {
+            pushBot("No candidates in your pipeline yet.");
+          }
           break;
         }
         case "company_view_results": {
@@ -299,7 +356,7 @@ export function ChatbotWidget() {
       setTyping(false);
       if (!open) setUnread((u) => u + 1);
     }
-
+  }
   return (
     <>
       <button
@@ -323,14 +380,51 @@ export function ChatbotWidget() {
         <div
           role="dialog"
           aria-label="InterQ Chatbot"
-          className="fixed bottom-24 right-4 z-50 w-96 max-w-[95vw] h-[70vh] bg-background border rounded-lg shadow-2xl flex flex-col"
+          className={`fixed ${fullscreen ? "inset-0" : "bottom-24 right-4 w-96 max-w-[95vw] h-[70vh]"} z-50 bg-background border rounded-lg shadow-2xl flex flex-col`}
         >
           <header className="px-4 py-3 border-b flex items-center justify-between">
             <div className="font-semibold">InterQ Assistant</div>
-            <div className="text-xs text-muted-foreground">
-              Role: {role.toUpperCase().replace("_", " ")}
+            <div className="text-xs text-muted-foreground">Role: {role.toUpperCase().replace("_", " ")}</div>
+            <div className="flex items-center gap-2">
+              <select
+                aria-label="Language"
+                className="text-xs border rounded px-1 py-0.5"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value as any)}
+              >
+                <option value="en">EN</option>
+                <option value="ur">UR</option>
+                <option value="ar">AR</option>
+              </select>
+              <button
+                aria-label="Toggle fullscreen"
+                className="text-xs border rounded px-2 py-1"
+                onClick={() => setFullscreen((v) => !v)}
+              >
+                {fullscreen ? "Exit" : "Full"}
+              </button>
+              <button
+                aria-label="Open history"
+                className="text-xs border rounded px-2 py-1"
+                onClick={() => setHistoryOpen((v) => !v)}
+              >
+                History
+              </button>
             </div>
           </header>
+          <div className="px-3 py-2 text-xs text-muted-foreground">
+            <div className="flex gap-2 overflow-x-auto">
+              {["Start an assessment", "View my results", "Schedule interview"].map((s) => (
+                <button
+                  key={s}
+                  className="px-2 py-1 border rounded whitespace-nowrap hover:bg-muted"
+                  onClick={() => handleSend(s)}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="flex-1 overflow-y-auto p-3 space-y-3" aria-live="polite" aria-busy={typing}>
             {messages.map((m) => (
               <div
@@ -343,6 +437,46 @@ export function ChatbotWidget() {
                   }`}
                 >
                   <div>{m.text}</div>
+                  {m.payload?.type === "cards" && Array.isArray(m.payload.items) && (
+                    <div className="mt-2 grid grid-cols-1 gap-2">
+                      {m.payload.items.map((it: any) => (
+                        <div key={it.id ?? it.title} className="border rounded p-2 bg-background">
+                          <div className="font-medium">{it.title}</div>
+                          {it.duration_minutes && (
+                            <div className="text-xs text-muted-foreground">{it.duration_minutes} min</div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {m.payload?.type === "table" && Array.isArray(m.payload.rows) && m.payload.rows.length > 0 && (
+                    <div className="mt-2 overflow-x-auto">
+                      <table className="text-xs w-full">
+                        <thead>
+                          <tr>
+                            {Object.keys(m.payload.rows[0] ?? {}).slice(0, 4).map((k: string) => (
+                              <th key={k} className="text-left font-semibold pr-2 py-1">
+                                {k}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {m.payload.rows.slice(0, 5).map((r: any, idx: number) => (
+                            <tr key={idx}>
+                              {Object.values(r)
+                                .slice(0, 4)
+                                .map((v: any, i: number) => (
+                                  <td key={i} className="pr-2 py-1">
+                                    {String(v)}
+                                  </td>
+                                ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
                   <div className="text-[10px] opacity-70 mt-1">
                     {new Date(m.timestamp).toLocaleTimeString()}
                   </div>
@@ -366,6 +500,111 @@ export function ChatbotWidget() {
                   {qa.label}
                 </button>
               ))}
+            </div>
+            {supportMode && (
+              <div className="mb-3 border rounded p-2">
+                <div className="text-xs mb-2">Create Support Ticket</div>
+                <div className="flex items-center gap-2 mb-2">
+                  <select
+                    aria-label="Issue type"
+                    className="border rounded px-2 py-1 text-xs"
+                    value={issueType}
+                    onChange={(e) => setIssueType(e.target.value as any)}
+                  >
+                    <option value="login">Login</option>
+                    <option value="assessment">Assessment</option>
+                    <option value="interview">Interview</option>
+                    <option value="results">Results</option>
+                    <option value="billing">Billing</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <button
+                    className="px-2 py-1 text-xs rounded border"
+                    onClick={async () => {
+                      if (!issueText.trim()) {
+                        pushBot("Describe your issue first.");
+                        return;
+                      }
+                      setTyping(true);
+                      try {
+                        const t = await createSupportTicket(issueType, issueText);
+                        pushBot(`Ticket created: ${t.ticketId}. Our support will respond via email.`);
+                        setSupportMode(false);
+                        setIssueText("");
+                      } catch (e: any) {
+                        pushBot(`Error: ${e.message ?? "Could not create ticket."}`);
+                      } finally {
+                        setTyping(false);
+                      }
+                    }}
+                  >
+                    Submit
+                  </button>
+                </div>
+                <textarea
+                  aria-label="Describe your issue"
+                  className="w-full border rounded p-2 text-sm"
+                  rows={3}
+                  placeholder="Describe what went wrong…"
+                  value={issueText}
+                  onChange={(e) => setIssueText(e.target.value)}
+                />
+              </div>
+            )}
+            <div className="flex items-center gap-2 mb-2">
+              <input
+                type="datetime-local"
+                aria-label="Select interview time"
+                className="border rounded px-2 py-1 text-xs"
+                value={scheduleISO ? scheduleISO.slice(0, 16) : ""}
+                onChange={(e) => setScheduleISO(e.target.value ? new Date(e.target.value).toISOString() : "")}
+              />
+              <button
+                className="px-2 py-1 text-xs rounded border"
+                onClick={async () => {
+                  if (!user) {
+                    pushBot("Sign in to schedule.");
+                    return;
+                  }
+                  if (!scheduleISO) {
+                    pushBot("Pick a time first.");
+                    return;
+                  }
+                  setTyping(true);
+                  try {
+                    await requestInterviewBooking(user.id, scheduleISO);
+                    pushBot("Interview scheduled or requested.");
+                  } catch (e: any) {
+                    pushBot(`Error: ${e.message ?? "Could not schedule."}`);
+                  } finally {
+                    setTyping(false);
+                  }
+                }}
+              >
+                Schedule
+              </button>
+              <label className="text-xs">
+                <input
+                  type="file"
+                  className="hidden"
+                  onChange={async (e) => {
+                    const f = e.target.files?.[0];
+                    if (!f) return;
+                    setUploading(true);
+                    try {
+                      const path = `uploads/${uid()}_${f.name}`;
+                      await uploadFileToResumes(f, path);
+                      pushBot("File uploaded.");
+                    } catch (err: any) {
+                      pushBot(`Upload error: ${err.message ?? "failed"}`);
+                    } finally {
+                      setUploading(false);
+                    }
+                  }}
+                />
+                <span className="ml-2 border rounded px-2 py-1 cursor-pointer">Upload</span>
+              </label>
+              {uploading && <span className="text-xs text-muted-foreground">Uploading…</span>}
             </div>
             <form
               className="flex gap-2"
@@ -391,6 +630,23 @@ export function ChatbotWidget() {
               </button>
             </form>
           </div>
+          {historyOpen && (
+            <aside className="absolute top-0 left-0 h-full w-64 bg-background border-r p-3 overflow-y-auto">
+              <div className="font-medium mb-2 text-sm">History</div>
+              <div className="space-y-1 text-xs">
+                {messages
+                  .slice()
+                  .reverse()
+                  .slice(0, 50)
+                  .map((m) => (
+                    <div key={m.id} className="truncate">
+                      {m.role === "user" ? "You: " : "Bot: "}
+                      {m.text}
+                    </div>
+                  ))}
+              </div>
+            </aside>
+          )}
         </div>
       )}
     </>

@@ -8,14 +8,14 @@ export interface ChatMessage {
   role: "user" | "bot" | "system";
   text: string;
   timestamp: number;
-  payload?: any;
+  payload?: unknown;
 }
 
 export interface QuickAction {
   id: string;
   label: string;
   action: string;
-  params?: Record<string, any>;
+  params?: Record<string, unknown>;
 }
 
 export async function getUserRole(session: Session | null): Promise<UserRole> {
@@ -30,7 +30,7 @@ export async function getUserRole(session: Session | null): Promise<UserRole> {
   }
 }
 
-export async function recordAudit(details: any, entityType = "chatbot_action") {
+export async function recordAudit(details: unknown, entityType = "chatbot_action") {
   try {
     const user = (await supabase.auth.getUser()).data.user;
     await supabase.from("audit_logs").insert({
@@ -39,9 +39,7 @@ export async function recordAudit(details: any, entityType = "chatbot_action") {
       details,
       ip_address: null,
     });
-  } catch {
-    
-  }
+  } catch { void 0 }
 }
 
 export async function searchAssessments(topic?: string) {
@@ -163,6 +161,82 @@ export async function adminFetchResults(topic?: string, fromISO?: string) {
   if (error) throw error;
   await recordAudit({ action: "admin_fetch_results", topic, fromISO });
   return data ?? [];
+}
+
+export async function uploadFileToResumes(file: File, path: string) {
+  const { data, error } = await supabase.storage.from("resumes").upload(path, file, {
+    upsert: true,
+  });
+  if (error) throw error;
+  await recordAudit({ action: "upload_file", path });
+  return data;
+}
+
+export async function verifyCertificate(uniqueCode: string) {
+  const { data, error } = await supabase
+    .from("job_seeker_certificates")
+    .select("*")
+    .eq("unique_code", uniqueCode)
+    .maybeSingle();
+  if (error) throw error;
+  await recordAudit({ action: "verify_certificate" });
+  return data;
+}
+
+export async function updateProfileVisibility(visible: boolean) {
+  const { data, error } = await supabase.auth.updateUser({
+    data: { profile_visible: visible },
+  });
+  if (error) throw error;
+  await recordAudit({ action: "update_profile_visibility", visible });
+  return data;
+}
+
+export async function companyMoveCandidateStage(companyId: string, candidateId: string, newStage: string) {
+  const { data, error } = await supabase
+    .from("candidates")
+    .update({ status: newStage })
+    .eq("id", candidateId)
+    .eq("company_id", companyId)
+    .select()
+    .single();
+  if (error) throw error;
+  await recordAudit({ action: "company_move_candidate_stage", candidateId, newStage });
+  return data;
+}
+
+export async function sendCandidateNotification(userId: string, title: string, message: string, link?: string, type = "message") {
+  const { data, error } = await supabase.from("job_seeker_notifications").insert({
+    user_id: userId,
+    title,
+    message,
+    link: link ?? null,
+    type,
+    is_read: false,
+  }).select().single();
+  if (error) throw error;
+  await recordAudit({ action: "send_notification", to: userId, type });
+  return data;
+}
+
+export async function getActiveAssessmentSession(userId: string) {
+  const { data, error } = await supabase
+    .from("assessment_sessions")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("completed", false)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw error;
+  await recordAudit({ action: "get_active_session" });
+  return data;
+}
+
+export async function createSupportTicket(issueType: string, description: string) {
+  const ticketId = crypto.randomUUID();
+  await recordAudit({ action: "support_ticket", issueType, description, ticketId });
+  return { ticketId };
 }
 
 export function defaultQuickActions(role: UserRole): QuickAction[] {
