@@ -142,7 +142,7 @@ const EnhancedNavigation = () => {
           <div className="flex items-center justify-between py-3">
             <Link to="/" className="flex items-center gap-3 group transition-smooth" onClick={() => setIsMobileMenuOpen(false)}>
               <div className="bg-transparent rounded-md p-1">
-                <img src="/interq-logo.png" alt="InterQ Logo" className="h-10 sm:h-12 w-auto max-w-full" loading="lazy" decoding="async" />
+                <img src="/interq-logo.png" alt="InterQ – Technical Interview & Hiring Platform" className="h-10 sm:h-12 w-auto max-w-full" loading="lazy" decoding="async" />
               </div>
               <span className="text-2xl font-bold text-gradient group-hover:opacity-80 transition-smooth">
                 InterQ

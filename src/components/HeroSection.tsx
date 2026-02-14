@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ArrowRight, Play, Users, TrendingUp, Shield } from "lucide-react";
+import { ArrowRight, Play, Users, TrendingUp, Shield, CheckCircle2, Clock, Target } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import heroImg from "@/assets/hero-interview.jpg";
 
@@ -11,16 +11,16 @@ const HeroSection = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+      transition: { staggerChildren: 0.1, delayChildren: 0.08 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 24 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" as const },
+      transition: { duration: 0.5, ease: "easeOut" as const },
     },
   };
 
@@ -31,55 +31,75 @@ const HeroSection = () => {
         <div className="absolute top-[-10%] right-[-6%] w-[600px] h-[600px] rounded-full bg-primary/[0.04] blur-[120px]" />
         <div className="absolute bottom-[-10%] left-[-6%] w-[500px] h-[500px] rounded-full bg-primary/[0.03] blur-[100px]" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full bg-primary/[0.015] blur-[140px]" />
-        {/* Subtle grid pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(hsl(var(--primary)/0.02)_1px,transparent_1px),linear-gradient(90deg,hsl(var(--primary)/0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
       </div>
 
       <div className="container-width relative z-10">
-        <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
           {/* Left Content */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex flex-col space-y-8 text-center lg:text-left items-center lg:items-start max-w-2xl mx-auto lg:mx-0"
+            className="flex flex-col space-y-6 text-center lg:text-left items-center lg:items-start max-w-2xl mx-auto lg:mx-0"
           >
+            {/* Badge */}
             <motion.div variants={itemVariants}>
               <span className="inline-flex items-center px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold tracking-wider uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary mr-2 animate-pulse" />
-                The Future of Hiring
+                Expert-Led Technical Hiring Platform
               </span>
             </motion.div>
 
+            {/* H1 — SEO-optimized, keyword-rich */}
             <motion.h1
               variants={itemVariants}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] font-extrabold leading-[1.08] tracking-tight text-foreground"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-[4.25rem] font-extrabold leading-[1.1] tracking-tight text-foreground"
             >
-              Measure what <br />
+              Technical Interview Platform{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">
-                matters most.
+                Powered by Experts
               </span>
             </motion.h1>
 
+            {/* Subheading — benefit-led, scannable */}
             <motion.p
               variants={itemVariants}
-              className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0"
+              className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0"
             >
-              Conduct fair, scalable, and insightful interviews with InterQ's
-              autonomous hiring engine. From first screen to final offer, hire
-              with mathematical confidence.
+              InterQ replaces unstructured hiring with{" "}
+              <strong className="text-foreground">structured candidate assessments</strong>{" "}
+              led by vetted domain experts — so you hire faster, reduce bias, and eliminate bad hires.
             </motion.p>
 
+            {/* Bullet benefits — mobile scannable */}
+            <motion.ul
+              variants={itemVariants}
+              className="flex flex-col gap-2 text-sm sm:text-base text-muted-foreground w-full max-w-xl mx-auto lg:mx-0"
+            >
+              {[
+                "Structured technical interviews — not gut-feel decisions",
+                "Vetted Experts assess candidates across 50+ domains",
+                "Detailed evaluation reports delivered within 24 hours",
+              ].map((item, i) => (
+                <li key={i} className="flex items-start gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary mt-0.5 shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </motion.ul>
+
+            {/* CTAs */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-col sm:flex-row items-center gap-4 pt-1 w-full sm:w-auto"
+              className="flex flex-col sm:flex-row items-center gap-3 pt-1 w-full sm:w-auto"
             >
               <Button
                 onClick={() => navigate("/get-started")}
                 size="lg"
                 className="w-full sm:w-auto h-13 px-9 text-base font-semibold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200 bg-primary hover:bg-primary/90 text-primary-foreground"
               >
-                Start Hiring Now
+                Request a Demo
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
 
@@ -90,25 +110,38 @@ const HeroSection = () => {
                 className="w-full sm:w-auto h-13 px-9 text-base font-medium rounded-xl border-border hover:bg-accent hover:text-accent-foreground transition-all duration-200 group"
               >
                 <Play className="mr-2 h-4 w-4 fill-current group-hover:scale-110 transition-transform" />
-                Watch Demo
+                See How It Works
               </Button>
             </motion.div>
 
-            {/* Trust strip */}
+            {/* CTA microcopy */}
+            <motion.p
+              variants={itemVariants}
+              className="text-xs text-muted-foreground"
+            >
+              No sales call required • 5-minute walkthrough of InterQ's hiring platform
+            </motion.p>
+
+            {/* Trust strip — compact mobile badges */}
             <motion.div
               variants={itemVariants}
-              className="pt-4 flex items-center gap-5 text-sm text-muted-foreground"
+              className="pt-2 w-full"
             >
-              <div className="flex -space-x-2.5">
-                {[1, 2, 3, 4].map((i) => (
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4">
+                {[
+                  { icon: Clock, text: "Reduce hiring time by 40%" },
+                  { icon: Users, text: "500+ hiring teams" },
+                  { icon: Target, text: "Higher hiring accuracy" },
+                ].map((badge, i) => (
                   <div
                     key={i}
-                    className={`w-9 h-9 rounded-full border-2 border-background bg-muted bg-[url('https://i.pravatar.cc/100?img=${i + 10}')] bg-cover`}
-                  />
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/60 border border-border/60 text-xs font-medium text-foreground"
+                  >
+                    <badge.icon className="h-3.5 w-3.5 text-primary" />
+                    {badge.text}
+                  </div>
                 ))}
               </div>
-              <div className="h-8 w-px bg-border" />
-              <span className="font-medium">Trusted by 500+ hiring teams</span>
             </motion.div>
           </motion.div>
 
@@ -117,14 +150,14 @@ const HeroSection = () => {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="relative w-full flex justify-center lg:justify-end items-center mt-8 lg:mt-0"
+            className="relative w-full hidden md:flex justify-center lg:justify-end items-center"
           >
             <div className="relative w-full max-w-[480px]">
               {/* Main image card */}
               <div className="rounded-2xl overflow-hidden shadow-elegant border border-border/40 bg-card">
                 <img
                   src={heroImg}
-                  alt="Professional team conducting a job interview in a modern office"
+                  alt="Professional technical interview session conducted by InterQ domain experts in a modern office"
                   className="w-full h-[340px] object-cover"
                   loading="eager"
                 />
