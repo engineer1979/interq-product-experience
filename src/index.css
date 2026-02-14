@@ -40,12 +40,12 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 214 32% 92%;
+    --input: 214 32% 92%;
     --ring: 199 89% 48%;
 
-    --radius: 0.75rem;
-    /* Slightly tighter radius for professional feel */
+    --radius: 1.25rem;
+    /* 20px radius for modern rounded cards */
 
     /* Premium Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(199 89% 48%) 0%, hsl(217 91% 60%) 100%);
@@ -94,7 +94,7 @@
   h4,
   h5,
   h6 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     @apply font-bold tracking-tight text-foreground;
   }
 
@@ -137,6 +137,46 @@
 
   .transition-smooth {
     transition: var(--transition-smooth);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 shadow-soft hover:shadow-elegant hover:bg-primary/90 transition-smooth;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-border/70 bg-background text-foreground px-6 py-3 shadow-soft hover:bg-accent hover:shadow-elegant transition-smooth;
+  }
+  .btn-arrow::after {
+    content: "→";
+    @apply inline-block ml-2;
+  }
+
+  /* Cards and Tags */
+  .card {
+    @apply rounded-2xl border border-border/70 bg-card shadow-soft hover:shadow-elegant transition-smooth;
+  }
+  .tag {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-medium border border-border/70 bg-accent text-foreground;
+  }
+  .tag-active {
+    @apply bg-primary text-primary-foreground border-transparent;
+  }
+
+  /* Search bars */
+  .search-shell {
+    @apply flex items-center gap-2 px-4 py-3 rounded-2xl border border-border/70 shadow-soft bg-white;
+  }
+
+  /* Inputs */
+  input[type="text"], input[type="email"], input[type="search"], input[type="password"], select, textarea {
+    @apply rounded-xl border border-border/70 bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-smooth;
+  }
+
+  /* Skeletons */
+  .skeleton {
+    @apply animate-pulse rounded-lg bg-muted;
+    background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted)/0.8) 37%, hsl(var(--muted)) 63%);
+    background-size: 400% 100%;
   }
 
   /* Glassmorphism Utilities */
