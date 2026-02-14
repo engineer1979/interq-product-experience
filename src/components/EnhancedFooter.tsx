@@ -1,4 +1,4 @@
-import { Mail, Linkedin, Twitter, Facebook, Instagram, ExternalLink, Download, Users, Briefcase, FileText, HelpCircle, BookOpen, BarChart3, Zap, Star, Code } from "lucide-react";
+import { Mail, Linkedin, Facebook, Instagram, ExternalLink, Download, Users, Briefcase, FileText, HelpCircle, BookOpen, BarChart3, Zap, Star, Code } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -50,10 +50,9 @@ const EnhancedFooter = () => {
   };
 
   const socialLinks = [
-    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/interq" },
-    { name: "Twitter", icon: Twitter, href: "https://twitter.com/interq" },
-    { name: "Facebook", icon: Facebook, href: "https://facebook.com/interq" },
-    { name: "Instagram", icon: Instagram, href: "https://instagram.com/interq" },
+    { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/profile.php?id=61583304695087" },
+    { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/interq.interview/" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/company/inter-tech-lnc/?viewAsMember=true" },
   ];
 
   const legalLinks = [

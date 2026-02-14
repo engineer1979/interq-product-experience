@@ -1,6 +1,12 @@
 import { motion } from "framer-motion";
-import { Linkedin, Twitter } from "lucide-react";
+import { Linkedin, Facebook, Instagram } from "lucide-react";
 import { Card } from "@/components/ui/card";
+
+const socialLinks = {
+  facebook: "https://www.facebook.com/profile.php?id=61583304695087",
+  instagram: "https://www.instagram.com/interq.interview/",
+  linkedin: "https://www.linkedin.com/company/inter-tech-lnc/?viewAsMember=true",
+};
 
 const team = [
   {
@@ -9,7 +15,6 @@ const team = [
     image: "/saima-huma-ceo.png",
     bio: "Visionary leader with over 15 years of experience in recruitment technology. Driving InterQ's mission to revolutionize hiring with fairness and AI.",
     quote: "Innovation is the key to unlocking potential.",
-    socials: { linkedin: "#", twitter: "#" },
   },
   {
     name: "Sohana Akter",
@@ -17,7 +22,6 @@ const team = [
     image: "/sohana-akter.png",
     bio: "Operational strategist ensuring InterQ's vision becomes reality. Sohana optimizes workflows and drives organizational excellence across all departments.",
     quote: "Efficiency is doing things right.",
-    socials: { linkedin: "#", twitter: "#" },
   },
   {
     name: "Muhammad Jalal",
@@ -25,7 +29,6 @@ const team = [
     image: "/muhammad-jalal.png",
     bio: "Driving digital transformation and information strategy. Muhammad ensures InterQ's infrastructure is secure, scalable, and ahead of the curve.",
     quote: "Information is the currency of the future.",
-    socials: { linkedin: "#", twitter: "#" },
   },
   {
     name: "Abdul Qadir",
@@ -33,7 +36,6 @@ const team = [
     image: "/abdul-qadir.png",
     bio: "Expert in bridging the gap between innovative technology and market adoption. Abdul ensures seamless implementation of InterQ's solutions.",
     quote: "Technology is only as powerful as its execution.",
-    socials: { linkedin: "#", twitter: "#" },
   },
   {
     name: "Atikur Rahman",
@@ -41,7 +43,6 @@ const team = [
     image: "/atikur-rahman.png",
     bio: "Ensuring operational excellence and system reliability. Atikur oversees the maintenance and optimization of our physical and digital infrastructure.",
     quote: "Reliability is the foundation of trust.",
-    socials: { linkedin: "#" },
   },
 ];
 
@@ -110,16 +111,15 @@ const TeamSection = () => {
                     <p className="italic text-sm text-muted-foreground font-medium leading-relaxed">"{member.quote}"</p>
 
                     <div className="flex gap-2">
-                      {member.socials.linkedin && (
-                        <a href={member.socials.linkedin} className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all">
-                          <Linkedin className="w-3.5 h-3.5" />
-                        </a>
-                      )}
-                      {member.socials.twitter && (
-                        <a href={member.socials.twitter} className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all">
-                          <Twitter className="w-3.5 h-3.5" />
-                        </a>
-                      )}
+                      <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on Facebook`} className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 hover:scale-110 transition-all">
+                        <Facebook className="w-4 h-4" />
+                      </a>
+                      <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on Instagram`} className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 hover:scale-110 transition-all">
+                        <Instagram className="w-4 h-4" />
+                      </a>
+                      <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on LinkedIn`} className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 hover:scale-110 transition-all">
+                        <Linkedin className="w-4 h-4" />
+                      </a>
                     </div>
                   </div>
                 </div>
