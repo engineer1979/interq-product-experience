@@ -495,6 +495,99 @@ export type Database = {
           },
         ]
       }
+      hiring_decisions: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          assessment_score: number | null
+          assessment_weight: number | null
+          ats_score: number | null
+          ats_weight: number | null
+          candidate_id: string
+          created_at: string
+          culture_fit_notes: string | null
+          decided_by: string
+          decision: string
+          final_weighted_score: number | null
+          id: string
+          interview_score: number | null
+          interview_weight: number | null
+          job_id: string | null
+          justification: string | null
+          key_gaps: string[] | null
+          key_strengths: string[] | null
+          rank: number | null
+          risk_level: string | null
+          salary_band_fit: string | null
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          assessment_score?: number | null
+          assessment_weight?: number | null
+          ats_score?: number | null
+          ats_weight?: number | null
+          candidate_id: string
+          created_at?: string
+          culture_fit_notes?: string | null
+          decided_by: string
+          decision?: string
+          final_weighted_score?: number | null
+          id?: string
+          interview_score?: number | null
+          interview_weight?: number | null
+          job_id?: string | null
+          justification?: string | null
+          key_gaps?: string[] | null
+          key_strengths?: string[] | null
+          rank?: number | null
+          risk_level?: string | null
+          salary_band_fit?: string | null
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          assessment_score?: number | null
+          assessment_weight?: number | null
+          ats_score?: number | null
+          ats_weight?: number | null
+          candidate_id?: string
+          created_at?: string
+          culture_fit_notes?: string | null
+          decided_by?: string
+          decision?: string
+          final_weighted_score?: number | null
+          id?: string
+          interview_score?: number | null
+          interview_weight?: number | null
+          job_id?: string | null
+          justification?: string | null
+          key_gaps?: string[] | null
+          key_strengths?: string[] | null
+          rank?: number | null
+          risk_level?: string | null
+          salary_band_fit?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hiring_decisions_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hiring_decisions_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interview_questions: {
         Row: {
           correct_answer: string | null
