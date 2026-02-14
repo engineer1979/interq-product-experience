@@ -276,6 +276,7 @@ export type Database = {
           allow_pause: boolean | null
           auto_submit_on_timeout: boolean | null
           category: string
+          company_id: string | null
           created_at: string
           created_by: string
           description: string | null
@@ -299,6 +300,7 @@ export type Database = {
           allow_pause?: boolean | null
           auto_submit_on_timeout?: boolean | null
           category: string
+          company_id?: string | null
           created_at?: string
           created_by: string
           description?: string | null
@@ -322,6 +324,7 @@ export type Database = {
           allow_pause?: boolean | null
           auto_submit_on_timeout?: boolean | null
           category?: string
+          company_id?: string | null
           created_at?: string
           created_by?: string
           description?: string | null
@@ -341,7 +344,15 @@ export type Database = {
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "assessments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       ats_screenings: {
         Row: {
@@ -421,8 +432,53 @@ export type Database = {
           },
         ]
       }
+      audit_logs: {
+        Row: {
+          action: string
+          company_id: string | null
+          created_at: string
+          details: Json | null
+          entity_id: string | null
+          entity_type: string
+          id: string
+          ip_address: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          company_id?: string | null
+          created_at?: string
+          details?: Json | null
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          ip_address?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          company_id?: string | null
+          created_at?: string
+          details?: Json | null
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          ip_address?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       candidates: {
         Row: {
+          company_id: string | null
           created_at: string
           created_by: string
           current_title: string | null
@@ -444,6 +500,7 @@ export type Database = {
           years_experience: number | null
         }
         Insert: {
+          company_id?: string | null
           created_at?: string
           created_by: string
           current_title?: string | null
@@ -465,6 +522,7 @@ export type Database = {
           years_experience?: number | null
         }
         Update: {
+          company_id?: string | null
           created_at?: string
           created_by?: string
           current_title?: string | null
@@ -487,10 +545,97 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "candidates_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "candidates_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
             referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      companies: {
+        Row: {
+          company_size: string | null
+          created_at: string
+          created_by: string
+          email: string
+          id: string
+          industry: string | null
+          is_verified: boolean | null
+          logo_url: string | null
+          name: string
+          onboarding_completed: boolean | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          company_size?: string | null
+          created_at?: string
+          created_by: string
+          email: string
+          id?: string
+          industry?: string | null
+          is_verified?: boolean | null
+          logo_url?: string | null
+          name: string
+          onboarding_completed?: boolean | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          company_size?: string | null
+          created_at?: string
+          created_by?: string
+          email?: string
+          id?: string
+          industry?: string | null
+          is_verified?: boolean | null
+          logo_url?: string | null
+          name?: string
+          onboarding_completed?: boolean | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      company_members: {
+        Row: {
+          company_id: string
+          id: string
+          invited_by: string | null
+          joined_at: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          company_id: string
+          id?: string
+          invited_by?: string | null
+          joined_at?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          company_id?: string
+          id?: string
+          invited_by?: string | null
+          joined_at?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_members_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
             referencedColumns: ["id"]
           },
         ]
@@ -950,6 +1095,7 @@ export type Database = {
       }
       jobs: {
         Row: {
+          company_id: string | null
           created_at: string
           created_by: string
           department: string | null
@@ -963,6 +1109,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          company_id?: string | null
           created_at?: string
           created_by: string
           department?: string | null
@@ -976,6 +1123,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          company_id?: string | null
           created_at?: string
           created_by?: string
           department?: string | null
@@ -988,7 +1136,15 @@ export type Database = {
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "jobs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       knockout_questions: {
         Row: {
@@ -1282,6 +1438,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_user_company_ids: { Args: { _user_id: string }; Returns: string[] }
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]
