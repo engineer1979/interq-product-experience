@@ -33,6 +33,7 @@ const EnhancedFooter = () => {
         { label: "Documentation", href: "/docs", icon: FileText },
         { label: "Case Studies", href: "/case-studies", icon: BarChart3 },
         { label: "Help Center", href: "/help-center", icon: HelpCircle },
+        { label: "Guidelines", href: "/guidelines", icon: FileText },
         { label: "API Reference", href: "/api-docs", icon: Code },
       ],
     },

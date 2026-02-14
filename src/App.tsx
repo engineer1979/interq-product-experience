@@ -42,6 +42,7 @@ const CollaborativeScoring = lazy(() => import("./pages/admin/CollaborativeScori
 const BookSession = lazy(() => import("./pages/BookSession"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const EvaluationReport = lazy(() => import("./pages/EvaluationReport"));
+const Guidelines = lazy(() => import("./pages/Guidelines"));
 
 const queryClient = new QueryClient();
 
@@ -88,6 +89,7 @@ const App = () => (
               <Route path="/book-session" element={<BookSession />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/evaluation-report" element={<EvaluationReport />} />
+              <Route path="/guidelines" element={<Guidelines />} />
               <Route path="/apply/:jobId" element={<ApplyPage />} />
               <Route path="/privacy-policy" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Privacy Policy</h1><p className="text-muted-foreground">Privacy policy content coming soon.</p></div></div>} />
               <Route path="/terms-of-service" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Terms of Service</h1><p className="text-muted-foreground">Terms of service content coming soon.</p></div></div>} />
