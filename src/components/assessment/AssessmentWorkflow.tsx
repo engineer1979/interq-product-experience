@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ChevronRight, CheckCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { WorkflowStepper } from './WorkflowStepper';
 import { AssessmentSelection } from './AssessmentSelection';
 import { AssessmentInstructions } from './AssessmentInstructions';
 import { AssessmentTest } from './AssessmentTest';
@@ -70,13 +71,7 @@ export interface QuestionResult {
   maxPoints: number;
 }
 
-const STEPS = [
-  { id: 1, title: 'Select Assessment', description: 'Choose your assessment' },
-  { id: 2, title: 'Instructions', description: 'Read guidelines' },
-  { id: 3, title: 'Start Test', description: 'Take the assessment' },
-  { id: 4, title: 'Review Answers', description: 'Check your responses' },
-  { id: 5, title: 'Results', description: 'View your score' }
-];
+// Steps are now rendered by WorkflowStepper component
 
 export function AssessmentWorkflow({ userId, onComplete, onCancel }: AssessmentWorkflowProps) {
   const [currentStep, setCurrentStep] = useState(1);
@@ -165,22 +160,18 @@ export function AssessmentWorkflow({ userId, onComplete, onCancel }: AssessmentW
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-background dark:to-background p-4">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-6">
             <h1 className="text-3xl font-bold">Assessment Workflow</h1>
             <Button variant="ghost" onClick={() => onCancel?.()}>Cancel Assessment</Button>
           </div>
-          <div className="flex items-center justify-between mb-2">
-            {STEPS.map((step, index) => (
-              <div key={step.id} className={`flex items-center cursor-pointer ${canProceedToStep(step.id) ? 'text-primary' : 'text-muted-foreground'}`} onClick={() => handleStepNavigation(step.id)}>
-                <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${currentStep >= step.id ? 'bg-primary border-primary text-primary-foreground' : 'border-muted-foreground'}`}>
-                  {currentStep > step.id ? <CheckCircle className="w-4 h-4" /> : <span className="text-sm font-medium">{step.id}</span>}
-                </div>
-                <div className="ml-2 hidden sm:block"><div className="text-sm font-medium">{step.title}</div></div>
-                {index < STEPS.length - 1 && <div className={`mx-4 flex-1 h-0.5 ${currentStep > step.id ? 'bg-primary' : 'bg-muted'}`} />}
-              </div>
-            ))}
-          </div>
-          <Progress value={(currentStep / STEPS.length) * 100} className="w-full" />
+
+          <WorkflowStepper
+            currentStep={currentStep}
+            onStepClick={handleStepNavigation}
+            canProceedToStep={canProceedToStep}
+          />
+
+          <Progress value={(currentStep / 5) * 100} className="w-full mt-6" />
         </div>
 
         <AssessmentSessionManager assessmentId={selectedAssessment?.id} userId={userId} sessionId={sessionId} onSessionUpdate={setSessionId} />
