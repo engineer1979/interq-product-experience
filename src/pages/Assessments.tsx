@@ -28,6 +28,7 @@ const Assessments = () => {
   const [assessments, setAssessments] = useState<Assessment[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const { toast } = useToast();
 
   const [loginEmail, setLoginEmail] = useState("");
@@ -77,8 +78,11 @@ const Assessments = () => {
   /* Filter out HR Manager and Executive assessments as requested */
   const hiddenTitles = ["HR Manager - Generalist", "HR Executive - Recruitment"];
 
+  const categories = ["All", ...Array.from(new Set(assessments.filter(a => !hiddenTitles.includes(a.title)).map(a => a.category))).sort()];
+
   const filteredAssessments = assessments.filter((assessment) =>
     !hiddenTitles.includes(assessment.title) &&
+    (selectedCategory === "All" || assessment.category === selectedCategory) &&
     (assessment.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       assessment.category.toLowerCase().includes(searchQuery.toLowerCase()))
   );
@@ -227,18 +231,34 @@ const Assessments = () => {
 
             {/* Assessment List */}
             <div id="assessment-list" className="space-y-6">
-              <div className="flex flex-col md:flex-row justify-between items-end gap-4 border-b border-border pb-4">
-                <h3 className="text-2xl font-bold">Available Assessments</h3>
-
-                {/* Search */}
-                <div className="relative w-full md:w-72">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                  <Input
-                    placeholder="Search topics..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9"
-                  />
+              <div className="flex flex-col gap-4 border-b border-border pb-4">
+                <div className="flex flex-col md:flex-row justify-between items-end gap-4">
+                  <h3 className="text-2xl font-bold">Available Assessments <span className="text-muted-foreground text-lg font-normal">({filteredAssessments.length})</span></h3>
+                  <div className="relative w-full md:w-72">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                    <Input
+                      placeholder="Search topics..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+                {/* Category Filter Pills */}
+                <div className="flex flex-wrap gap-2">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                        selectedCategory === cat
+                          ? 'bg-primary text-primary-foreground shadow-sm'
+                          : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -263,7 +283,8 @@ const Assessments = () => {
                           {assessment.difficulty}
                         </span>
                       </div>
-                      <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{assessment.title}</h3>
+                      <h3 className="text-xl font-bold mb-1 group-hover:text-primary transition-colors">{assessment.title}</h3>
+                      <span className="inline-block px-2 py-0.5 rounded text-xs font-medium bg-muted text-muted-foreground mb-2">{assessment.category}</span>
                       <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
                         {assessment.description}
                       </p>
