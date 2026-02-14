@@ -84,10 +84,10 @@ export default function CompanySignup() {
         role: "admin",
       });
 
-      // 4. Set user role to enterprise
+      // 4. Set user role to company
       await (supabase as any).from("user_roles").insert({
         user_id: userId,
-        role: "enterprise",
+        role: "company",
       });
 
       // 5. Log audit

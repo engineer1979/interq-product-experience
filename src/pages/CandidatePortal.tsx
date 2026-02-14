@@ -46,7 +46,7 @@ const CandidatePortal = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const userName = user?.email?.split("@")[0] || "Candidate";
+  const userName = user?.email?.split("@")[0] || "Job Seeker";
 
   return (
     <div className="min-h-screen bg-background flex">

@@ -29,7 +29,7 @@ const DataPrivacySection = () => {
             Enterprise-Grade Security & Privacy
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            InterQ is built with security at its core — protecting candidate, company, and expert data at every level.
+            InterQ is built with security at its core — protecting job seeker, company, and admin data at every level.
           </p>
         </motion.div>
 

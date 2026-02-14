@@ -294,7 +294,7 @@ export default function PipelineDashboard() {
                   </Avatar>
                   <div>
                     <SheetTitle>{selectedCandidate.full_name}</SheetTitle>
-                    <p className="text-sm text-muted-foreground">{selectedCandidate.current_title || "Candidate"}</p>
+                    <p className="text-sm text-muted-foreground">{selectedCandidate.current_title || "Job Seeker"}</p>
                   </div>
                 </div>
               </SheetHeader>

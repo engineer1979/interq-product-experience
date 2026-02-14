@@ -12,18 +12,13 @@ const demoUsers = [
     color: "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300",
   },
   {
-    role: "Recruiter",
-    description: "Create assessments and view candidate results",
+    role: "Company",
+    description: "Create assessments and manage hiring pipeline",
     color: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300",
   },
   {
-    role: "Enterprise",
-    description: "Manage organization-wide hiring",
-    color: "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300",
-  },
-  {
-    role: "Candidate",
-    description: "Take assessments and interviews",
+    role: "Job Seeker",
+    description: "Take assessments and attend interviews",
     color: "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300",
   },
 ];
