@@ -36,11 +36,11 @@ const reportData = {
   expertComments:
     "Alex showed strong technical depth in ML/AI topics and communicated solutions clearly. Their experience with production systems is evident. I recommend moving forward with a focus on evaluating system design capabilities in the next round.",
   categories: [
-    { name: "Technical Knowledge", score: 90 },
-    { name: "Problem Solving", score: 85 },
-    { name: "Communication", score: 92 },
-    { name: "Practical Experience", score: 88 },
-    { name: "Cultural Fit", score: 80 },
+    { name: "Technical Skills", score: 90, rating: 5 },
+    { name: "Problem Solving", score: 85, rating: 4 },
+    { name: "Communication", score: 92, rating: 5 },
+    { name: "System Design", score: 78, rating: 4 },
+    { name: "Culture Fit", score: 80, rating: 4 },
   ],
 };
 
@@ -185,7 +185,14 @@ const EvaluationReport = () => {
                   <div key={cat.name} className="space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium">{cat.name}</span>
-                      <span className="text-sm font-bold text-primary">{cat.score}%</span>
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-0.5">
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <Star key={s} className={cn("w-3.5 h-3.5", s <= (cat as any).rating ? "fill-yellow-400 text-yellow-400" : "text-muted")} />
+                          ))}
+                        </div>
+                        <span className="text-sm font-bold text-primary">{cat.score}%</span>
+                      </div>
                     </div>
                     <Progress value={cat.score} className="h-2" />
                   </div>

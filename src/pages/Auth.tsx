@@ -12,6 +12,7 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
   const { signUp, signIn, user } = useAuth();
   const navigate = useNavigate();
@@ -120,6 +121,21 @@ const Auth = () => {
                     />
                   </div>
                   <div>
+                    <Label htmlFor="signup-role">I am a</Label>
+                    <select
+                      id="signup-role"
+                      value={role}
+                      onChange={(e) => setRole(e.target.value)}
+                      className="mt-1 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      required
+                    >
+                      <option value="">Select your role</option>
+                      <option value="company">Company / Hiring Team</option>
+                      <option value="candidate">Candidate</option>
+                      <option value="expert">Expert</option>
+                    </select>
+                  </div>
+                  <div>
                     <Label htmlFor="signup-password">Password</Label>
                     <Input
                       id="signup-password"
@@ -131,6 +147,12 @@ const Auth = () => {
                       minLength={6}
                       className="mt-1"
                     />
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <input type="checkbox" id="privacy" required className="mt-1 rounded border-input" />
+                    <Label htmlFor="privacy" className="text-xs text-muted-foreground leading-relaxed">
+                      I agree to the <a href="/privacy-policy" className="text-primary hover:underline">Privacy Policy</a> and <a href="/terms-of-service" className="text-primary hover:underline">Terms of Service</a>
+                    </Label>
                   </div>
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? "Creating account..." : "Create Account"}
