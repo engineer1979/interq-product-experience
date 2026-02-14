@@ -38,6 +38,7 @@ const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 const CreateAssessment = lazy(() => import("./pages/CreateAssessment"));
 const AssessmentWorkflowPage = lazy(() => import("./pages/AssessmentWorkflowPage"));
 const ATSScreening = lazy(() => import("./pages/admin/ATSScreening"));
+const CollaborativeScoring = lazy(() => import("./pages/admin/CollaborativeScoring"));
 
 const queryClient = new QueryClient();
 
@@ -93,6 +94,7 @@ const App = () => (
                 <Route index element={<AdminDashboard />} />
                 <Route path="jobs" element={<AdminJobs />} />
                 <Route path="ats-screening" element={<ATSScreening />} />
+                <Route path="scoring" element={<CollaborativeScoring />} />
                 <Route path="results" element={<AdminResults />} />
                 <Route path="results/:id" element={<AdminResultDetail />} />
                 <Route path="settings" element={<AdminSettings />} />

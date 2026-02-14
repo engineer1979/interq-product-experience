@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, FileText, Settings, LogOut, Menu, X, Briefcase, ScanSearch } from "lucide-react";
+import { LayoutDashboard, FileText, Settings, LogOut, Menu, X, Briefcase, ScanSearch, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -8,6 +8,7 @@ const navItems = [
     { to: "/admin", icon: LayoutDashboard, label: "Dashboard" },
     { to: "/admin/jobs", icon: Briefcase, label: "Jobs" },
     { to: "/admin/ats-screening", icon: ScanSearch, label: "ATS Screening" },
+    { to: "/admin/scoring", icon: Trophy, label: "Scoring & Rankings" },
     { to: "/admin/results", icon: FileText, label: "Results" },
     { to: "/admin/settings", icon: Settings, label: "Settings" }
 ];
