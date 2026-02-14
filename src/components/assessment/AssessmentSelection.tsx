@@ -36,8 +36,9 @@ export function AssessmentSelection({ onAssessmentSelect, userId }: AssessmentSe
   const [selectedTag, setSelectedTag] = useState<string>('all');
   const { toast } = useToast();
 
-  const categories = ['all', 'Technical', 'Behavioral', 'Cognitive', 'Domain-Specific', 'Leadership'];
-  const difficulties = ['all', 'easy', 'medium', 'hard'];
+  // Derive categories and difficulties dynamically from fetched data
+  const categories = ['all', ...Array.from(new Set(assessments.map(a => a.category))).sort()];
+  const difficulties = ['all', ...Array.from(new Set(assessments.map(a => a.difficulty))).sort()];
   const commonTags = ['all', 'JavaScript', 'Python', 'React', 'Node.js', 'SQL', 'Problem Solving', 'Communication'];
 
   const fetchAssessments = useCallback(async () => {
@@ -75,10 +76,17 @@ export function AssessmentSelection({ onAssessmentSelect, userId }: AssessmentSe
 
   const filterAssessments = useCallback(() => {
     const filtered = assessments.filter(assessment => {
-      const matchesSearch = assessment.title.toLowerCase().includes(searchTerm.toLowerCase()) || assessment.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const searchLower = searchTerm.toLowerCase();
+      const matchesSearch = !searchTerm || 
+        assessment.title.toLowerCase().includes(searchLower) || 
+        assessment.description.toLowerCase().includes(searchLower) ||
+        assessment.category.toLowerCase().includes(searchLower);
       const matchesCategory = selectedCategory === 'all' || assessment.category === selectedCategory;
       const matchesDifficulty = selectedDifficulty === 'all' || assessment.difficulty === selectedDifficulty;
-      const matchesTag = selectedTag === 'all' || assessment.tags.some(tag => tag.toLowerCase().includes(selectedTag.toLowerCase()));
+      // Tags: match against title + category since DB doesn't store tags separately
+      const matchesTag = selectedTag === 'all' || 
+        assessment.title.toLowerCase().includes(selectedTag.toLowerCase()) ||
+        assessment.category.toLowerCase().includes(selectedTag.toLowerCase());
       return matchesSearch && matchesCategory && matchesDifficulty && matchesTag;
     });
     setFilteredAssessments(filtered);
@@ -88,10 +96,10 @@ export function AssessmentSelection({ onAssessmentSelect, userId }: AssessmentSe
   useEffect(() => { filterAssessments(); }, [filterAssessments]);
 
   const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
+    switch (difficulty.toLowerCase()) {
       case 'easy': return 'bg-green-100 text-green-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'hard': return 'bg-red-100 text-red-800';
+      case 'medium': case 'intermediate': return 'bg-yellow-100 text-yellow-800';
+      case 'hard': case 'advanced': return 'bg-red-100 text-red-800';
       default: return 'bg-secondary text-secondary-foreground';
     }
   };
