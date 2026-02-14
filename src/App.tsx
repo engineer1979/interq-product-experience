@@ -40,6 +40,13 @@ const AssessmentWorkflowPage = lazy(() => import("./pages/AssessmentWorkflowPage
 const ATSScreening = lazy(() => import("./pages/admin/ATSScreening"));
 const CollaborativeScoring = lazy(() => import("./pages/admin/CollaborativeScoring"));
 const PipelineDashboard = lazy(() => import("./pages/admin/PipelineDashboard"));
+const TestManagement = lazy(() => import("./pages/admin/TestManagement"));
+const QuestionBank = lazy(() => import("./pages/admin/QuestionBank"));
+const InterviewManagement = lazy(() => import("./pages/admin/InterviewManagement"));
+const CompanyManagement = lazy(() => import("./pages/admin/CompanyManagement"));
+const JobSeekerManagement = lazy(() => import("./pages/admin/JobSeekerManagement"));
+const CertificateManagement = lazy(() => import("./pages/admin/CertificateManagement"));
+const ActivityLogs = lazy(() => import("./pages/admin/ActivityLogs"));
 const BookSession = lazy(() => import("./pages/BookSession"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const EvaluationReport = lazy(() => import("./pages/EvaluationReport"));
@@ -105,12 +112,19 @@ const App = () => (
               <Route path="/newsletter" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Newsletter Signup</h1><p className="text-muted-foreground">Newsletter signup coming soon.</p></div></div>} />
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
+                <Route path="tests" element={<TestManagement />} />
+                <Route path="question-bank" element={<QuestionBank />} />
+                <Route path="results" element={<AdminResults />} />
+                <Route path="results/:id" element={<AdminResultDetail />} />
+                <Route path="interviews" element={<InterviewManagement />} />
+                <Route path="certificates" element={<CertificateManagement />} />
+                <Route path="companies" element={<CompanyManagement />} />
+                <Route path="job-seekers" element={<JobSeekerManagement />} />
+                <Route path="logs" element={<ActivityLogs />} />
                 <Route path="pipeline" element={<PipelineDashboard />} />
                 <Route path="jobs" element={<AdminJobs />} />
                 <Route path="ats-screening" element={<ATSScreening />} />
                 <Route path="scoring" element={<CollaborativeScoring />} />
-                <Route path="results" element={<AdminResults />} />
-                <Route path="results/:id" element={<AdminResultDetail />} />
                 <Route path="settings" element={<AdminSettings />} />
               </Route>
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
