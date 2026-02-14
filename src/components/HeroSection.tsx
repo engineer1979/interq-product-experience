@@ -1,206 +1,185 @@
 import { Button } from "@/components/ui/button";
-import { motion, Variants } from "framer-motion";
-import { Zap, ArrowRight, Play } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, Play, Users, TrendingUp, Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import heroImg from "@/assets/hero-interview.jpg";
 
 const HeroSection = () => {
   const navigate = useNavigate();
 
-  // Staggered animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1
-      }
-    }
+      transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+    },
   };
 
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
+  const itemVariants = {
+    hidden: { opacity: 0, y: 24 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
+      transition: { duration: 0.6, ease: "easeOut" as const },
+    },
   };
 
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20 pb-16 bg-background">
-      {/* Sophisticated Background Effects */}
+      {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Professional Office Background Image with Overlay */}
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-[0.03] grayscale contrast-125"
-          style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80")' }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
-
-        <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] rounded-full bg-primary/5 blur-[100px] animate-pulse-subtle" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-blue-500/5 blur-[80px] animate-pulse-subtle delay-1000" />
-        {/* Grid pattern overlay for tech feel */}
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.03]" />
+        <div className="absolute top-[-8%] right-[-4%] w-[500px] h-[500px] rounded-full bg-primary/[0.04] blur-[100px]" />
+        <div className="absolute bottom-[-8%] left-[-4%] w-[400px] h-[400px] rounded-full bg-primary/[0.03] blur-[80px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/[0.02] blur-[120px]" />
       </div>
 
       <div className="container-width relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex flex-col space-y-8 text-center lg:text-left items-center lg:items-start max-w-2xl mx-auto lg:mx-0"
+            className="flex flex-col space-y-7 text-center lg:text-left items-center lg:items-start max-w-2xl mx-auto lg:mx-0"
           >
             <motion.div variants={itemVariants}>
-              <span className="inline-flex items-center px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold tracking-wide uppercase mb-4">
+              <span className="inline-flex items-center px-3.5 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-semibold tracking-wide uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary mr-2 animate-pulse" />
                 The Future of Hiring
               </span>
             </motion.div>
 
-            {/* Main Headline */}
             <motion.h1
               variants={itemVariants}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight text-slate-900 dark:text-white"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight text-foreground"
             >
               Measure what <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">matters most.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">
+                matters most.
+              </span>
             </motion.h1>
 
-            {/* Subheading */}
             <motion.p
               variants={itemVariants}
-              className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl mx-auto lg:mx-0 font-medium"
+              className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0 font-medium"
             >
-              Conduct fair, scalable, and insightful interviews with InterQ's autonomous hiring engine. From first screen to final offer, hire with mathematical confidence.
+              Conduct fair, scalable, and insightful interviews with InterQ's
+              autonomous hiring engine. From first screen to final offer, hire
+              with mathematical confidence.
             </motion.p>
 
-            {/* CTA Buttons */}
             <motion.div
               variants={itemVariants}
               className="flex flex-col sm:flex-row items-center gap-4 pt-2 w-full sm:w-auto"
             >
               <Button
-                onClick={() => navigate('/get-started')}
+                onClick={() => navigate("/get-started")}
                 size="lg"
-                className="w-full sm:w-auto h-12 px-8 text-base font-semibold rounded-lg shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200 bg-primary hover:bg-primary/90 text-white"
+                className="w-full sm:w-auto h-12 px-8 text-base font-semibold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200 bg-primary hover:bg-primary/90 text-primary-foreground"
               >
                 Start Hiring Now
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
 
               <Button
-                onClick={() => navigate('/#how-it-works')}
+                onClick={() => navigate("/#how-it-works")}
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto h-12 px-8 text-base font-medium rounded-lg border-slate-200 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200 group"
+                className="w-full sm:w-auto h-12 px-8 text-base font-medium rounded-xl border-border hover:bg-accent hover:text-accent-foreground transition-all duration-200 group"
               >
-                <Play className="mr-2 h-4 w-4 fill-slate-900 group-hover:fill-slate-900/80 transition-colors" />
+                <Play className="mr-2 h-4 w-4 fill-current group-hover:scale-110 transition-transform" />
                 Watch Demo
               </Button>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="pt-4 flex items-center gap-4 text-sm text-slate-500">
+            <motion.div
+              variants={itemVariants}
+              className="pt-3 flex items-center gap-4 text-sm text-muted-foreground"
+            >
               <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map(i => (
-                  <div key={i} className={`w-8 h-8 rounded-full border-2 border-white bg-slate-200 bg-[url('https://i.pravatar.cc/100?img=${i + 10}')] bg-cover`} />
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className={`w-8 h-8 rounded-full border-2 border-background bg-muted bg-[url('https://i.pravatar.cc/100?img=${i + 10}')] bg-cover`}
+                  />
                 ))}
               </div>
               <span>Trusted by 500+ hiring teams</span>
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Modern Glass Card Visual */}
+          {/* Right Content — Image Card with floating stats */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
             className="relative w-full flex justify-center lg:justify-end items-center mt-8 lg:mt-0"
           >
-            {/* Abstract Decorative blob behind */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-radial from-blue-500/10 to-transparent blur-3xl -z-10" />
+            {/* Decorative blobs */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-gradient-radial from-primary/[0.06] to-transparent blur-3xl -z-10" />
 
-            <div className="relative w-full max-w-[500px]">
-              <div className="glass-card p-6 sm:p-8 backdrop-blur-xl bg-white/60 border border-white/60 shadow-2xl rounded-2xl relative overflow-hidden group">
-                {/* Shine effect */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/40 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ transform: 'skewX(-20deg) translateX(-150%)' }} />
-
-                <div className="flex items-center justify-between mb-8">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                      <Zap size={20} className="fill-current" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-slate-900">Live Analysis</h3>
-                      <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Processing Candidate...</p>
-                    </div>
+            <div className="relative w-full max-w-[460px]">
+              {/* Main image card */}
+              <div className="rounded-2xl overflow-hidden shadow-elegant border border-border/50 bg-card">
+                <img
+                  src={heroImg}
+                  alt="Professional team conducting a job interview in a modern office"
+                  className="w-full h-[320px] object-cover"
+                  loading="eager"
+                />
+                <div className="p-5 flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-foreground">Live Analysis</p>
+                    <p className="text-xs text-muted-foreground">Processing candidate…</p>
                   </div>
                   <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 text-green-700 text-xs font-bold border border-green-500/20">
                     <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
                     </span>
                     Active
                   </div>
                 </div>
-
-                <div className="space-y-6">
-                  {/* Metric 1 */}
-                  <div>
-                    <div className="flex justify-between text-sm font-medium mb-2">
-                      <span className="text-slate-600">Technical Proficiency</span>
-                      <span className="text-slate-900 font-bold">92%</span>
-                    </div>
-                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: "92%" }}
-                        transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
-                        className="h-full bg-gradient-to-r from-primary to-blue-500 rounded-full"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Metric 2 */}
-                  <div>
-                    <div className="flex justify-between text-sm font-medium mb-2">
-                      <span className="text-slate-600">Communication Clarity</span>
-                      <span className="text-slate-900 font-bold">88%</span>
-                    </div>
-                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: "88%" }}
-                        transition={{ duration: 1.5, ease: "easeOut", delay: 0.7 }}
-                        className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Floating Elements mimicking AI processing */}
-                  <div className="pt-4 grid grid-cols-2 gap-3">
-                    <div className="p-3 bg-white/50 rounded-lg border border-slate-100 shadow-sm flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs">AI</div>
-                      <div className="h-2 w-12 bg-slate-200 rounded-full" />
-                    </div>
-                    <div className="p-3 bg-white/50 rounded-lg border border-slate-100 shadow-sm flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xs">IQ</div>
-                      <div className="h-2 w-16 bg-slate-200 rounded-full" />
-                    </div>
-                  </div>
-                </div>
               </div>
 
-              {/* Decorative floating badge */}
+              {/* Floating stat card — top-left */}
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -left-4 top-6 glass-card px-4 py-3 rounded-xl shadow-elegant flex items-center gap-3 z-10"
+              >
+                <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                  <Users size={18} />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground font-medium">Candidates</p>
+                  <p className="text-sm font-bold text-foreground">2,847</p>
+                </div>
+              </motion.div>
+
+              {/* Floating stat card — bottom-right */}
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="absolute -right-4 bottom-24 glass-card px-4 py-3 rounded-xl shadow-elegant flex items-center gap-3 z-10"
+              >
+                <div className="w-9 h-9 rounded-lg bg-green-500/10 flex items-center justify-center text-green-600">
+                  <TrendingUp size={18} />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground font-medium">Hire Rate</p>
+                  <p className="text-sm font-bold text-foreground">94.2%</p>
+                </div>
+              </motion.div>
+
+              {/* Floating badge — right */}
               <motion.div
                 animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -right-4 top-1/2 transform -translate-y-1/2 glass px-4 py-3 rounded-xl border-l-4 border-l-primary shadow-lg max-w-[180px]"
+                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                className="absolute -right-2 top-1/3 glass-card px-3 py-2 rounded-lg shadow-elegant flex items-center gap-2 z-10"
               >
-                <p className="text-xs font-bold text-slate-500 mb-1">Recommendation</p>
-                <p className="text-sm font-bold text-slate-900">Strong Hire</p>
+                <Shield size={14} className="text-primary" />
+                <span className="text-xs font-bold text-foreground">Strong Hire</span>
               </motion.div>
             </div>
           </motion.div>
