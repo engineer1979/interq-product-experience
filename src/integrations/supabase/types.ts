@@ -833,6 +833,7 @@ export type Database = {
           job_role: string
           questions: Json
           title: string
+          topic: string | null
           updated_at: string
         }
         Insert: {
@@ -845,6 +846,7 @@ export type Database = {
           job_role: string
           questions: Json
           title: string
+          topic?: string | null
           updated_at?: string
         }
         Update: {
@@ -857,6 +859,7 @@ export type Database = {
           job_role?: string
           questions?: Json
           title?: string
+          topic?: string | null
           updated_at?: string
         }
         Relationships: []
