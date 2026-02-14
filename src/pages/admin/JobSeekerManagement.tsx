@@ -17,7 +17,7 @@ export default function JobSeekerManagement() {
       const { data } = await supabase
         .from("profiles")
         .select("*")
-        .eq("role", "candidate")
+        .eq("role", "job_seeker")
         .order("created_at", { ascending: false });
       return data ?? [];
     },

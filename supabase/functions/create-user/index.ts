@@ -61,7 +61,7 @@ Deno.serve(async (req) => {
     console.log('User created successfully:', newUser.user?.id);
 
     // Update the user's role if not candidate (default role)
-    if (newUser.user && role !== 'candidate') {
+    if (newUser.user && role !== 'job_seeker') {
       const { error: roleError } = await supabaseAdmin
         .from('user_roles')
         .update({ role })

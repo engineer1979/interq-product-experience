@@ -77,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data: signInData, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -96,7 +96,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         description: "You have successfully signed in.",
       });
 
-      navigate("/jobseeker");
+      // Route based on role
+      const userId = signInData.user?.id;
+      if (userId) {
+        const { data: roleData } = await supabase.rpc('get_user_role', { _user_id: userId });
+        if (roleData === 'admin') {
+          navigate("/admin");
+        } else if (roleData === 'company') {
+          navigate("/company");
+        } else {
+          navigate("/jobseeker");
+        }
+      } else {
+        navigate("/jobseeker");
+      }
       return { error: null };
     } catch (error) {
       return { error: error as Error };

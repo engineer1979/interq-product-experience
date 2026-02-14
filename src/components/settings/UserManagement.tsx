@@ -26,7 +26,7 @@ export function UserManagement() {
     email: "",
     password: "",
     fullName: "",
-    role: "candidate" as "admin" | "recruiter" | "enterprise" | "candidate",
+    role: "job_seeker" as "admin" | "company" | "job_seeker",
   });
   const { toast } = useToast();
 
@@ -56,7 +56,7 @@ export function UserManagement() {
 
           return {
             ...profile,
-            role: roleData?.role || "candidate",
+            role: roleData?.role || "job_seeker",
           };
         })
       );
@@ -96,7 +96,7 @@ export function UserManagement() {
       });
 
       setIsCreateOpen(false);
-      setFormData({ email: "", password: "", fullName: "", role: "candidate" });
+      setFormData({ email: "", password: "", fullName: "", role: "job_seeker" });
       fetchUsers();
     } catch (error: any) {
       toast({
@@ -109,7 +109,7 @@ export function UserManagement() {
     }
   };
 
-  const updateUserRole = async (userId: string, newRole: "admin" | "recruiter" | "enterprise" | "candidate") => {
+  const updateUserRole = async (userId: string, newRole: "admin" | "company" | "job_seeker") => {
     try {
       const { error } = await supabase
         .from("user_roles")
@@ -137,10 +137,8 @@ export function UserManagement() {
     switch (role) {
       case "admin":
         return "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300";
-      case "recruiter":
+      case "company":
         return "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300";
-      case "enterprise":
-        return "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300";
       default:
         return "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300";
     }
@@ -207,9 +205,8 @@ export function UserManagement() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="recruiter">Recruiter</SelectItem>
-                      <SelectItem value="enterprise">Enterprise</SelectItem>
-                      <SelectItem value="candidate">Candidate</SelectItem>
+                      <SelectItem value="company">Company</SelectItem>
+                      <SelectItem value="job_seeker">Job Seeker</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -256,8 +253,8 @@ export function UserManagement() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${getRoleBadgeColor(user.role || "candidate")}`}>
-                        {user.role || "candidate"}
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${getRoleBadgeColor(user.role || "job_seeker")}`}>
+                        {user.role === 'job_seeker' ? 'Job Seeker' : (user.role || "job_seeker")}
                       </span>
                     </TableCell>
                     <TableCell>
@@ -276,9 +273,8 @@ export function UserManagement() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="admin">Admin</SelectItem>
-                          <SelectItem value="recruiter">Recruiter</SelectItem>
-                          <SelectItem value="enterprise">Enterprise</SelectItem>
-                          <SelectItem value="candidate">Candidate</SelectItem>
+                          <SelectItem value="company">Company</SelectItem>
+                          <SelectItem value="job_seeker">Job Seeker</SelectItem>
                         </SelectContent>
                       </Select>
                     </TableCell>

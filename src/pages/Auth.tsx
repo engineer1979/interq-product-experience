@@ -130,9 +130,9 @@ const Auth = () => {
                       required
                     >
                       <option value="">Select your role</option>
-                      <option value="company">Company / Hiring Team</option>
-                      <option value="candidate">Candidate</option>
-                      <option value="expert">Expert</option>
+                      <option value="admin">Admin</option>
+                      <option value="company">Company</option>
+                      <option value="job_seeker">Job Seeker</option>
                     </select>
                   </div>
                   <div>

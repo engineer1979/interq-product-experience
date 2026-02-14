@@ -7,7 +7,7 @@ import EnhancedFooter from "@/components/EnhancedFooter";
 const sections = [
   {
     icon: Award,
-    title: "For Experts",
+    title: "For Admins",
     color: "text-primary",
     items: [
       "Follow the structured evaluation framework for every interview",
@@ -15,12 +15,12 @@ const sections = [
       "Use the standardized scoring rubric (1–5 scale) consistently",
       "Provide actionable feedback in the strengths and improvement sections",
       "Submit evaluation reports within 24 hours of the session",
-      "Maintain strict confidentiality of all candidate information",
+      "Maintain strict confidentiality of all job seeker information",
     ],
   },
   {
     icon: Users,
-    title: "For Candidates",
+    title: "For Job Seekers",
     color: "text-green-600",
     items: [
       "Maintain professional conduct throughout the interview session",
@@ -39,8 +39,8 @@ const sections = [
       "Submit accurate and detailed job descriptions for each role",
       "Specify required skill domains and seniority level clearly",
       "Follow the structured review process for evaluation reports",
-      "Provide timely feedback on candidate hiring decisions",
-      "Respect confidentiality of expert identities and scoring methods",
+      "Provide timely feedback on job seeker hiring decisions",
+      "Respect confidentiality of admin identities and scoring methods",
       "Use the platform's built-in tools for scheduling and communication",
     ],
   },

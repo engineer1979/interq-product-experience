@@ -18,7 +18,7 @@ interface Permission {
 }
 
 const modules = ["assessments", "interviews", "analytics", "users", "settings"];
-const roles = ["admin", "recruiter", "enterprise", "candidate"];
+const roles = ["admin", "company", "job_seeker"];
 
 export function PermissionManagement() {
   const [permissions, setPermissions] = useState<Permission[]>([]);
@@ -83,12 +83,12 @@ export function PermissionManagement() {
     switch (role) {
       case "admin":
         return "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300";
-      case "recruiter":
+      case "company":
         return "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300";
-      case "enterprise":
-        return "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300";
-      default:
+      case "job_seeker":
         return "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300";
+      default:
+        return "bg-muted text-muted-foreground";
     }
   };
 
@@ -113,7 +113,7 @@ export function PermissionManagement() {
               <div className="flex items-center gap-3">
                 <Shield className="w-5 h-5 text-primary" />
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${getRoleBadgeColor(role)}`}>
-                  {role.charAt(0).toUpperCase() + role.slice(1)}
+                  {role === 'job_seeker' ? 'Job Seeker' : role.charAt(0).toUpperCase() + role.slice(1)}
                 </span>
               </div>
 
