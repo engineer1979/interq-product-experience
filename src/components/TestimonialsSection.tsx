@@ -41,7 +41,7 @@ const TestimonialsSection = () => {
                         <div className="flex items-center gap-4">
                             <div className="flex flex-col">
                                 <span className="font-bold text-foreground">Senior Software Engineer</span>
-                                <span className="text-sm text-primary">Interviewer</span>
+                                <span className="text-sm text-primary">Expert</span>
                             </div>
                         </div>
                     </motion.div>

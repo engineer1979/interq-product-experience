@@ -70,7 +70,7 @@ const cases = [
     results: [
       "45% increase in technical interview consistency",
       "Reduced candidate drop-off rate by 18%",
-      "Enhanced interviewer feedback quality"
+      "Enhanced expert feedback quality"
     ],
     stats: [
       { label: "Consistency", value: "+45%" },

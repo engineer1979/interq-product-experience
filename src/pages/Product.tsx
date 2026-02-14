@@ -114,24 +114,26 @@ const Product = () => {
                     Try Assessment Demo
                   </Button>
                 </div>
-                <div className="rounded-2xl h-96 overflow-hidden shadow-2xl">
+                <div className="rounded-2xl h-96 overflow-hidden shadow-2xl relative">
                   <img
                     src="https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=1260"
                     alt="AI Assessments Dashboard"
                     className="w-full h-full object-cover"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 </div>
               </div>
             </TabsContent>
 
             <TabsContent value="interviews">
               <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="rounded-2xl h-96 overflow-hidden shadow-2xl">
+                <div className="rounded-2xl h-96 overflow-hidden shadow-2xl relative">
                   <img
                     src="https://images.pexels.com/photos/4240505/pexels-photo-4240505.jpeg?auto=compress&cs=tinysrgb&w=1260"
                     alt="AI Video Interview Session"
                     className="w-full h-full object-cover"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 </div>
                 <div>
                   <h2 className="text-4xl font-bold mb-6">AI-Powered Video Interviews</h2>
@@ -184,12 +186,13 @@ const Product = () => {
                     Explore Analytics
                   </Button>
                 </div>
-                <div className="rounded-2xl h-96 overflow-hidden shadow-2xl">
+                <div className="rounded-2xl h-96 overflow-hidden shadow-2xl relative">
                   <img
                     src="https://images.pexels.com/photos/5900165/pexels-photo-5900165.jpeg?auto=compress&cs=tinysrgb&w=1260"
                     alt="Advanced Analytics Dashboard"
                     className="w-full h-full object-cover"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 </div>
               </div>
             </TabsContent>

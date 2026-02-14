@@ -13,7 +13,7 @@ const ProblemsSolved = () => {
     { icon: Target, title: "Bias in evaluations", description: "Standardized, objective assessment metrics" },
     { icon: Calendar, title: "Scheduling complexity", description: "Streamlined interview coordination" },
     { icon: BarChart, title: "Inconsistent quality", description: "Uniform evaluation standards" },
-    { icon: DollarSign, title: "High interviewer costs", description: "Reduce expenses with automation" },
+    { icon: DollarSign, title: "High expert costs", description: "Reduce expenses with automation" },
     { icon: Shield, title: "Assessment fraud", description: "Advanced cheating detection systems" },
     { icon: TrendingUp, title: "Scalability challenges", description: "Grow your hiring without limits" },
   ];
