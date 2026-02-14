@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ChevronRight, CheckCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import { WorkflowStepper } from './WorkflowStepper';
 import { AssessmentSelection } from './AssessmentSelection';
 import { AssessmentInstructions } from './AssessmentInstructions';
@@ -89,10 +90,72 @@ export function AssessmentWorkflow({ userId, onComplete, onCancel }: AssessmentW
 
   const handleAssessmentSelect = (assessment: Assessment) => { setSelectedAssessment(assessment); setCurrentStep(2); };
 
-  const handleInstructionsAccept = () => {
+  const fetchQuestionsAndCreateSession = useCallback(async (assessment: Assessment) => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Fetch questions for this assessment
+      const { data: questionData, error: qError } = await supabase
+        .from('assessment_questions')
+        .select('*')
+        .eq('assessment_id', assessment.id)
+        .order('order_index', { ascending: true });
+
+      if (qError) throw qError;
+
+      if (!questionData || questionData.length === 0) {
+        setError('No questions available for this assessment. Please contact an administrator.');
+        setLoading(false);
+        return false;
+      }
+
+      // Map DB rows to Question interface, parse options from JSON
+      const mappedQuestions: Question[] = questionData.map((q: any) => ({
+        id: q.id,
+        question_text: q.question_text,
+        question_type: q.question_type === 'multiple_choice' ? 'mcq' : q.question_type,
+        options: Array.isArray(q.options) ? q.options : (typeof q.options === 'string' ? JSON.parse(q.options) : []),
+        correct_answer: q.correct_answer,
+        points: q.points,
+        order_index: q.order_index,
+      }));
+
+      setQuestions(mappedQuestions);
+
+      // Create assessment session
+      const { data: sessionData, error: sError } = await supabase
+        .from('assessment_sessions')
+        .insert({
+          assessment_id: assessment.id,
+          user_id: userId,
+          time_remaining_seconds: assessment.duration_minutes * 60,
+          current_question_index: 0,
+          completed: false,
+        })
+        .select('id')
+        .single();
+
+      if (sError) throw sError;
+      if (sessionData) setSessionId(sessionData.id);
+
+      return true;
+    } catch (err: any) {
+      console.error('Error loading questions:', err);
+      setError(err.message || 'Failed to load questions.');
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }, [userId]);
+
+  const handleInstructionsAccept = async () => {
     if (!instructionsAccepted) { toast({ title: 'Please accept the instructions', variant: 'destructive' }); return; }
-    setCurrentStep(3);
-    setStartTime(Date.now());
+    if (!selectedAssessment) return;
+    const success = await fetchQuestionsAndCreateSession(selectedAssessment);
+    if (success) {
+      setCurrentStep(3);
+      setStartTime(Date.now());
+    }
   };
 
   const handleTestComplete = (finalAnswers: Record<string, string>, finalMarkedForReview: Set<string>) => {
@@ -146,10 +209,20 @@ export function AssessmentWorkflow({ userId, onComplete, onCancel }: AssessmentW
   };
 
   const renderCurrentStep = () => {
+    if (loading) {
+      return (
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <span className="ml-3 text-muted-foreground">Loading questions...</span>
+        </div>
+      );
+    }
     switch (currentStep) {
       case 1: return <AssessmentSelection onAssessmentSelect={handleAssessmentSelect} userId={userId} />;
       case 2: return <AssessmentInstructions assessment={selectedAssessment!} onAccept={handleInstructionsAccept} onBack={() => setCurrentStep(1)} accepted={instructionsAccepted} onAcceptChange={setInstructionsAccepted} />;
-      case 3: return <AssessmentTest assessment={selectedAssessment!} questions={questions} onComplete={handleTestComplete} onBack={() => setCurrentStep(2)} sessionId={sessionId} userId={userId} />;
+      case 3: return questions.length > 0 
+        ? <AssessmentTest assessment={selectedAssessment!} questions={questions} onComplete={handleTestComplete} onBack={() => setCurrentStep(2)} sessionId={sessionId} userId={userId} />
+        : <div className="text-center py-12"><AlertCircle className="w-12 h-12 mx-auto text-muted-foreground mb-4" /><h3 className="text-lg font-medium mb-2">No questions available</h3><p className="text-muted-foreground mb-4">This assessment has no questions yet.</p><Button variant="outline" onClick={() => setCurrentStep(1)}>Choose Another Assessment</Button></div>;
       case 4: return <AssessmentReview assessment={selectedAssessment!} questions={questions} answers={answers} markedForReview={markedForReview} onSubmit={handleReviewSubmit} onBack={() => setCurrentStep(3)} />;
       case 5: return <AssessmentResults results={results!} assessment={selectedAssessment!} onFinish={() => onCancel?.()} />;
       default: return null;
