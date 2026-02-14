@@ -39,10 +39,13 @@ const CreateAssessment = lazy(() => import("./pages/CreateAssessment"));
 const AssessmentWorkflowPage = lazy(() => import("./pages/AssessmentWorkflowPage"));
 const ATSScreening = lazy(() => import("./pages/admin/ATSScreening"));
 const CollaborativeScoring = lazy(() => import("./pages/admin/CollaborativeScoring"));
+const PipelineDashboard = lazy(() => import("./pages/admin/PipelineDashboard"));
 const BookSession = lazy(() => import("./pages/BookSession"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const EvaluationReport = lazy(() => import("./pages/EvaluationReport"));
 const Guidelines = lazy(() => import("./pages/Guidelines"));
+const ExpertPortal = lazy(() => import("./pages/ExpertPortal"));
+const CandidatePortal = lazy(() => import("./pages/CandidatePortal"));
 
 const queryClient = new QueryClient();
 
@@ -90,6 +93,8 @@ const App = () => (
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/evaluation-report" element={<EvaluationReport />} />
               <Route path="/guidelines" element={<Guidelines />} />
+              <Route path="/expert-portal" element={<ExpertPortal />} />
+              <Route path="/candidate-portal" element={<CandidatePortal />} />
               <Route path="/apply/:jobId" element={<ApplyPage />} />
               <Route path="/privacy-policy" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Privacy Policy</h1><p className="text-muted-foreground">Privacy policy content coming soon.</p></div></div>} />
               <Route path="/terms-of-service" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Terms of Service</h1><p className="text-muted-foreground">Terms of service content coming soon.</p></div></div>} />
@@ -100,6 +105,7 @@ const App = () => (
               <Route path="/newsletter" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Newsletter Signup</h1><p className="text-muted-foreground">Newsletter signup coming soon.</p></div></div>} />
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
+                <Route path="pipeline" element={<PipelineDashboard />} />
                 <Route path="jobs" element={<AdminJobs />} />
                 <Route path="ats-screening" element={<ATSScreening />} />
                 <Route path="scoring" element={<CollaborativeScoring />} />
