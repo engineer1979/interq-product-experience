@@ -1,11 +1,13 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, FileText, Settings, LogOut, Menu, X, Briefcase, ScanSearch, Trophy } from "lucide-react";
+import { LayoutDashboard, FileText, Settings, LogOut, Menu, X, Briefcase, ScanSearch, Trophy, Kanban } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { NotificationBell } from "@/components/NotificationBell";
 
 const navItems = [
     { to: "/admin", icon: LayoutDashboard, label: "Dashboard" },
+    { to: "/admin/pipeline", icon: Kanban, label: "Pipeline" },
     { to: "/admin/jobs", icon: Briefcase, label: "Jobs" },
     { to: "/admin/ats-screening", icon: ScanSearch, label: "ATS Screening" },
     { to: "/admin/scoring", icon: Trophy, label: "Scoring & Rankings" },
@@ -37,8 +39,11 @@ export function AdminLayout() {
                 isMobileMenuOpen ? "block" : "hidden md:block"
             )}>
                 <div className="p-6 hidden md:block">
-                    <h2 className="text-2xl font-bold">Admin Panel</h2>
-                    <p className="text-sm text-muted-foreground">InterQ Live Interview Tests</p>
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-2xl font-bold">Admin Panel</h2>
+                        <NotificationBell />
+                    </div>
+                    <p className="text-sm text-muted-foreground">InterQ Recruitment Platform</p>
                 </div>
                 <nav className="px-4 space-y-2 pb-4">
                     {navItems.map((item) => {
