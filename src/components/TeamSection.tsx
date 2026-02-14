@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Linkedin, Facebook, Instagram } from "lucide-react";
-import { Card } from "@/components/ui/card";
 
 const socialLinks = {
   facebook: "https://www.facebook.com/profile.php?id=61583304695087",
@@ -48,10 +47,11 @@ const team = [
 
 const TeamSection = () => {
   return (
-    <section className="py-28 bg-background relative overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/[0.03] rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/[0.02] rounded-full blur-[100px]" />
+    <section className="py-28 relative overflow-hidden bg-gradient-to-b from-background via-muted/20 to-background">
+      {/* Decorative background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-0 w-[600px] h-[600px] bg-primary/[0.03] rounded-full blur-[150px]" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-primary/[0.02] rounded-full blur-[120px]" />
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 max-w-7xl relative z-10">
@@ -60,76 +60,101 @@ const TeamSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-20"
         >
-          <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-primary/5 border border-primary/15 text-primary text-xs font-semibold tracking-wider uppercase mb-5">
-            Our Team
+          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/5 border border-primary/15 text-primary text-xs font-semibold tracking-[0.15em] uppercase mb-6">
+            Leadership
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">
+          <h2 className="text-4xl md:text-5xl font-bold mb-5 text-foreground tracking-tight">
             Meet the Team Behind InterQ
           </h2>
-          <p className="text-muted-foreground text-lg leading-relaxed">
+          <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mx-auto">
             The talent, expertise, and passion driving our platform's success.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {team.map((member, index) => (
-            <motion.div
-              key={member.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true, margin: "-50px" }}
-              className="h-full"
-              whileHover={{ y: -5 }}
-            >
-              <Card className="team-member-card h-full shadow-soft hover:shadow-elegant transition-all duration-300 flex flex-col items-center text-center p-8 border-border/50 bg-card">
-                <div className="team-member-image-wrapper relative">
-                  <div className="team-image-container w-full h-full relative group">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="team-image"
-                      loading="eager"
-                      decoding="async"
-                    />
-                  </div>
-                </div>
+        {/* Top row: 3 cards */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto mb-8">
+          {team.slice(0, 3).map((member, index) => (
+            <TeamCard key={member.name} member={member} index={index} />
+          ))}
+        </div>
 
-                <div className="flex-1 flex flex-col w-full">
-                  <h3 className="text-xl font-bold mb-1 text-foreground tracking-tight">{member.name}</h3>
-                  <p className="text-primary font-semibold text-xs mb-4 uppercase tracking-wider">
-                    {member.role}
-                  </p>
-
-                  <p className="text-muted-foreground leading-relaxed mb-4 text-sm">
-                    {member.bio}
-                  </p>
-
-                  <div className="mt-auto pt-3 flex flex-col items-center gap-3">
-                    <p className="italic text-sm text-muted-foreground font-medium leading-relaxed">"{member.quote}"</p>
-
-                    <div className="flex gap-2">
-                      <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on Facebook`} className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 hover:scale-110 transition-all">
-                        <Facebook className="w-4 h-4" />
-                      </a>
-                      <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on Instagram`} className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 hover:scale-110 transition-all">
-                        <Instagram className="w-4 h-4" />
-                      </a>
-                      <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on LinkedIn`} className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 hover:scale-110 transition-all">
-                        <Linkedin className="w-4 h-4" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
+        {/* Bottom row: 2 cards centered */}
+        <div className="grid md:grid-cols-2 gap-8 max-w-[43rem] mx-auto">
+          {team.slice(3).map((member, index) => (
+            <TeamCard key={member.name} member={member} index={index + 3} />
           ))}
         </div>
       </div>
     </section>
   );
 };
+
+interface TeamCardProps {
+  member: (typeof team)[number];
+  index: number;
+}
+
+const TeamCard = ({ member, index }: TeamCardProps) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.08, duration: 0.5, ease: "easeOut" }}
+    viewport={{ once: true, margin: "-40px" }}
+    className="group h-full"
+  >
+    <div className="h-full flex flex-col items-center text-center rounded-2xl bg-card border border-border/50 p-8 pt-10 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
+      {/* Circular portrait */}
+      <div className="relative mb-6">
+        <div className="w-[140px] h-[140px] rounded-full overflow-hidden ring-[3px] ring-primary/15 ring-offset-4 ring-offset-card shadow-md group-hover:ring-primary/30 transition-all duration-200">
+          <img
+            src={member.image}
+            alt={member.name}
+            className="w-full h-full object-cover object-top"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      </div>
+
+      {/* Info */}
+      <h3 className="text-lg font-bold text-foreground tracking-tight mb-1">
+        {member.name}
+      </h3>
+      <p className="text-primary font-semibold text-[11px] uppercase tracking-[0.15em] mb-4">
+        {member.role}
+      </p>
+
+      <p className="text-muted-foreground text-sm leading-relaxed mb-5 flex-1">
+        {member.bio}
+      </p>
+
+      <p className="italic text-xs text-muted-foreground/80 mb-4">
+        "{member.quote}"
+      </p>
+
+      {/* Social */}
+      <div className="flex gap-1.5">
+        {[
+          { href: socialLinks.facebook, icon: Facebook, label: "Facebook" },
+          { href: socialLinks.instagram, icon: Instagram, label: "Instagram" },
+          { href: socialLinks.linkedin, icon: Linkedin, label: "LinkedIn" },
+        ].map(({ href, icon: Icon, label }) => (
+          <a
+            key={label}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${member.name} on ${label}`}
+            className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-200"
+          >
+            <Icon className="w-3.5 h-3.5" />
+          </a>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+);
 
 export default TeamSection;
