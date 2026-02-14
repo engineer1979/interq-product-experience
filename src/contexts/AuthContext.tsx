@@ -96,7 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         description: "You have successfully signed in.",
       });
 
-      navigate("/");
+      navigate("/jobseeker");
       return { error: null };
     } catch (error) {
       return { error: error as Error };

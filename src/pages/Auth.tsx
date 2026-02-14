@@ -19,7 +19,7 @@ const Auth = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate("/jobseeker");
     }
   }, [user, navigate]);
 

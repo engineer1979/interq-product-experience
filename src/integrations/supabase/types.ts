@@ -1093,6 +1093,93 @@ export type Database = {
           },
         ]
       }
+      job_seeker_certificates: {
+        Row: {
+          assessment_id: string | null
+          certificate_name: string
+          grade: string | null
+          id: string
+          interview_id: string | null
+          issued_at: string
+          metadata: Json | null
+          score: number | null
+          unique_code: string
+          user_id: string
+        }
+        Insert: {
+          assessment_id?: string | null
+          certificate_name: string
+          grade?: string | null
+          id?: string
+          interview_id?: string | null
+          issued_at?: string
+          metadata?: Json | null
+          score?: number | null
+          unique_code?: string
+          user_id: string
+        }
+        Update: {
+          assessment_id?: string | null
+          certificate_name?: string
+          grade?: string | null
+          id?: string
+          interview_id?: string | null
+          issued_at?: string
+          metadata?: Json | null
+          score?: number | null
+          unique_code?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_seeker_certificates_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_seeker_certificates_interview_id_fkey"
+            columns: ["interview_id"]
+            isOneToOne: false
+            referencedRelation: "interviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_seeker_notifications: {
+        Row: {
+          created_at: string
+          id: string
+          is_read: boolean | null
+          link: string | null
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          link?: string | null
+          message: string
+          title: string
+          type?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          link?: string | null
+          message?: string
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       jobs: {
         Row: {
           company_id: string | null
@@ -1227,35 +1314,65 @@ export type Database = {
         Row: {
           avatar_url: string | null
           company_name: string | null
+          country: string | null
           created_at: string
+          education: Json | null
           email: string
           full_name: string | null
           id: string
+          linkedin_url: string | null
+          location: string | null
           phone_number: string | null
+          profile_visibility: boolean | null
+          resume_url: string | null
           role: string | null
+          skills: string[] | null
+          timezone: string | null
           updated_at: string
+          visibility_settings: Json | null
+          work_experience: Json | null
         }
         Insert: {
           avatar_url?: string | null
           company_name?: string | null
+          country?: string | null
           created_at?: string
+          education?: Json | null
           email: string
           full_name?: string | null
           id: string
+          linkedin_url?: string | null
+          location?: string | null
           phone_number?: string | null
+          profile_visibility?: boolean | null
+          resume_url?: string | null
           role?: string | null
+          skills?: string[] | null
+          timezone?: string | null
           updated_at?: string
+          visibility_settings?: Json | null
+          work_experience?: Json | null
         }
         Update: {
           avatar_url?: string | null
           company_name?: string | null
+          country?: string | null
           created_at?: string
+          education?: Json | null
           email?: string
           full_name?: string | null
           id?: string
+          linkedin_url?: string | null
+          location?: string | null
           phone_number?: string | null
+          profile_visibility?: boolean | null
+          resume_url?: string | null
           role?: string | null
+          skills?: string[] | null
+          timezone?: string | null
           updated_at?: string
+          visibility_settings?: Json | null
+          work_experience?: Json | null
         }
         Relationships: []
       }

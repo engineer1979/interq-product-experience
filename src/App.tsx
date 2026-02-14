@@ -64,6 +64,17 @@ const CompanyResults = lazy(() => import("./pages/company/CompanyResults"));
 const CompanyNotifications = lazy(() => import("./pages/company/CompanyNotifications"));
 const CompanyAuditLogs = lazy(() => import("./pages/company/CompanyAuditLogs"));
 const CompanySettings = lazy(() => import("./pages/company/CompanySettings"));
+const JobSeekerLayout = lazy(() => import("./components/jobseeker/JobSeekerLayout").then(m => ({ default: m.JobSeekerLayout })));
+const JobSeekerDashboard = lazy(() => import("./pages/jobseeker/JobSeekerDashboard"));
+const JobSeekerAssessments = lazy(() => import("./pages/jobseeker/JobSeekerAssessments"));
+const JobSeekerInterviews = lazy(() => import("./pages/jobseeker/JobSeekerInterviews"));
+const JobSeekerResults = lazy(() => import("./pages/jobseeker/JobSeekerResults"));
+const JobSeekerCertificates = lazy(() => import("./pages/jobseeker/JobSeekerCertificates"));
+const JobSeekerProfile = lazy(() => import("./pages/jobseeker/JobSeekerProfile"));
+const JobSeekerPrivacy = lazy(() => import("./pages/jobseeker/JobSeekerPrivacy"));
+const JobSeekerGuidelines = lazy(() => import("./pages/jobseeker/JobSeekerGuidelines"));
+const JobSeekerNotifications = lazy(() => import("./pages/jobseeker/JobSeekerNotifications"));
+const JobSeekerSettings = lazy(() => import("./pages/jobseeker/JobSeekerSettings"));
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -124,7 +135,18 @@ const App = () => (
                 <Route path="logs" element={<CompanyAuditLogs />} />
                 <Route path="settings" element={<CompanySettings />} />
               </Route>
-              <Route path="/apply/:jobId" element={<ApplyPage />} />
+              <Route path="/jobseeker" element={<JobSeekerLayout />}>
+                <Route index element={<JobSeekerDashboard />} />
+                <Route path="assessments" element={<JobSeekerAssessments />} />
+                <Route path="interviews" element={<JobSeekerInterviews />} />
+                <Route path="results" element={<JobSeekerResults />} />
+                <Route path="certificates" element={<JobSeekerCertificates />} />
+                <Route path="profile" element={<JobSeekerProfile />} />
+                <Route path="privacy" element={<JobSeekerPrivacy />} />
+                <Route path="guidelines" element={<JobSeekerGuidelines />} />
+                <Route path="notifications" element={<JobSeekerNotifications />} />
+                <Route path="settings" element={<JobSeekerSettings />} />
+              </Route>
               <Route path="/privacy-policy" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Privacy Policy</h1><p className="text-muted-foreground">Privacy policy content coming soon.</p></div></div>} />
               <Route path="/terms-of-service" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Terms of Service</h1><p className="text-muted-foreground">Terms of service content coming soon.</p></div></div>} />
               <Route path="/cookie-policy" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Cookie Policy</h1><p className="text-muted-foreground">Cookie policy content coming soon.</p></div></div>} />
