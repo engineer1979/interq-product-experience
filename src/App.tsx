@@ -53,7 +53,17 @@ const EvaluationReport = lazy(() => import("./pages/EvaluationReport"));
 const Guidelines = lazy(() => import("./pages/Guidelines"));
 const ExpertPortal = lazy(() => import("./pages/ExpertPortal"));
 const CandidatePortal = lazy(() => import("./pages/CandidatePortal"));
-
+const CompanySignup = lazy(() => import("./pages/company/CompanySignup"));
+const CompanyLayout = lazy(() => import("./components/company/CompanyLayout").then(m => ({ default: m.CompanyLayout })));
+const CompanyDashboard = lazy(() => import("./pages/company/CompanyDashboard"));
+const CompanyJobs = lazy(() => import("./pages/company/CompanyJobs"));
+const CompanyCandidates = lazy(() => import("./pages/company/CompanyCandidates"));
+const CompanyTests = lazy(() => import("./pages/company/CompanyTests"));
+const CompanyInterviews = lazy(() => import("./pages/company/CompanyInterviews"));
+const CompanyResults = lazy(() => import("./pages/company/CompanyResults"));
+const CompanyNotifications = lazy(() => import("./pages/company/CompanyNotifications"));
+const CompanyAuditLogs = lazy(() => import("./pages/company/CompanyAuditLogs"));
+const CompanySettings = lazy(() => import("./pages/company/CompanySettings"));
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -102,6 +112,18 @@ const App = () => (
               <Route path="/guidelines" element={<Guidelines />} />
               <Route path="/expert-portal" element={<ExpertPortal />} />
               <Route path="/candidate-portal" element={<CandidatePortal />} />
+              <Route path="/company-signup" element={<CompanySignup />} />
+              <Route path="/company" element={<CompanyLayout />}>
+                <Route index element={<CompanyDashboard />} />
+                <Route path="jobs" element={<CompanyJobs />} />
+                <Route path="candidates" element={<CompanyCandidates />} />
+                <Route path="tests" element={<CompanyTests />} />
+                <Route path="interviews" element={<CompanyInterviews />} />
+                <Route path="results" element={<CompanyResults />} />
+                <Route path="notifications" element={<CompanyNotifications />} />
+                <Route path="logs" element={<CompanyAuditLogs />} />
+                <Route path="settings" element={<CompanySettings />} />
+              </Route>
               <Route path="/apply/:jobId" element={<ApplyPage />} />
               <Route path="/privacy-policy" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Privacy Policy</h1><p className="text-muted-foreground">Privacy policy content coming soon.</p></div></div>} />
               <Route path="/terms-of-service" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Terms of Service</h1><p className="text-muted-foreground">Terms of service content coming soon.</p></div></div>} />
