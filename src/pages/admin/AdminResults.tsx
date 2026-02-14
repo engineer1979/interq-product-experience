@@ -1,138 +1,132 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { mockCandidateResults, CandidateResult } from "@/data/mockAdminData";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Eye } from "lucide-react";
+import { Search, Download, Eye } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AdminResults() {
-    const navigate = useNavigate();
-    const [searchQuery, setSearchQuery] = useState("");
-    const [statusFilter, setStatusFilter] = useState<string>("all");
-    const [sortBy, setSortBy] = useState<"date" | "score" | "name">("date");
+  const [search, setSearch] = useState("");
+  const [passFilter, setPassFilter] = useState("all");
+  const [page, setPage] = useState(0);
+  const PAGE_SIZE = 25;
 
-    let filteredResults = mockCandidateResults.filter((result) => {
-        const matchesSearch =
-            result.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            result.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            result.position.toLowerCase().includes(searchQuery.toLowerCase());
+  const { data, isLoading } = useQuery({
+    queryKey: ["admin-all-results", page],
+    queryFn: async () => {
+      const { data, count } = await supabase
+        .from("assessment_results")
+        .select("*, assessments(title, category)", { count: "exact" })
+        .order("completed_at", { ascending: false })
+        .range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1);
+      return { results: data ?? [], total: count ?? 0 };
+    },
+  });
 
-        const matchesStatus = statusFilter === "all" || result.status === statusFilter;
+  const filtered = data?.results.filter((r) => {
+    const title = (r.assessments as any)?.title?.toLowerCase() ?? "";
+    const matchSearch = title.includes(search.toLowerCase()) || r.user_id.includes(search);
+    const matchPass = passFilter === "all" || (passFilter === "passed" ? r.passed : !r.passed);
+    return matchSearch && matchPass;
+  }) ?? [];
 
-        return matchesSearch && matchesStatus;
-    });
+  const totalPages = Math.ceil((data?.total ?? 0) / PAGE_SIZE);
 
-    // Sort results
-    filteredResults = [...filteredResults].sort((a, b) => {
-        if (sortBy === "date") {
-            return new Date(b.test_date).getTime() - new Date(a.test_date).getTime();
-        } else if (sortBy === "score") {
-            return b.overall_score - a.overall_score;
-        } else {
-            return a.name.localeCompare(b.name);
-        }
-    });
+  const exportCSV = () => {
+    if (!filtered.length) return;
+    const header = "ID,Assessment,Category,Score,Percentage,Passed,Date\n";
+    const rows = filtered.map(r =>
+      `${r.id},"${(r.assessments as any)?.title}","${(r.assessments as any)?.category}",${r.score}/${r.total_points},${Number(r.percentage).toFixed(1)}%,${r.passed},${r.completed_at}`
+    ).join("\n");
+    const blob = new Blob([header + rows], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "interq-results.csv";
+    a.click();
+  };
 
-    const getStatusBadge = (status: CandidateResult["status"]) => {
-        const variants: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-            completed: "default",
-            reviewed: "secondary",
-            pending: "outline",
-            failed: "destructive"
-        };
-        return <Badge variant={variants[status]}>{status}</Badge>;
-    };
-
-    return (
-        <div className="space-y-6">
-            <div>
-                <h1 className="text-3xl font-bold">Interview Results</h1>
-                <p className="text-muted-foreground">View and manage candidate interview recordings</p>
-            </div>
-
-            <div className="flex flex-col md:flex-row gap-4">
-                <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                        placeholder="Search by name, email, or position..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-10"
-                    />
-                </div>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Filter by status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="all">All Status</SelectItem>
-                        <SelectItem value="completed">Completed</SelectItem>
-                        <SelectItem value="reviewed">Reviewed</SelectItem>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="failed">Failed</SelectItem>
-                    </SelectContent>
-                </Select>
-                <Select value={sortBy} onValueChange={(v) => setSortBy(v as any)}>
-                    <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Sort by" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="date">Date</SelectItem>
-                        <SelectItem value="score">Score</SelectItem>
-                        <SelectItem value="name">Name</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
-
-            <div className="border rounded-lg">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Candidate</TableHead>
-                            <TableHead>Position</TableHead>
-                            <TableHead>Test Date</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Score</TableHead>
-                            <TableHead>Actions</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {filteredResults.map((result) => (
-                            <TableRow key={result.candidate_id}>
-                                <TableCell>
-                                    <div>
-                                        <p className="font-medium">{result.name}</p>
-                                        <p className="text-sm text-muted-foreground">{result.email}</p>
-                                    </div>
-                                </TableCell>
-                                <TableCell>{result.position}</TableCell>
-                                <TableCell>{new Date(result.test_date).toLocaleDateString()}</TableCell>
-                                <TableCell>{getStatusBadge(result.status)}</TableCell>
-                                <TableCell>
-                                    {result.overall_score > 0 ? (
-                                        <span className="font-medium">{result.overall_score}%</span>
-                                    ) : (
-                                        <span className="text-muted-foreground">-</span>
-                                    )}
-                                </TableCell>
-                                <TableCell>
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => navigate(`/admin/results/${result.candidate_id}`)}
-                                    >
-                                        <Eye className="h-4 w-4 mr-2" />
-                                        View
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </div>
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Test Results</h1>
+          <p className="text-sm text-muted-foreground mt-1">{data?.total ?? 0} total results</p>
         </div>
-    );
+        <Button variant="outline" size="sm" onClick={exportCSV}>
+          <Download className="h-4 w-4 mr-2" /> Export CSV
+        </Button>
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input placeholder="Search by test name or user ID..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-10" />
+        </div>
+        <Select value={passFilter} onValueChange={setPassFilter}>
+          <SelectTrigger className="w-[160px]"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Results</SelectItem>
+            <SelectItem value="passed">Passed</SelectItem>
+            <SelectItem value="failed">Failed</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <Card>
+        <CardContent className="p-0">
+          {isLoading ? (
+            <div className="p-6 space-y-3">{Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-12 w-full" />)}</div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Assessment</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>User ID</TableHead>
+                  <TableHead>Score</TableHead>
+                  <TableHead>Result</TableHead>
+                  <TableHead>Date</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filtered.map((r) => (
+                  <TableRow key={r.id}>
+                    <TableCell className="font-medium text-sm max-w-[200px] truncate">{(r.assessments as any)?.title}</TableCell>
+                    <TableCell><Badge variant="outline" className="text-[10px]">{(r.assessments as any)?.category}</Badge></TableCell>
+                    <TableCell className="font-mono text-xs">{r.user_id.slice(0, 8)}...</TableCell>
+                    <TableCell className="text-sm font-semibold">{r.score}/{r.total_points} ({Number(r.percentage).toFixed(0)}%)</TableCell>
+                    <TableCell>
+                      <Badge variant={r.passed ? "default" : "destructive"} className="text-[10px]">
+                        {r.passed ? "Pass" : "Fail"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{new Date(r.completed_at).toLocaleDateString()}</TableCell>
+                  </TableRow>
+                ))}
+                {!filtered.length && (
+                  <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">No results found</TableCell></TableRow>
+                )}
+              </TableBody>
+            </Table>
+          )}
+        </CardContent>
+      </Card>
+
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">Page {page + 1} of {totalPages}</p>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}>Previous</Button>
+            <Button variant="outline" size="sm" onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page >= totalPages - 1}>Next</Button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
