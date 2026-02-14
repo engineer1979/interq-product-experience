@@ -1,4 +1,4 @@
-import { Mail, Linkedin, Twitter, Facebook, Instagram, ArrowRight } from "lucide-react";
+import { Mail, Linkedin, Facebook, Instagram, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate, Link } from "react-router-dom";
@@ -55,10 +55,9 @@ const Footer = () => {
               The enterprise-grade AI interviewing platform. Empowering hiring teams with data-driven insights and autonomous workflows.
             </p>
             <div className="flex gap-4">
-              <Link to="#" className="p-2 rounded-full bg-slate-800 hover:bg-primary/20 hover:text-primary transition-colors"><Linkedin size={18} /></Link>
-              <Link to="#" className="p-2 rounded-full bg-slate-800 hover:bg-primary/20 hover:text-primary transition-colors"><Twitter size={18} /></Link>
-              <Link to="#" className="p-2 rounded-full bg-slate-800 hover:bg-primary/20 hover:text-primary transition-colors"><Facebook size={18} /></Link>
-              <Link to="#" className="p-2 rounded-full bg-slate-800 hover:bg-primary/20 hover:text-primary transition-colors"><Instagram size={18} /></Link>
+              <a href="https://www.facebook.com/profile.php?id=61583304695087" target="_blank" rel="noopener noreferrer" aria-label="Follow InterQ on Facebook" className="p-2 rounded-full bg-slate-800 hover:bg-primary/20 hover:text-primary hover:scale-110 transition-all"><Facebook size={20} /></a>
+              <a href="https://www.instagram.com/interq.interview/" target="_blank" rel="noopener noreferrer" aria-label="Follow InterQ on Instagram" className="p-2 rounded-full bg-slate-800 hover:bg-primary/20 hover:text-primary hover:scale-110 transition-all"><Instagram size={20} /></a>
+              <a href="https://www.linkedin.com/company/inter-tech-lnc/?viewAsMember=true" target="_blank" rel="noopener noreferrer" aria-label="Follow InterQ on LinkedIn" className="p-2 rounded-full bg-slate-800 hover:bg-primary/20 hover:text-primary hover:scale-110 transition-all"><Linkedin size={20} /></a>
             </div>
           </div>
 
