@@ -104,7 +104,7 @@ const WhoWeServe = () => {
                             <div className="absolute inset-0 bg-purple-900/10 group-hover:bg-transparent transition-colors z-10" />
                             <img
                                 src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80"
-                                alt="Interviewers"
+                                alt="Experts"
                                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                             />
                         </div>
@@ -113,12 +113,12 @@ const WhoWeServe = () => {
                                 <div className="h-10 w-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
                                     <Users className="h-5 w-5 text-purple-600" />
                                 </div>
-                                <h3 className="text-xl font-bold">For Interviewers</h3>
+                                <h3 className="text-xl font-bold">For Experts</h3>
                             </div>
                             <ul className="space-y-3">
                                 <li className="flex items-start gap-3 text-muted-foreground">
                                     <Users className="h-5 w-5 text-purple-500 shrink-0" />
-                                    <span>Join network of expert interviewers</span>
+                                    <span>Join network of domain experts</span>
                                 </li>
                                 <li className="flex items-start gap-3 text-muted-foreground">
                                     <Video className="h-5 w-5 text-purple-500 shrink-0" />

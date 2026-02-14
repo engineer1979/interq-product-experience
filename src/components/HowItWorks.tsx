@@ -22,7 +22,7 @@ const steps = [
     {
         icon: Video,
         title: "Expert Interview",
-        description: "Expert interviewer conducts online session (coding / MCQs / pair interview)."
+        description: "Expert conducts online session (coding / MCQs / pair interview)."
     },
     {
         icon: FileBarChart,

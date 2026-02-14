@@ -12,7 +12,7 @@ const ServiceDetails: React.FC = () => {
                         <CardTitle>Feature</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p>Interviews happen asynchronously conducted by vetted interviewers.</p>
+                        <p>Interviews happen asynchronously conducted by vetted experts.</p>
                     </CardContent>
                 </Card>
                 <Card className="shadow-md">

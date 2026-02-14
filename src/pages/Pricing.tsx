@@ -225,7 +225,7 @@ const Pricing = () => {
                 },
                 {
                   question: "What constitutes a 'Cognitive Assessment'?",
-                  answer: "A single interaction where a candidate engages with our AI interviewer or technical rubric. We provide detailed multi-modal feedback for every session.",
+                  answer: "A single interaction where a candidate engages with our AI expert or technical rubric. We provide detailed multi-modal feedback for every session.",
                 },
                 {
                   question: "Is platform white-labeling supported?",

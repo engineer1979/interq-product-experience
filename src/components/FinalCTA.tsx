@@ -77,7 +77,7 @@ const FinalCTA = () => {
                             className="h-12 sm:h-16 px-6 sm:px-8 text-base sm:text-lg bg-accent text-white hover:bg-accent/90 border border-white/20 shadow-xl w-full sm:w-auto hover:-translate-y-1 transition-all duration-300"
                         >
                             <Users className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
-                            Interviewers: Join as Evaluator
+                            Experts: Join as Evaluator
                         </Button>
                     </div>
                 </motion.div>

@@ -44,7 +44,7 @@ const INITIAL_INTEGRATIONS: Integration[] = [
         provider: "google_calendar",
         category: "calendar",
         name: "Google Calendar",
-        description: "Sync interviewer availability and prevent double-booking.",
+        description: "Sync expert availability and prevent double-booking.",
         is_connected: true,
         is_enabled: true
     },
