@@ -1,0 +1,12 @@
+project_id = "lenltzlsnlbzwlizmijc"
+
+[functions.create-demo-users]
+verify_jwt = false
+
+[functions.create-user]
+verify_jwt = false
+
+
+[functions.evaluate-code]
+verify_jwt = false
+

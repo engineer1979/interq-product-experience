@@ -1,0 +1,27 @@
+name: Vercel Deploy (via Deploy Hook)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    name: Trigger Vercel Deploy Hook
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate secret presence
+        run: |
+          if [ -z "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" ]; then
+            echo "Missing GitHub Secret: VERCEL_DEPLOY_HOOK_URL"
+            echo "Add it in GitHub → Settings → Secrets and variables → Actions"
+            exit 1
+          fi
+      - name: Trigger deploy
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}")
+          echo "Vercel responded with HTTP $code"
+          if [ "$code" -lt 200 ] || [ "$code" -ge 300 ]; then
+            echo "Deploy hook call failed"
+            exit 1
+          fi
