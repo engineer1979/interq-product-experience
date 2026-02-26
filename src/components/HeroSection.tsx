@@ -97,7 +97,8 @@ const HeroSection = () => {
               <Button
                 onClick={() => navigate("/get-started")}
                 size="lg"
-                className="w-full sm:w-auto h-13 px-9 text-base font-semibold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200 bg-primary hover:bg-primary/90 text-primary-foreground"
+                variant="premium"
+                className="w-full sm:w-auto h-13 px-9 text-base font-semibold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200"
               >
                 Request a Demo
                 <ArrowRight className="ml-2 h-4 w-4" />

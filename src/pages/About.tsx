@@ -9,6 +9,7 @@ import { Target, Eye, Heart, Zap, Users, Globe } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import TeamSection from "@/components/TeamSection";
+ 
 
 const About = () => {
   const { toast } = useToast();
@@ -50,7 +51,7 @@ const About = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 gradient-hero">
+      <section className="pt-32 pb-20 px-4 hero-blue">
         <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

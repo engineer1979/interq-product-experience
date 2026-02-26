@@ -17,6 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+ 
 
 const Pricing = () => {
   const plans = [
@@ -85,7 +86,7 @@ const Pricing = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 relative overflow-hidden text-center">
+      <section className="pt-32 pb-20 px-4 relative overflow-hidden text-center hero-blue">
         <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
         <div className="container mx-auto max-w-7xl relative z-10">
           <motion.div
@@ -151,9 +152,9 @@ const Pricing = () => {
 
                 <Button
                   onClick={() => window.location.href = '/get-started'}
-                  variant={plan.popular ? "default" : "outline"}
+                  variant={plan.popular ? "premium" : "outline"}
                   className={`w-full h-14 text-sm font-black uppercase tracking-widest shadow-sm rounded-2xl ${plan.popular
-                      ? "gradient-primary border-0 hover:shadow-glow-sm transition-all text-white"
+                      ? "border-0 hover:shadow-glow-sm transition-all"
                       : "border-primary/20 hover:bg-primary/5 text-primary"
                     }`}
                 >

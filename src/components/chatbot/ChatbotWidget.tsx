@@ -25,6 +25,8 @@ import {
   getActiveAssessmentSession,
   createSupportTicket,
 } from "@/services/chatbot/actions";
+import { Bot, Send, Maximize2, Minimize2, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 function uid() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -112,6 +114,49 @@ export function ChatbotWidget() {
     }
   }, [open]);
 
+  function extractSiteText(): { text: string; source: string }[] {
+    const nodes = Array.from(document.querySelectorAll("main, section, article, header, footer"));
+    const chunks: { text: string; source: string }[] = [];
+    nodes.forEach((el, i) => {
+      const txt = (el.textContent || "").replace(/\s+/g, " ").trim();
+      if (txt.length > 120) {
+        chunks.push({ text: txt.slice(0, 4000), source: (el.getAttribute("aria-label") || el.tagName || `section-${i}`).toLowerCase() });
+      }
+    });
+    return chunks;
+  }
+
+  function score(a: string, b: string) {
+    const aw = a.toLowerCase().split(/\W+/).filter(Boolean);
+    const bw = b.toLowerCase().split(/\W+/).filter(Boolean);
+    const set = new Set(bw);
+    let s = 0;
+    for (const w of aw) if (set.has(w)) s += 1;
+    return s / Math.max(aw.length, 1);
+  }
+
+  function knowledgeAnswer(query: string) {
+    const corpus = extractSiteText();
+    if (!corpus.length) return null;
+    const ranked = corpus
+      .map((c) => ({ c, s: score(query, c.text) }))
+      .filter((x) => x.s > 0)
+      .sort((a, b) => b.s - a.s)
+      .slice(0, 3);
+    if (!ranked.length) return null;
+    const summary = ranked.map((r) => {
+      const idx = r.c.text.toLowerCase().indexOf(query.toLowerCase().split(/\W+/)[0] || "");
+      const start = Math.max(0, idx - 120);
+      const end = Math.min(r.c.text.length, (idx > 0 ? idx : 0) + 240);
+      return `• ${r.c.text.slice(start, end)}…`;
+    }).join("\n");
+    const links = Array.from(document.querySelectorAll('a[href^="/"]'))
+      .slice(0, 8)
+      .map((a) => ({ href: a.getAttribute("href") || "/", label: (a.textContent || "").trim() }))
+      .filter((l) => l.label.length > 0);
+    return { summary, links };
+  }
+
   async function handleSend(text: string) {
     if (!text.trim()) return;
     pushUser(text);
@@ -177,7 +222,12 @@ export function ChatbotWidget() {
           }
         }
       } else {
-        pushBot("I can help with assessments, interviews, results, and more. Use the quick actions below.");
+        const ans = knowledgeAnswer(text);
+        if (ans) {
+          pushBot(`Here’s what I found based on current page content:\n${ans.summary}`, { type: "links", links: ans.links });
+        } else {
+          pushBot("I’ll help you navigate. Try: Features, Product, Pricing, Integrations, Case Studies, Contact.");
+        }
       }
     } catch (e: any) {
       pushBot(`Error: ${e.message ?? "Something went wrong."}`);
@@ -359,13 +409,15 @@ export function ChatbotWidget() {
   }
   return (
     <>
-      <button
-        aria-label="Open InterQ Chatbot"
-        className="fixed bottom-4 right-4 z-50 rounded-full bg-primary text-primary-foreground h-14 w-14 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+      <motion.button
+        aria-label="Open InterQ Chat Assistant"
+        className="fixed bottom-6 right-6 z-50 rounded-full h-16 w-16 shadow-glow ring-2 ring-primary/40 bg-[var(--gradient-primary)] text-white flex items-center justify-center"
         onClick={() => setOpen((v) => !v)}
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.96 }}
       >
-        <span className="sr-only">Open Chatbot</span>
-        <span aria-hidden>💬</span>
+        <span className="sr-only">Open Chat Assistant</span>
+        <Bot className="h-7 w-7 drop-shadow" />
         {unread > 0 && (
           <span
             aria-label={`${unread} unread`}
@@ -374,281 +426,258 @@ export function ChatbotWidget() {
             {unread}
           </span>
         )}
-      </button>
+      </motion.button>
 
-      {open && (
-        <div
-          role="dialog"
-          aria-label="InterQ Chatbot"
-          className={`fixed ${fullscreen ? "inset-0" : "bottom-24 right-4 w-96 max-w-[95vw] h-[70vh]"} z-50 bg-background border rounded-lg shadow-2xl flex flex-col`}
-        >
-          <header className="px-4 py-3 border-b flex items-center justify-between">
-            <div className="font-semibold">InterQ Assistant</div>
-            <div className="text-xs text-muted-foreground">Role: {role.toUpperCase().replace("_", " ")}</div>
-            <div className="flex items-center gap-2">
-              <select
-                aria-label="Language"
-                className="text-xs border rounded px-1 py-0.5"
-                value={language}
-                onChange={(e) => setLanguage(e.target.value as any)}
-              >
-                <option value="en">EN</option>
-                <option value="ur">UR</option>
-                <option value="ar">AR</option>
-              </select>
-              <button
-                aria-label="Toggle fullscreen"
-                className="text-xs border rounded px-2 py-1"
-                onClick={() => setFullscreen((v) => !v)}
-              >
-                {fullscreen ? "Exit" : "Full"}
-              </button>
-              <button
-                aria-label="Open history"
-                className="text-xs border rounded px-2 py-1"
-                onClick={() => setHistoryOpen((v) => !v)}
-              >
-                History
-              </button>
-            </div>
-          </header>
-          <div className="px-3 py-2 text-xs text-muted-foreground">
-            <div className="flex gap-2 overflow-x-auto">
-              {["Start an assessment", "View my results", "Schedule interview"].map((s) => (
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            role="dialog"
+            aria-label="InterQ Chat Assistant"
+            className={`fixed ${fullscreen ? "inset-0" : "bottom-24 right-6 w-[28rem] max-w-[95vw] h-[70vh]"} z-50 flex flex-col rounded-2xl border border-white/20 shadow-2xl backdrop-blur-xl bg-white/10`}
+            initial={{ opacity: 0, y: 20, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.98 }}
+          >
+            <header className="px-4 py-3 bg-[var(--gradient-primary)] text-white rounded-t-2xl flex items-center justify-between shadow-md">
+              <div className="flex items-center gap-3">
+                <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center ring-1 ring-white/30">
+                  <Bot className="h-5 w-5" />
+                </div>
+                <div className="font-semibold">InterQ AI Assistant</div>
+              </div>
+              <div className="flex items-center gap-2">
                 <button
-                  key={s}
-                  className="px-2 py-1 border rounded whitespace-nowrap hover:bg-muted"
-                  onClick={() => handleSend(s)}
+                  aria-label="Toggle fullscreen"
+                  className="h-7 w-7 rounded bg-white/20 hover:bg-white/30 flex items-center justify-center"
+                  onClick={() => setFullscreen((v) => !v)}
                 >
-                  {s}
+                  {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                 </button>
-              ))}
-            </div>
-          </div>
-          <div className="flex-1 overflow-y-auto p-3 space-y-3" aria-live="polite" aria-busy={typing}>
-            {messages.map((m) => (
-              <div
-                key={m.id}
-                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${
-                    m.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
-                  }`}
+                <button
+                  aria-label="Close chat"
+                  className="h-7 w-7 rounded bg-white/20 hover:bg-white/30 flex items-center justify-center"
+                  onClick={() => setOpen(false)}
                 >
-                  <div>{m.text}</div>
-                  {(m.payload as any)?.type === "cards" && Array.isArray((m.payload as any).items) && (
-                    <div className="mt-2 grid grid-cols-1 gap-2">
-                      {(m.payload as any).items.map((it: any) => (
-                        <div key={it.id ?? it.title} className="border rounded p-2 bg-background">
-                          <div className="font-medium">{it.title}</div>
-                          {it.duration_minutes && (
-                            <div className="text-xs text-muted-foreground">{it.duration_minutes} min</div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  {(m.payload as any)?.type === "table" && Array.isArray((m.payload as any).rows) && (m.payload as any).rows.length > 0 && (
-                    <div className="mt-2 overflow-x-auto">
-                      <table className="text-xs w-full">
-                        <thead>
-                          <tr>
-                            {Object.keys((m.payload as any).rows[0] ?? {}).slice(0, 4).map((k: string) => (
-                              <th key={k} className="text-left font-semibold pr-2 py-1">
-                                {k}
-                              </th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {(m.payload as any).rows.slice(0, 5).map((r: any, idx: number) => (
-                            <tr key={idx}>
-                              {Object.values(r)
-                                .slice(0, 4)
-                                .map((v: any, i: number) => (
-                                  <td key={i} className="pr-2 py-1">
-                                    {String(v)}
-                                  </td>
-                                ))}
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            </header>
+
+            <div className="px-3 py-2 text-xs text-white/80 bg-white/5 border-b border-white/10">
+              <div className="flex gap-2 overflow-x-auto">
+                {["Features", "Product", "Pricing", "Integrations", "Case Studies", "Contact"].map((s) => (
+                  <button
+                    key={s}
+                    className="px-2 py-1 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 whitespace-nowrap"
+                    onClick={() => handleSend(s)}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-3 space-y-3" aria-live="polite" aria-busy={typing}>
+              {messages.map((m) => (
+                <div
+                  key={m.id}
+                  className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm shadow-md ${
+                      m.role === "user"
+                        ? "bg-white text-foreground"
+                        : "bg-primary/15 border border-primary/20 text-white"
+                    }`}
+                  >
+                    <div>{m.text}</div>
+                    {(m.payload as any)?.type === "cards" && Array.isArray((m.payload as any).items) && (
+                      <div className="mt-2 grid grid-cols-1 gap-2">
+                        {(m.payload as any).items.map((it: any) => (
+                          <div key={it.id ?? it.title} className="rounded-xl p-2 bg-white/10 border border-white/20">
+                            <div className="font-medium text-white">{it.title}</div>
+                            {it.duration_minutes && (
+                              <div className="text-xs text-white/70">{it.duration_minutes} min</div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {(m.payload as any)?.type === "table" && Array.isArray((m.payload as any).rows) && (m.payload as any).rows.length > 0 && (
+                      <div className="mt-2 overflow-x-auto">
+                        <table className="text-xs w-full text-white/90">
+                          <thead>
+                            <tr>
+                              {Object.keys((m.payload as any).rows[0] ?? {}).slice(0, 4).map((k: string) => (
+                                <th key={k} className="text-left font-semibold pr-2 py-1">
+                                  {k}
+                                </th>
+                              ))}
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody>
+                            {(m.payload as any).rows.slice(0, 5).map((r: any, idx: number) => (
+                              <tr key={idx}>
+                                {Object.values(r)
+                                  .slice(0, 4)
+                                  .map((v: any, i: number) => (
+                                    <td key={i} className="pr-2 py-1">
+                                      {String(v)}
+                                    </td>
+                                  ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                    {(m.payload as any)?.type === "links" && Array.isArray((m.payload as any).links) && (
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {(m.payload as any).links.slice(0, 5).map((l: any, i: number) => (
+                          <a key={i} href={l.href} className="text-xs underline decoration-white/40 hover:text-white">
+                            {l.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                    <div className="text-[10px] opacity-70 mt-1">
+                      {new Date(m.timestamp).toLocaleTimeString()}
                     </div>
-                  )}
-                  <div className="text-[10px] opacity-70 mt-1">
-                    {new Date(m.timestamp).toLocaleTimeString()}
                   </div>
                 </div>
-              </div>
-            ))}
-            {typing && (
-              <div className="text-xs text-muted-foreground">Assistant is typing…</div>
-            )}
-            <div ref={chatEndRef} />
-          </div>
-          <div className="border-t p-3">
-            <div className="flex flex-wrap gap-2 mb-2">
-              {quickActions.map((qa) => (
-                <button
-                  key={qa.id}
-                  className="px-2 py-1 text-xs rounded border hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                  onClick={() => handleQuickAction(qa)}
-                  aria-label={`Quick action ${qa.label}`}
-                >
-                  {qa.label}
-                </button>
               ))}
-            </div>
-            {supportMode && (
-              <div className="mb-3 border rounded p-2">
-                <div className="text-xs mb-2">Create Support Ticket</div>
-                <div className="flex items-center gap-2 mb-2">
-                  <select
-                    aria-label="Issue type"
-                    className="border rounded px-2 py-1 text-xs"
-                    value={issueType}
-                    onChange={(e) => setIssueType(e.target.value as any)}
-                  >
-                    <option value="login">Login</option>
-                    <option value="assessment">Assessment</option>
-                    <option value="interview">Interview</option>
-                    <option value="results">Results</option>
-                    <option value="billing">Billing</option>
-                    <option value="other">Other</option>
-                  </select>
-                  <button
-                    className="px-2 py-1 text-xs rounded border"
-                    onClick={async () => {
-                      if (!issueText.trim()) {
-                        pushBot("Describe your issue first.");
-                        return;
-                      }
-                      setTyping(true);
-                      try {
-                        const t = await createSupportTicket(issueType, issueText);
-                        pushBot(`Ticket created: ${t.ticketId}. Our support will respond via email.`);
-                        setSupportMode(false);
-                        setIssueText("");
-                      } catch (e: any) {
-                        pushBot(`Error: ${e.message ?? "Could not create ticket."}`);
-                      } finally {
-                        setTyping(false);
-                      }
-                    }}
-                  >
-                    Submit
-                  </button>
+              {typing && (
+                <div className="flex items-center gap-1 text-white/70">
+                  <span className="inline-block h-2 w-2 rounded-full bg-white/60 animate-bounce" style={{ animationDelay: "0ms" }} />
+                  <span className="inline-block h-2 w-2 rounded-full bg-white/60 animate-bounce" style={{ animationDelay: "120ms" }} />
+                  <span className="inline-block h-2 w-2 rounded-full bg-white/60 animate-bounce" style={{ animationDelay: "240ms" }} />
                 </div>
-                <textarea
-                  aria-label="Describe your issue"
-                  className="w-full border rounded p-2 text-sm"
-                  rows={3}
-                  placeholder="Describe what went wrong…"
-                  value={issueText}
-                  onChange={(e) => setIssueText(e.target.value)}
-                />
+              )}
+              <div ref={chatEndRef} />
+            </div>
+
+            <div className="border-t border-white/10 p-3 bg-white/5 rounded-b-2xl">
+              <div className="flex flex-wrap gap-2 mb-2">
+                {quickActions.map((qa) => (
+                  <button
+                    key={qa.id}
+                    className="px-2 py-1 text-xs rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-white/30"
+                    onClick={() => handleQuickAction(qa)}
+                    aria-label={`Quick action ${qa.label}`}
+                  >
+                    {qa.label}
+                  </button>
+                ))}
+                <button
+                  className="ml-auto px-2 py-1 text-xs rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white"
+                  onClick={() => setHistoryOpen((v) => !v)}
+                  aria-label="Toggle history"
+                >
+                  History
+                </button>
+                <div className="text-xs text-white/60">Role: {role.toUpperCase().replace("_", " ")}</div>
               </div>
-            )}
-            <div className="flex items-center gap-2 mb-2">
-              <input
-                type="datetime-local"
-                aria-label="Select interview time"
-                className="border rounded px-2 py-1 text-xs"
-                value={scheduleISO ? scheduleISO.slice(0, 16) : ""}
-                onChange={(e) => setScheduleISO(e.target.value ? new Date(e.target.value).toISOString() : "")}
-              />
-              <button
-                className="px-2 py-1 text-xs rounded border"
-                onClick={async () => {
-                  if (!user) {
-                    pushBot("Sign in to schedule.");
-                    return;
-                  }
-                  if (!scheduleISO) {
-                    pushBot("Pick a time first.");
-                    return;
-                  }
-                  setTyping(true);
-                  try {
-                    await requestInterviewBooking(user.id, scheduleISO);
-                    pushBot("Interview scheduled or requested.");
-                  } catch (e: any) {
-                    pushBot(`Error: ${e.message ?? "Could not schedule."}`);
-                  } finally {
-                    setTyping(false);
-                  }
+              {supportMode && (
+                <div className="mb-3 border border-white/20 rounded-xl p-2 bg-white/10">
+                  <div className="text-xs mb-2 text-white/90">Create Support Ticket</div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <select
+                      aria-label="Issue type"
+                      className="border border-white/20 bg-white/10 text-white rounded px-2 py-1 text-xs"
+                      value={issueType}
+                      onChange={(e) => setIssueType(e.target.value as any)}
+                    >
+                      <option value="login">Login</option>
+                      <option value="assessment">Assessment</option>
+                      <option value="interview">Interview</option>
+                      <option value="results">Results</option>
+                      <option value="billing">Billing</option>
+                      <option value="other">Other</option>
+                    </select>
+                    <button
+                      className="px-2 py-1 text-xs rounded bg-white/10 border border-white/20 text-white hover:bg-white/20"
+                      onClick={async () => {
+                        if (!issueText.trim()) {
+                          pushBot("Describe your issue first.");
+                          return;
+                        }
+                        setTyping(true);
+                        try {
+                          const t = await createSupportTicket(issueType, issueText);
+                          pushBot(`Ticket created: ${t.ticketId}. Our support will respond via email.`);
+                          setSupportMode(false);
+                          setIssueText("");
+                        } catch (e: any) {
+                          pushBot(`Error: ${e.message ?? "Could not create ticket."}`);
+                        } finally {
+                          setTyping(false);
+                        }
+                      }}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                  <textarea
+                    aria-label="Describe your issue"
+                    className="w-full border border-white/20 bg-white/10 text-white rounded p-2 text-sm placeholder-white/50"
+                    rows={3}
+                    placeholder="Describe what went wrong…"
+                    value={issueText}
+                    onChange={(e) => setIssueText(e.target.value)}
+                  />
+                </div>
+              )}
+              <form
+                className="flex items-center gap-2"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const t = input;
+                  setInput("");
+                  handleSend(t);
                 }}
               >
-                Schedule
-              </button>
-              <label className="text-xs">
+                <select
+                  aria-label="Language"
+                  className="text-xs border border-white/20 bg-white/10 text-white rounded px-2 py-1"
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value as any)}
+                >
+                  <option value="en">EN</option>
+                  <option value="ur">UR</option>
+                  <option value="ar">AR</option>
+                </select>
                 <input
-                  type="file"
-                  className="hidden"
-                  onChange={async (e) => {
-                    const f = e.target.files?.[0];
-                    if (!f) return;
-                    setUploading(true);
-                    try {
-                      const path = `uploads/${uid()}_${f.name}`;
-                      await uploadFileToResumes(f, path);
-                      pushBot("File uploaded.");
-                    } catch (err: any) {
-                      pushBot(`Upload error: ${err.message ?? "failed"}`);
-                    } finally {
-                      setUploading(false);
-                    }
-                  }}
+                  aria-label="Type your message"
+                  className="flex-1 border border-white/20 bg-white/10 text-white rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-white/30 placeholder-white/60"
+                  placeholder="Ask about Features, Pricing, Integrations…"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
                 />
-                <span className="ml-2 border rounded px-2 py-1 cursor-pointer">Upload</span>
-              </label>
-              {uploading && <span className="text-xs text-muted-foreground">Uploading…</span>}
+                <button
+                  type="submit"
+                  className="px-3 py-2 rounded-full bg-[var(--gradient-primary)] text-white text-sm shadow-glow hover:brightness-110"
+                >
+                  <Send className="h-4 w-4" />
+                </button>
+              </form>
+              {historyOpen && (
+                <aside className="mt-2 max-h-32 overflow-y-auto text-xs text-white/80 space-y-1">
+                  {messages
+                    .slice()
+                    .reverse()
+                    .slice(0, 50)
+                    .map((m) => (
+                      <div key={m.id} className="truncate">
+                        {m.role === "user" ? "You: " : "Bot: "}
+                        {m.text}
+                      </div>
+                    ))}
+                </aside>
+              )}
             </div>
-            <form
-              className="flex gap-2"
-              onSubmit={(e) => {
-                e.preventDefault();
-                const t = input;
-                setInput("");
-                handleSend(t);
-              }}
-            >
-              <input
-                aria-label="Type your message"
-                className="flex-1 border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                placeholder="Ask me to start an assessment, schedule interview…"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-              />
-              <button
-                type="submit"
-                className="px-3 py-2 rounded bg-primary text-primary-foreground text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-              >
-                Send
-              </button>
-            </form>
-          </div>
-          {historyOpen && (
-            <aside className="absolute top-0 left-0 h-full w-64 bg-background border-r p-3 overflow-y-auto">
-              <div className="font-medium mb-2 text-sm">History</div>
-              <div className="space-y-1 text-xs">
-                {messages
-                  .slice()
-                  .reverse()
-                  .slice(0, 50)
-                  .map((m) => (
-                    <div key={m.id} className="truncate">
-                      {m.role === "user" ? "You: " : "Bot: "}
-                      {m.text}
-                    </div>
-                  ))}
-              </div>
-            </aside>
-          )}
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

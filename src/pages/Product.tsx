@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileQuestion, Video, BarChart3, Shield, Zap, Users } from "lucide-react";
+ 
 
 const Product = () => {
   const [activeTab, setActiveTab] = useState("assessments");
@@ -37,7 +38,7 @@ const Product = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 gradient-hero">
+      <section className="pt-32 pb-20 px-4 hero-blue">
         <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -110,7 +111,7 @@ const Product = () => {
                       </li>
                     ))}
                   </ul>
-                  <Button className="mt-6 sm:mt-8 w-full sm:w-auto h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg" size="lg" onClick={() => navigate('/assessments')}>
+                  <Button variant="premium" className="mt-6 sm:mt-8 w-full sm:w-auto h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg" size="lg" onClick={() => navigate('/assessments')}>
                     Try Assessment Demo
                   </Button>
                 </div>
@@ -154,7 +155,7 @@ const Product = () => {
                       </li>
                     ))}
                   </ul>
-                  <Button className="mt-8 w-full sm:w-auto" size="lg" onClick={() => navigate('/ai-interview')}>
+                  <Button variant="premium" className="mt-8 w-full sm:w-auto" size="lg" onClick={() => navigate('/ai-interview')}>
                     Watch Interview Demo
                   </Button>
                 </div>
@@ -182,7 +183,7 @@ const Product = () => {
                       </li>
                     ))}
                   </ul>
-                  <Button className="mt-8 w-full sm:w-auto" size="lg" onClick={() => navigate('/interviews')}>
+                  <Button variant="premium" className="mt-8 w-full sm:w-auto" size="lg" onClick={() => navigate('/interviews')}>
                     Explore Analytics
                   </Button>
                 </div>

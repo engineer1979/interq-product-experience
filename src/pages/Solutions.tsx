@@ -115,7 +115,7 @@ const Solutions = () => {
           >
             <div className="relative mb-8 rounded-[2.5rem] overflow-hidden shadow-elegant max-w-5xl mx-auto border border-white/10">
               <img
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"
+                src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=1920"
                 alt="Strategic Global Hiring - Professional Team Collaboration"
                 className="w-full h-72 md:h-[500px] object-cover"
                 loading="lazy"
