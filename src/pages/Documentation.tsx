@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -100,7 +100,7 @@ const Documentation = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <EnhancedNavigation />
 
       <div className="container mx-auto max-w-7xl pt-32 pb-20 px-4 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-12">
@@ -229,7 +229,7 @@ const Documentation = () => {
         </div>
       </div>
 
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Check, Info, ArrowRight, Zap, Globe, ShieldCheck, Mail } from "lucide-react";
 import {
@@ -82,11 +82,11 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navigation />
+    <div className="min-h-screen hero-blue bg-aurora text-foreground">
+      <EnhancedNavigation />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 relative overflow-hidden text-center hero-blue">
+      <section className="pt-32 pb-20 px-4 relative overflow-hidden text-center">
         <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
         <div className="container mx-auto max-w-7xl relative z-10">
           <motion.div
@@ -95,10 +95,10 @@ const Pricing = () => {
             transition={{ duration: 0.6 }}
             className="mb-16"
           >
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">
-              Scale Your <span className="gradient-primary bg-clip-text text-transparent">Potential</span>
+            <h1 className="text-5xl md:text-7xl fancy-heading mb-6 tracking-tight text-white">
+              Scale Your <span className="gradient-text-brand">Potential</span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 font-medium">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto mb-10 font-medium">
               Enterprise-grade hiring solutions tailored to your unique organizational structure. Compare our tiers below and connect with our team.
             </p>
           </motion.div>
@@ -128,11 +128,11 @@ const Pricing = () => {
                     <plan.icon className={`h-7 w-7 text-primary`} />
                   </div>
                   <h3 className="text-2xl font-black mb-2 tracking-tight">{plan.name}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-6 font-medium">{plan.description}</p>
+                  <p className="text-white/80 text-sm leading-relaxed mb-6 font-medium">{plan.description}</p>
 
                   <div className="h-20 flex flex-col justify-end">
                     <div className="flex flex-col text-left">
-                      <span className="text-muted-foreground text-[10px] font-black uppercase tracking-[0.2em] mb-1">Pricing Model</span>
+                      <span className="text-white/80 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Pricing Model</span>
                       <span className="text-4xl font-black tracking-tighter">Contact Sales</span>
                     </div>
                   </div>
@@ -145,7 +145,7 @@ const Pricing = () => {
                       <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 mt-0.5">
                         <Check className="w-3 h-3 text-emerald-500" />
                       </div>
-                      <span className="text-sm font-bold text-foreground/80 group-hover:text-foreground transition-colors text-left">{feature}</span>
+                      <span className="text-sm font-bold text-white/80 group-hover:text-white transition-colors text-left">{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -177,7 +177,7 @@ const Pricing = () => {
               <Table>
                 <TableHeader className="bg-secondary/30">
                   <TableRow className="border-border/40">
-                    <TableHead className="w-[300px] text-xs font-black uppercase tracking-widest py-8 pl-10 text-muted-foreground">Functional Specifications</TableHead>
+                    <TableHead className="w-[300px] text-xs font-black uppercase tracking-widest py-8 pl-10 text-white/80">Functional Specifications</TableHead>
                     <TableHead className="text-center text-xs font-black uppercase tracking-widest text-foreground">Starter</TableHead>
                     <TableHead className="text-center text-xs font-black uppercase tracking-widest text-primary">Professional</TableHead>
                     <TableHead className="text-center text-xs font-black uppercase tracking-widest text-foreground">Organizational</TableHead>
@@ -191,7 +191,7 @@ const Pricing = () => {
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger>
-                              <Info className="h-3.5 w-3.5 text-muted-foreground/50 hover:text-primary transition-colors" />
+                              <Info className="h-3.5 w-3.5 text-white/50 hover:text-primary transition-colors" />
                             </TooltipTrigger>
                             <TooltipContent className="bg-popover border-border/40">
                               <p className="text-xs font-bold">Deep analytic support for {row.feature.toLowerCase()}</p>
@@ -199,13 +199,13 @@ const Pricing = () => {
                           </Tooltip>
                         </TooltipProvider>
                       </TableCell>
-                      <TableCell className="text-center font-bold text-sm text-muted-foreground/80">
+                      <TableCell className="text-center font-bold text-sm text-white/80">
                         {typeof row.starter === 'boolean' ? (row.starter ? <Check className="mx-auto text-emerald-500" size={18} /> : "-") : row.starter}
                       </TableCell>
                       <TableCell className="text-center bg-primary/5 font-black text-sm text-primary">
                         {typeof row.pro === 'boolean' ? (row.pro ? <Check className="mx-auto text-emerald-500" size={18} /> : "-") : row.pro}
                       </TableCell>
-                      <TableCell className="text-center font-bold text-sm text-muted-foreground/80">
+                      <TableCell className="text-center font-bold text-sm text-white/80">
                         {typeof row.org === 'boolean' ? (row.org ? <Check className="mx-auto text-emerald-500" size={18} /> : "-") : row.org}
                       </TableCell>
                     </TableRow>
@@ -249,7 +249,7 @@ const Pricing = () => {
                     <div className="w-2 h-2 bg-primary rounded-full group-hover:animate-pulse" />
                     {faq.question}
                   </h3>
-                  <p className="text-muted-foreground text-xs font-medium leading-relaxed">{faq.answer}</p>
+                  <p className="text-white/80 text-xs font-medium leading-relaxed">{faq.answer}</p>
                 </motion.div>
               ))}
             </div>
@@ -257,7 +257,7 @@ const Pricing = () => {
         </div>
       </section>
 
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

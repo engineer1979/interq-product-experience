@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -89,7 +89,7 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <EnhancedNavigation />
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 relative overflow-hidden bg-gradient-to-b from-primary/5 to-transparent">
@@ -260,7 +260,7 @@ const Blog = () => {
         </div>
       </section>
 
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

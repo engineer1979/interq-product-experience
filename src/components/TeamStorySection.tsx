@@ -10,7 +10,7 @@ const values = [
 
 const TeamStorySection = () => {
   return (
-    <section className="py-28 px-4 bg-background relative overflow-hidden">
+    <section className="py-28 px-4 bg-transparent relative overflow-hidden">
       {/* Subtle background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-primary/[0.03] rounded-full blur-[120px]" />
@@ -46,8 +46,8 @@ const TeamStorySection = () => {
             <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-primary/5 border border-primary/15 text-primary text-xs font-semibold tracking-wider uppercase mb-5">
               Our Story
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground leading-tight">
-              Meet the Team <br /> <span className="text-primary">Behind InterQ</span>
+            <h2 className="text-4xl md:text-5xl fancy-heading mb-6 text-foreground leading-tight">
+              Meet the Team <br /> <span className="gradient-text-brand">Behind InterQ</span>
             </h2>
             <p className="text-xl text-foreground font-medium leading-relaxed mb-6">
               At InterQ, we help you hire the right people — without stress or guesswork.

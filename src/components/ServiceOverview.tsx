@@ -23,7 +23,7 @@ const products = [
 
 const ServiceOverview: React.FC = () => {
   return (
-    <section className="py-28 bg-background relative overflow-hidden">
+    <section className="py-28 bg-transparent relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/[0.03] rounded-full blur-[120px] pointer-events-none" />
 
       <div className="container mx-auto px-4 lg:px-8 max-w-7xl relative z-10">
@@ -36,7 +36,7 @@ const ServiceOverview: React.FC = () => {
           <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-primary/5 border border-primary/15 text-primary text-xs font-semibold tracking-wider uppercase mb-5">
             Our Products
           </span>
-          <h2 className="text-3xl md:text-5xl font-bold mb-5 text-foreground">InterQ Products</h2>
+          <h2 className="text-3xl md:text-5xl fancy-heading mb-5 text-foreground">InterQ Products</h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
             Comprehensive tools designed to cover every aspect of the technical hiring process.
           </p>

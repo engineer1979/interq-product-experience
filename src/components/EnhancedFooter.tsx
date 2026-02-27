@@ -63,7 +63,7 @@ const EnhancedFooter = () => {
   ];
 
   return (
-    <footer className="bg-foreground text-background">
+    <footer className="hero-blue bg-aurora">
       <div className="container mx-auto px-4 lg:px-8 py-16">
         {/* Top Section */}
         <div className="grid lg:grid-cols-3 gap-12 mb-16">
@@ -92,7 +92,7 @@ const EnhancedFooter = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-background/8 flex items-center justify-center text-background/50 hover:text-primary hover:bg-background/15 transition-all duration-200"
+                  className="w-9 h-9 rounded-lg bg-background/12 flex items-center justify-center text-background/80 hover:text-primary hover:bg-background/20 border border-background/20 transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
                   aria-label={`Follow us on ${social.name}`}
                 >
                   <social.icon className="h-4 w-4" />

@@ -26,7 +26,7 @@ const industries = [
 
 const FutureExpansion = () => {
   return (
-    <section className="py-28 bg-background relative overflow-hidden">
+    <section className="py-28 bg-transparent relative overflow-hidden">
       <div className="absolute inset-0 bg-[linear-gradient(hsl(var(--primary)/0.015)_1px,transparent_1px),linear-gradient(90deg,hsl(var(--primary)/0.015)_1px,transparent_1px)] bg-[size:48px_48px] pointer-events-none" />
 
       <div className="container mx-auto px-4 text-center relative z-10">

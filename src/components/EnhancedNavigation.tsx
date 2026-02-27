@@ -193,7 +193,7 @@ const EnhancedNavigation = () => {
                   className={`flex items-center gap-1 px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     isActive(item.href) || item.children?.some(child => isActive(child.href))
                       ? "bg-primary/10 text-primary shadow-sm"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                      : "text-white hover:text-primary hover:bg-muted/60"
                   }`}
                   aria-expanded={activeDropdown === item.label}
                   aria-haspopup={item.children ? "true" : "false"}
@@ -217,16 +217,16 @@ const EnhancedNavigation = () => {
                         <div className="p-2">
                           {item.children.map((child) => (
                             <button
-                              key={child.label}
-                              onClick={() => trackNavigation(child.label, child.href)}
-                              className={`w-full flex items-center gap-3 p-3 text-left rounded-md transition-all duration-200 hover:bg-muted/50 ${
-                                isActive(child.href) ? "text-primary bg-primary/10" : "text-foreground/80 hover:text-primary"
-                              }`}
-                            >
+                          key={child.label}
+                          onClick={() => trackNavigation(child.label, child.href)}
+                          className={`w-full flex items-center gap-3 p-3 text-left rounded-md transition-all duration-200 hover:bg-muted/50 ${
+                            isActive(child.href) ? "text-primary bg-primary/10" : "text-foreground hover:text-primary"
+                          }`}
+                        >
                               {child.icon && <child.icon size={18} className="text-primary" />}
                               <div>
                                 <div className="font-medium text-sm">{child.label}</div>
-                                {child.description && <div className="text-xs text-muted-foreground mt-0.5">{child.description}</div>}
+                                {child.description && <div className="text-xs text-white/80 mt-0.5">{child.description}</div>}
                               </div>
                             </button>
                           ))}
@@ -242,7 +242,7 @@ const EnhancedNavigation = () => {
               <Link
                 to="/admin"
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActive("/admin") ? "bg-primary/10 text-primary shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                  isActive("/admin") ? "bg-primary/10 text-primary shadow-sm" : "text-foreground/90 hover:text-primary hover:bg-muted/60"
                 }`}
               >
                 Admin
@@ -286,12 +286,12 @@ const EnhancedNavigation = () => {
                             <button
                               key={child.label}
                               onClick={() => trackNavigation(child.label, child.href)}
-                              className={`w-full flex items-center gap-3 p-3 text-left rounded-md transition-smooth hover:bg-muted/50 ${isActive(child.href) ? "text-primary bg-primary/10" : "text-foreground/80 hover:text-primary"}`}
+                              className={`w-full flex items-center gap-3 p-3 text-left rounded-md transition-smooth hover:bg-muted/50 ${isActive(child.href) ? "text-primary bg-primary/10" : "text-foreground hover:text-primary"}`}
                             >
                               {child.icon && <child.icon size={16} className="text-primary" />}
                               <div>
                                 <div className="font-medium text-sm">{child.label}</div>
-                                {child.description && <div className="text-xs text-muted-foreground mt-0.5">{child.description}</div>}
+                                {child.description && <div className="text-xs text-white/80 mt-0.5">{child.description}</div>}
                               </div>
                             </button>
                           ))}
@@ -300,7 +300,7 @@ const EnhancedNavigation = () => {
                     </div>
                   ))}
                   {isAdmin && (
-                    <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)} className={`block p-3 rounded-lg transition-smooth hover:bg-muted/50 ${isActive("/admin") ? "text-primary bg-primary/10" : "text-foreground/80 hover:text-primary"}`}>
+                    <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)} className={`block p-3 rounded-lg transition-smooth hover:bg-muted/50 ${isActive("/admin") ? "text-primary bg-primary/10" : "text-white hover:text-primary"}`}>
                       Admin Dashboard
                     </Link>
                   )}

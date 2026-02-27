@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -48,7 +48,7 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <EnhancedNavigation />
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 hero-blue">
@@ -242,7 +242,7 @@ const About = () => {
         </div>
       </section>
 
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

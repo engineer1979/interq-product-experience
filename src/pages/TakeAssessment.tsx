@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -408,7 +408,7 @@ export default function TakeAssessment() {
   return (
     <ProtectedRoute>
       <div className="min-h-screen flex flex-col bg-background">
-        <Navigation />
+        <EnhancedNavigation />
 
         <main className="flex-grow container mx-auto px-4 py-8 max-w-5xl">
           {/* Face Detection */}
@@ -512,7 +512,7 @@ export default function TakeAssessment() {
           violations={proctoringViolations}
         />
 
-        <Footer />
+        <EnhancedFooter />
       </div>
     </ProtectedRoute>
   );

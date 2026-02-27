@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -88,8 +88,8 @@ const Assessments = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
+    <div className="min-h-screen hero-blue bg-aurora">
+      <EnhancedNavigation />
 
       <section className="pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-7xl">
@@ -100,17 +100,17 @@ const Assessments = () => {
           >
             {/* Header */}
             <div className="text-center mb-16">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              <h1 className="text-4xl md:text-6xl fancy-heading mb-6 text-white">
                 Skill <span className="text-gradient">Assessments</span>
               </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-xl text-white/90 max-w-2xl mx-auto">
                 Validate your expertise with our industry-standard assessments. Take them anytime, anywhere.
               </p>
             </div>
 
             {/* How It Works - Process Explanation */}
             <div className="mb-20">
-              <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+              <h2 className="text-3xl fancy-heading text-center mb-12">How It Works</h2>
               <div className="grid md:grid-cols-5 gap-8 relative">
                 {[
                   { icon: Search, title: "1. Select", desc: "Choose an assessment", action: () => document.getElementById('assessment-list')?.scrollIntoView({ behavior: 'smooth' }) },
@@ -358,7 +358,7 @@ const Assessments = () => {
         </div>
       </section>
 
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -80,7 +80,7 @@ const HelpCenter = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <EnhancedNavigation />
 
       {/* Hero Search Section */}
       <section className="pt-32 pb-16 px-4 relative overflow-hidden bg-gradient-to-b from-primary/5 to-transparent">
@@ -242,7 +242,7 @@ const HelpCenter = () => {
         </div>
       </section>
 
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

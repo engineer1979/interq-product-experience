@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { useToast } from "@/components/ui/use-toast";
 import { AssessmentSetupWizard, AssessmentConfig } from "@/components/admin/AssessmentSetupWizard";
 import { motion } from "framer-motion";
@@ -78,7 +78,7 @@ export default function CreateAssessment() {
   return (
     <ProtectedRoute>
       <div className="min-h-screen flex flex-col bg-background selection:bg-primary/20">
-        <Navigation />
+        <EnhancedNavigation />
 
         {/* Decorative background gradients */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
@@ -127,7 +127,7 @@ export default function CreateAssessment() {
           )}
         </main>
 
-        <Footer />
+        <EnhancedFooter />
       </div>
     </ProtectedRoute>
   );

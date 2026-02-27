@@ -1,6 +1,5 @@
 import EnhancedNavigation from "@/components/EnhancedNavigation";
 import HeroSection from "@/components/HeroSection";
-import CompanyLogosSection from "@/components/CompanyLogosSection";
 import TeamStorySection from "@/components/TeamStorySection";
 import CompanyOverview from "@/components/CompanyOverview";
 import TeamSection from "@/components/TeamSection";
@@ -21,12 +20,10 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <AnimatedBackground />
       <EnhancedNavigation />
-      <div className="animate-fade-in hero-blue">
+      <div className="animate-fade-in hero-blue bg-aurora">
         <HeroSection />
       </div>
-      <div className="animate-fade-in section-blue-light">
-        <CompanyLogosSection />
-      </div>
+      {/* Clients section removed per request */}
       <div className="animate-fade-in section-blue-dark">
         <TeamStorySection />
       </div>

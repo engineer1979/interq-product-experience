@@ -11,7 +11,7 @@ const clients = [
 
 const CompanyLogosSection = () => {
   return (
-    <section className="py-20 md:py-28 bg-gradient-to-b from-background to-muted/30 border-y border-border">
+    <section className="py-20 md:py-28 bg-background bg-gradient-to-b from-background to-muted/30 border-y border-border">
       <div className="container mx-auto px-4 max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

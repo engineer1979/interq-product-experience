@@ -90,7 +90,7 @@ const WhoWeServe = () => {
                 </div>
                 <ul className="space-y-3.5">
                   {card.features.map((feature) => (
-                    <li key={feature.text} className="flex items-start gap-3 text-muted-foreground text-sm">
+                    <li key={feature.text} className="flex items-start gap-3 text-foreground text-sm">
                       <feature.icon className="h-4.5 w-4.5 text-primary shrink-0 mt-0.5" />
                       <span>{feature.text}</span>
                     </li>

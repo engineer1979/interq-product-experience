@@ -47,7 +47,7 @@ const team = [
 
 const TeamSection = () => {
   return (
-    <section className="py-28 relative overflow-hidden bg-gradient-to-b from-background via-muted/20 to-background">
+    <section className="py-28 relative overflow-hidden bg-background bg-gradient-to-b from-background via-muted/20 to-background">
       {/* Decorative background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-0 w-[600px] h-[600px] bg-primary/[0.03] rounded-full blur-[150px]" />
@@ -68,7 +68,7 @@ const TeamSection = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-5 text-foreground tracking-tight">
             Meet the Team Behind InterQ
           </h2>
-          <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mx-auto">
+          <p className="text-white/80 text-lg leading-relaxed max-w-2xl mx-auto">
             The talent, expertise, and passion driving our platform's success.
           </p>
         </motion.div>
@@ -126,16 +126,16 @@ const TeamCard = ({ member, index }: TeamCardProps) => (
         {member.role}
       </p>
 
-      <p className="text-muted-foreground text-sm leading-relaxed mb-5 flex-1">
+      <p className="text-foreground text-sm leading-relaxed mb-5 flex-1">
         {member.bio}
       </p>
 
-      <p className="italic text-xs text-muted-foreground/80 mb-4">
+      <p className="italic text-xs text-white/80 mb-4">
         "{member.quote}"
       </p>
 
       {/* Social */}
-      <div className="flex gap-1.5">
+      <div className="flex gap-2">
         {[
           { href: socialLinks.facebook, icon: Facebook, label: "Facebook" },
           { href: socialLinks.instagram, icon: Instagram, label: "Instagram" },
@@ -147,9 +147,9 @@ const TeamCard = ({ member, index }: TeamCardProps) => (
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${member.name} on ${label}`}
-            className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-200"
+            className="w-9 h-9 rounded-full flex items-center justify-center text-foreground hover:text-primary bg-accent/40 hover:bg-primary/10 border border-border/60 transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
           >
-            <Icon className="w-3.5 h-3.5" />
+            <Icon className="w-4 h-4" />
           </a>
         ))}
       </div>

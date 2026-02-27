@@ -12,7 +12,7 @@ const CompanyOverview = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-28 bg-muted/30 relative overflow-hidden">
+    <section ref={ref} className="py-28 bg-background bg-muted/30 relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-primary/[0.03] rounded-full blur-[120px]" />
         <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-primary/[0.02] rounded-full blur-[100px]" />
@@ -134,15 +134,15 @@ const CompanyOverview = () => {
 
           {/* Team and CEO duplicates — using glass-card */}
           <Accordion type="single" collapsible className="w-full space-y-4">
-            <AccordionItem value="team" className="glass-card px-8 border border-border/30 rounded-2xl">
-              <AccordionTrigger className="text-lg font-semibold hover:no-underline py-6">Meet the Team</AccordionTrigger>
+            <AccordionItem value="team" className="glass-card px-8 border border-border/30 rounded-2xl bg-background">
+              <AccordionTrigger className="text-lg font-semibold hover:no-underline py-6 text-foreground">Meet the Team</AccordionTrigger>
               <AccordionContent className="text-muted-foreground text-base leading-relaxed pb-8">
                 Our team is made up of passionate strategists, designers, engineers, and problem-solvers who share a common goal: delivering exceptional digital solutions. At InterQ, we value diversity of thought, continuous learning, and collaboration. Every team member brings unique expertise and a commitment to excellence in everything they do.
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="ceo" className="glass-card px-8 border border-border/30 rounded-2xl">
-              <AccordionTrigger className="text-lg font-semibold hover:no-underline py-6">Message from the CEO</AccordionTrigger>
+            <AccordionItem value="ceo" className="glass-card px-8 border border-border/30 rounded-2xl bg-background">
+              <AccordionTrigger className="text-lg font-semibold hover:no-underline py-6 text-foreground">Message from the CEO</AccordionTrigger>
               <AccordionContent className="text-muted-foreground text-base leading-relaxed pb-8">
                 <div className="flex flex-col md:flex-row gap-6 items-start">
                   <div className="team-member-image-wrapper relative">

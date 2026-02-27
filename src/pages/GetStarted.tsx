@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CheckCircle2, Shield, Award, Lock } from "lucide-react";
-import Navigation from "@/components/Navigation";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
 import xiLogo from "@/assets/client-xi-website.png";
 import sBrandLogo from "@/assets/client-s-brand.png";
 import sharkLogo from "@/assets/client-shark-electronics.png";
-import Footer from "@/components/Footer";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -52,7 +52,7 @@ const GetStarted = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <EnhancedNavigation />
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 gradient-hero">
@@ -272,7 +272,7 @@ const GetStarted = () => {
         </div>
       </section>
 
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

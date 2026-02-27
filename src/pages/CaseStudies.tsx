@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -85,7 +85,7 @@ const CaseStudies = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <EnhancedNavigation />
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 relative overflow-hidden hero-blue">
@@ -213,7 +213,7 @@ const CaseStudies = () => {
         </DialogContent>
       </Dialog>
 
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

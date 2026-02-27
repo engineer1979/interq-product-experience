@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { ArrowRight, Star, Zap, Shield, BarChart3, Users, Code } from "lucide-react";
 import { useNavigate as useRouterNavigate } from "react-router-dom";
  
@@ -60,9 +62,10 @@ const Features = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted to-background">
+    <div className="min-h-screen hero-blue bg-aurora">
+      <EnhancedNavigation />
       {/* Hero Section */}
-      <section className="relative py-24 px-4 lg:px-8 overflow-hidden hero-blue">
+      <section className="relative py-24 px-4 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-accent/10 opacity-30" />
         <div className="container mx-auto text-center relative z-10">
           <motion.div
@@ -71,10 +74,8 @@ const Features = () => {
             transition={{ duration: 0.8 }}
             className="max-w-4xl mx-auto"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Platform Features
-            </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <h1 className="text-4xl md:text-6xl fancy-heading mb-6 gradient-text-brand">Platform Features</h1>
+            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
               Discover the comprehensive suite of AI-powered tools that transform how organizations 
               identify, assess, and hire top talent.
             </p>
@@ -110,7 +111,7 @@ const Features = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl fancy-heading mb-4">
               Everything You Need to Hire Smarter
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -161,7 +162,7 @@ const Features = () => {
             transition={{ duration: 0.8 }}
             className="max-w-3xl mx-auto"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl fancy-heading mb-4">
               Ready to Experience the Future of Hiring?
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
@@ -189,6 +190,7 @@ const Features = () => {
           </motion.div>
         </div>
       </section>
+      <EnhancedFooter />
     </div>
   );
 };

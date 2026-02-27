@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserManagement } from "@/components/settings/UserManagement";
@@ -70,7 +70,7 @@ const Settings = () => {
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-background">
-        <Navigation />
+        <EnhancedNavigation />
 
         <section className="pt-32 pb-20 px-4">
           <div className="container mx-auto max-w-7xl">
@@ -111,7 +111,7 @@ const Settings = () => {
           </div>
         </section>
 
-        <Footer />
+        <EnhancedFooter />
       </div>
     </ProtectedRoute>
   );

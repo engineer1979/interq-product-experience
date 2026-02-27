@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileQuestion, Video, BarChart3, Shield, Zap, Users } from "lucide-react";
@@ -34,11 +34,11 @@ const Product = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
+    <div className="min-h-screen hero-blue bg-aurora">
+      <EnhancedNavigation />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 hero-blue">
+      <section className="pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -46,10 +46,10 @@ const Product = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              The Complete <span className="gradient-primary bg-clip-text text-transparent">AI Recruitment</span> Platform
+            <h1 className="text-5xl md:text-6xl fancy-heading mb-6 text-white">
+              The Complete <span className="gradient-text-brand">AI Recruitment</span> Platform
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-white/90 max-w-3xl mx-auto">
               From assessments to interviews to analytics - everything you need to hire the best talent, powered by AI
             </p>
           </motion.div>
@@ -93,7 +93,7 @@ const Product = () => {
             <TabsContent value="assessments">
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div>
-                  <h2 className="text-4xl font-bold mb-6">Smart MCQ Assessments</h2>
+                  <h2 className="text-4xl fancy-heading mb-6">Smart MCQ Assessments</h2>
                   <ul className="space-y-4">
                     {[
                       "3,400+ pre-built skills assessments",
@@ -115,7 +115,7 @@ const Product = () => {
                     Try Assessment Demo
                   </Button>
                 </div>
-                <div className="rounded-2xl h-96 overflow-hidden shadow-2xl relative">
+                <div className="media-rounded media-shadow h-96 relative">
                   <img
                     src="https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=1260"
                     alt="AI Assessments Dashboard"
@@ -128,7 +128,7 @@ const Product = () => {
 
             <TabsContent value="interviews">
               <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="rounded-2xl h-96 overflow-hidden shadow-2xl relative">
+                <div className="media-rounded media-shadow h-96 relative">
                   <img
                     src="https://images.pexels.com/photos/4240505/pexels-photo-4240505.jpeg?auto=compress&cs=tinysrgb&w=1260"
                     alt="AI Video Interview Session"
@@ -137,7 +137,7 @@ const Product = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 </div>
                 <div>
-                  <h2 className="text-4xl font-bold mb-6">AI-Powered Video Interviews</h2>
+                  <h2 className="text-4xl fancy-heading mb-6">AI-Powered Video Interviews</h2>
                   <ul className="space-y-4">
                     {[
                       "Real-time AI analysis of responses",
@@ -187,7 +187,7 @@ const Product = () => {
                     Explore Analytics
                   </Button>
                 </div>
-                <div className="rounded-2xl h-96 overflow-hidden shadow-2xl relative">
+                <div className="media-rounded media-shadow h-96 relative">
                   <img
                     src="https://images.pexels.com/photos/5900165/pexels-photo-5900165.jpeg?auto=compress&cs=tinysrgb&w=1260"
                     alt="Advanced Analytics Dashboard"
@@ -233,7 +233,7 @@ const Product = () => {
         </div>
       </section>
 
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { AssessmentWorkflow, AssessmentResults as AssessmentResultsType } from "@/components/assessment/AssessmentWorkflow";
 import { AssessmentResults as AssessmentResultsComponent } from "@/components/assessment/AssessmentResults";
 import { Card } from "@/components/ui/card";
@@ -73,7 +73,7 @@ export default function AssessmentWorkflowPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <EnhancedNavigation />
       <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-4">Assessment Workflow</h1>
@@ -98,7 +98,7 @@ export default function AssessmentWorkflowPage() {
           </Card>
         </div>
       </div>
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 }

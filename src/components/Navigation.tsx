@@ -61,7 +61,7 @@ const Navigation = () => {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
             ? "bg-background/98 backdrop-blur-md shadow-sm"
-            : "bg-background backdrop-blur-md"
+            : "bg-transparent"
         }`}
       >
         <div className="container mx-auto px-4 lg:px-8">
@@ -112,16 +112,20 @@ const Navigation = () => {
                 key={link.label}
                 to={link.href}
                 className={`relative px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  location.pathname === link.href
-                    ? "bg-primary/10 text-primary shadow-sm"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                  isScrolled
+                    ? (location.pathname === link.href
+                        ? "bg-primary/10 text-primary shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/60")
+                    : (location.pathname === link.href
+                        ? "bg-white/10 text-white shadow-sm"
+                        : "text-white/90 hover:text-white bg-transparent hover:bg-white/10")
                 }`}
               >
                 {link.label}
                 {location.pathname === link.href && (
                   <motion.span
                     layoutId="nav-indicator"
-                    className="absolute bottom-0 left-2 right-2 h-0.5 bg-primary rounded-full"
+                    className={`absolute bottom-0 left-2 right-2 h-0.5 rounded-full ${isScrolled ? "bg-primary" : "bg-white/70"}`}
                     transition={{ type: "spring", stiffness: 350, damping: 30 }}
                   />
                 )}
@@ -131,9 +135,13 @@ const Navigation = () => {
               <Link
                 to="/admin"
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  location.pathname.startsWith("/admin")
-                    ? "bg-primary/10 text-primary shadow-sm"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                  isScrolled
+                    ? (location.pathname.startsWith("/admin")
+                        ? "bg-primary/10 text-primary shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/60")
+                    : (location.pathname.startsWith("/admin")
+                        ? "bg-white/10 text-white shadow-sm"
+                        : "text-white/90 hover:text-white bg-transparent hover:bg-white/10")
                 }`}
               >
                 Admin
@@ -143,9 +151,13 @@ const Navigation = () => {
               <Link
                 to="/settings"
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  location.pathname === "/settings"
-                    ? "bg-primary/10 text-primary shadow-sm"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                  isScrolled
+                    ? (location.pathname === "/settings"
+                        ? "bg-primary/10 text-primary shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/60")
+                    : (location.pathname === "/settings"
+                        ? "bg-white/10 text-white shadow-sm"
+                        : "text-white/90 hover:text-white bg-transparent hover:bg-white/10")
                 }`}
               >
                 Settings

@@ -40,7 +40,7 @@ const faqs = [
 
 const FAQSection = () => {
   return (
-    <section className="py-24 bg-background" id="faq">
+    <section className="py-24 bg-transparent" id="faq">
       <div className="container mx-auto px-4 max-w-3xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -52,7 +52,7 @@ const FAQSection = () => {
             <HelpCircle className="w-4 h-4" />
             Frequently Asked Questions
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl fancy-heading mb-4">
             Everything You Need to Know
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">

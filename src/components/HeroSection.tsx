@@ -25,7 +25,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-24 pb-20 bg-background">
+    <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-24 pb-20 bg-transparent">
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] right-[-6%] w-[600px] h-[600px] rounded-full bg-primary/[0.04] blur-[120px]" />
@@ -54,10 +54,10 @@ const HeroSection = () => {
             {/* H1 — SEO-optimized, keyword-rich */}
             <motion.h1
               variants={itemVariants}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-[4.25rem] font-extrabold leading-[1.1] tracking-tight text-foreground"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-[4.25rem] fancy-heading leading-[1.1] tracking-tight text-white"
             >
               Technical Interview Platform{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">
+              <span className="gradient-text-brand">
                 Powered by Experts
               </span>
             </motion.h1>
@@ -65,17 +65,17 @@ const HeroSection = () => {
             {/* Subheading — benefit-led, scannable */}
             <motion.p
               variants={itemVariants}
-              className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0"
+              className="text-base sm:text-lg text-white/90 leading-relaxed max-w-xl mx-auto lg:mx-0"
             >
               InterQ replaces unstructured hiring with{" "}
-              <strong className="text-foreground">structured candidate assessments</strong>{" "}
+              <strong className="text-white">structured candidate assessments</strong>{" "}
               led by vetted domain experts — so you hire faster, reduce bias, and eliminate bad hires.
             </motion.p>
 
             {/* Bullet benefits — mobile scannable */}
             <motion.ul
               variants={itemVariants}
-              className="flex flex-col gap-2 text-sm sm:text-base text-muted-foreground w-full max-w-xl mx-auto lg:mx-0"
+              className="flex flex-col gap-2 text-sm sm:text-base text-white/85 w-full max-w-xl mx-auto lg:mx-0"
             >
               {[
                 "Structured technical interviews — not gut-feel decisions",
@@ -153,8 +153,8 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
             className="relative w-full hidden md:flex justify-center lg:justify-end items-center"
           >
-            <div className="relative w-full max-w-[480px]">
-              {/* Main image card */}
+            <div className="relative w-full max-w-[520px] space-y-6">
+              {/* Main image card - Clean without overlapping elements */}
               <div className="rounded-2xl overflow-hidden shadow-elegant border border-border/40 bg-card">
                 <img
                   src={heroImg}
@@ -162,10 +162,11 @@ const HeroSection = () => {
                   className="w-full h-[340px] object-cover"
                   loading="eager"
                 />
-                <div className="p-5 flex items-center justify-between">
+                {/* Live Analysis Status Bar */}
+                <div className="p-4 flex items-center justify-between bg-muted/50 border-t border-border/40">
                   <div>
                     <p className="text-sm font-bold text-foreground">Live Analysis</p>
-                    <p className="text-xs text-muted-foreground">Processing candidate…</p>
+                    <p className="text-xs text-white/80">Processing candidate…</p>
                   </div>
                   <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 text-green-700 text-xs font-bold border border-green-500/20">
                     <span className="relative flex h-2 w-2">
@@ -177,45 +178,72 @@ const HeroSection = () => {
                 </div>
               </div>
 
-              {/* Floating stat card — top-left */}
-              <motion.div
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -left-6 top-8 glass-card px-4 py-3 rounded-xl shadow-elegant flex items-center gap-3 z-10"
-              >
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                  <Users size={18} />
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground font-medium">Candidates</p>
-                  <p className="text-sm font-bold text-foreground">2,847</p>
-                </div>
-              </motion.div>
+              {/* Structured KPI Grid - No overlapping, clean layout */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* Candidates Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  className="glass-card p-4 rounded-xl shadow-elegant flex items-center gap-3"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                    <Users size={18} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-white/80 font-medium">Candidates</p>
+                    <p className="text-sm font-bold text-foreground">2,847</p>
+                  </div>
+                </motion.div>
 
-              {/* Floating stat card — bottom-right */}
-              <motion.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute -right-6 bottom-28 glass-card px-4 py-3 rounded-xl shadow-elegant flex items-center gap-3 z-10"
-              >
-                <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center text-green-600">
-                  <TrendingUp size={18} />
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground font-medium">Hire Rate</p>
-                  <p className="text-sm font-bold text-foreground">94.2%</p>
-                </div>
-              </motion.div>
+                {/* Strong Hire Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                  className="glass-card p-4 rounded-xl shadow-elegant flex items-center gap-3"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-600">
+                    <Shield size={18} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-white/80 font-medium">Strong Hire</p>
+                    <p className="text-sm font-bold text-foreground">87.3%</p>
+                  </div>
+                </motion.div>
 
-              {/* Floating badge — right */}
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="absolute -right-3 top-1/3 glass-card px-3.5 py-2.5 rounded-lg shadow-elegant flex items-center gap-2 z-10"
-              >
-                <Shield size={14} className="text-primary" />
-                <span className="text-xs font-bold text-foreground">Strong Hire</span>
-              </motion.div>
+                {/* Hire Rate Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                  className="glass-card p-4 rounded-xl shadow-elegant flex items-center gap-3"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center text-green-600">
+                    <TrendingUp size={18} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-white/80 font-medium">Hire Rate</p>
+                    <p className="text-sm font-bold text-foreground">94.2%</p>
+                  </div>
+                </motion.div>
+
+                {/* Active Sessions Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.7 }}
+                  className="glass-card p-4 rounded-xl shadow-elegant flex items-center gap-3"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center text-orange-600">
+                    <Clock size={18} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-white/80 font-medium">Active</p>
+                    <p className="text-sm font-bold text-foreground">24</p>
+                  </div>
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         </div>

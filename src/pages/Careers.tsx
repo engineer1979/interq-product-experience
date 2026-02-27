@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -65,7 +65,7 @@ export default function Careers() {
 
     return (
         <div className="min-h-screen flex flex-col bg-background">
-            <Navigation />
+            <EnhancedNavigation />
             <main className="flex-grow">
                 <section className="pt-32 pb-20 px-4 bg-secondary/20">
                     <div className="container mx-auto text-center max-w-3xl">
@@ -121,7 +121,7 @@ export default function Careers() {
                     )}
                 </section>
             </main>
-            <Footer />
+            <EnhancedFooter />
         </div>
     );
 }

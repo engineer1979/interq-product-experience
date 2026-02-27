@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import EnhancedNavigation from "@/components/EnhancedNavigation";
+import EnhancedFooter from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -134,7 +134,7 @@ export default function ApplyPage() {
 
     return (
         <div className="min-h-screen flex flex-col bg-background">
-            <Navigation />
+            <EnhancedNavigation />
 
             <main className="flex-grow container mx-auto px-4 pt-32 pb-20 flex items-center justify-center">
                 <Card className="w-full max-w-2xl shadow-xl border-primary/10">
@@ -240,7 +240,7 @@ export default function ApplyPage() {
                 </Card>
             </main>
 
-            <Footer />
+            <EnhancedFooter />
         </div>
     );
 }
