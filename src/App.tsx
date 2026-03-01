@@ -7,6 +7,7 @@ import { Suspense, lazy } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 
+// Auto-deployment test - Deployment system verified
 const Index = lazy(() => import("./pages/Index"));
 const Auth = lazy(() => import("./pages/Auth"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
@@ -188,3 +189,7 @@ const App = () => (
 );
 
 export default App;
+<<<<<<< HEAD
+=======
+// Auto-deployment test - Deployment system verified
+>>>>>>> b8d5e6c22c07c377fc50b43c50c8d365dcb9eaea
