@@ -7,6 +7,7 @@ import { Suspense, lazy } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 
+// Auto-deployment test - Deployment system verified
 const Index = lazy(() => import("./pages/Index"));
 const Auth = lazy(() => import("./pages/Auth"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
