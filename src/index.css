@@ -1,0 +1,687 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+  PROFESSIONAL CORPORATE THEME 
+  Palette: Slate, Deep Teal, White, Subtle Gradients
+*/
+
+@layer base {
+  :root {
+    color-scheme: light;
+
+    /* REFINED SaaS PALETTE - Corporate & Trustworthy */
+    --background: 220 33% 98%;
+    --foreground: 222 47% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 10%;
+
+    /* Brand Primary Blue from Logo (from #22D3EE) */
+    --primary: 188 86% 53%;
+    --primary-foreground: 210 40% 98%;
+
+    /* Deep Navy Variations for Sections */
+    --navy-deep: 224 71% 4%;
+    --navy-muted: 224 71% 7%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 10%;
+
+    --muted: 210 40% 95%;
+    --muted-foreground: 215 16% 45%;
+
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 10%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 45%;
+
+    /* Modern SaaS Radius (12px) */
+    --radius: 1rem;
+
+    /* Premium Modern Shadows */
+    --shadow-soft: 0 2px 10px -2px rgba(0, 0, 0, 0.05);
+    --shadow-elegant: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.2);
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(188 86% 53%) 0%, hsl(188 90% 60%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(205 70% 12%) 0%, hsl(205 70% 18%) 100%);
+    --gradient-glass: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+
+    --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+    --sidebar-background: 210 40% 98%;
+    --sidebar-foreground: 222 47% 10%;
+    --sidebar-primary: 221 83% 45%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 210 40% 96.1%;
+    --sidebar-accent-foreground: 222 47% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 221 83% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground min-h-screen antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-image: var(--gradient-hero);
+    background-attachment: fixed;
+    letter-spacing: -0.011em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+    @apply font-bold tracking-tight text-foreground leading-[1.2];
+  }
+
+  h1 {
+    letter-spacing: -0.025em;
+  }
+}
+
+@layer components {
+
+  .text-gradient {
+    background: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(221 100% 55%) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .gradient-text-brand {
+    background: linear-gradient(90deg, hsl(var(--primary)) 0%, #1d4ed8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .fancy-heading {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .fancy-heading-dark {
+    color: #ffffff;
+    text-shadow: 0 0 12px rgba(34, 211, 238, 0.14);
+  }
+
+  .soft-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 2px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size 200ms ease;
+  }
+  .soft-underline:hover {
+    background-size: 100% 2px;
+  }
+
+  .bg-aurora {
+    position: relative;
+  }
+  .bg-aurora::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(60% 40% at 0% 0%, rgba(34,211,238,0.08), transparent 60%),
+      radial-gradient(50% 50% at 100% 0%, rgba(29,78,216,0.10), transparent 60%),
+      radial-gradient(60% 50% at 50% 100%, rgba(34,211,238,0.06), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .bg-aurora > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .gradient-primary {
+    background: var(--gradient-primary);
+    color: white;
+  }
+
+  .section-bg {
+    position: relative;
+  }
+  .section-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--section-bg, none);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.18;
+    z-index: 0;
+    pointer-events: none;
+    filter: saturate(1) contrast(1.05);
+  }
+  .section-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, rgba(15, 23, 42, 0.05) 35%, rgba(15, 23, 42, 0.35) 100%),
+                radial-gradient(60% 60% at 50% 0%, rgba(37, 99, 235, 0.15) 0%, rgba(37, 99, 235, 0) 70%);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .section-bg > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Blue-tinted section variants */
+  .section-blue-dark {
+    background: linear-gradient(180deg, hsl(205 70% 10%) 0%, hsl(205 70% 14%) 100%);
+    color: white;
+    --foreground: 0 0% 100%;
+    --muted-foreground: 210 20% 94%;
+    --card-foreground: 0 0% 100%;
+    --accent-foreground: 0 0% 100%;
+  }
+  .section-blue-light {
+    /* Unified theme: use the same deep blue family as dark sections */
+    background: linear-gradient(180deg, hsl(205 70% 12%) 0%, hsl(205 70% 18%) 100%);
+    color: white;
+    --foreground: 0 0% 100%;
+    --muted-foreground: 210 20% 94%;
+    --card-foreground: 0 0% 100%;
+    --accent-foreground: 0 0% 100%;
+  }
+  .hero-blue {
+    background: linear-gradient(180deg, hsl(205 70% 12%) 0%, hsl(205 70% 18%) 100%);
+    --foreground: 0 0% 100%;
+    --muted-foreground: 210 20% 94%;
+    --card-foreground: 0 0% 100%;
+    --accent-foreground: 0 0% 100%;
+  }
+
+  /* Typography on dark blue sections */
+  .section-blue-dark h1,
+  .section-blue-light h1,
+  .section-blue-dark h2,
+  .section-blue-light h2,
+  .section-blue-dark h3,
+  .section-blue-light h3,
+  .section-blue-dark h4,
+  .section-blue-light h4,
+  .section-blue-dark h5,
+  .section-blue-light h5,
+  .section-blue-dark h6,
+  .section-blue-light h6,
+  .hero-blue h1,
+  .hero-blue h2,
+  .hero-blue h3,
+  .hero-blue h4,
+  .hero-blue h5,
+  .hero-blue h6 {
+    color: #ffffff;
+    letter-spacing: 0.01em;
+  }
+  .section-blue-dark h1,
+  .hero-blue h1 {
+    text-shadow: 0 0 12px rgba(34, 211, 238, 0.12);
+  }
+  .section-blue-dark p,
+  .section-blue-light p,
+  .section-blue-dark li,
+  .section-blue-light li,
+  .section-blue-dark small,
+  .section-blue-light small,
+  .hero-blue p,
+  .hero-blue li,
+  .hero-blue small {
+    color: #f5f7fa;
+  }
+
+  /* Ensure text is dark on light cards placed inside dark sections */
+  .section-blue-dark .card,
+  .section-blue-light .card,
+  .section-blue-dark .bg-card,
+  .section-blue-light .bg-card,
+  .section-blue-dark .glass,
+  .section-blue-light .glass,
+  .section-blue-dark .glass-card,
+  .section-blue-light .glass-card,
+  .hero-blue .card,
+  .hero-blue .bg-card,
+  .hero-blue .glass,
+  .hero-blue .glass-card {
+    --foreground: 222 47% 10%;
+    --muted-foreground: 215 16% 45%;
+    --card-foreground: 222 47% 10%;
+    color: hsl(var(--foreground));
+  }
+  /* Any explicitly light surface inside dark sections should use dark text tokens */
+  .section-blue-dark .bg-white,
+  .section-blue-light .bg-white,
+  .section-blue-dark .bg-background,
+  .section-blue-light .bg-background,
+  .section-blue-dark .bg-secondary,
+  .section-blue-light .bg-secondary,
+  .section-blue-dark .bg-accent,
+  .section-blue-light .bg-accent,
+  .section-blue-dark .bg-muted,
+  .section-blue-light .bg-muted,
+  .hero-blue .bg-white,
+  .hero-blue .bg-background,
+  .hero-blue .bg-secondary,
+  .hero-blue .bg-accent,
+  .hero-blue .bg-muted {
+    --foreground: 222 47% 10%;
+    --muted-foreground: 215 16% 45%;
+    --card-foreground: 222 47% 10%;
+    --accent-foreground: 222 47% 10%;
+    color: hsl(var(--foreground));
+  }
+  .section-blue-dark .bg-white h1,
+  .section-blue-light .bg-white h1,
+  .section-blue-dark .bg-white h2,
+  .section-blue-light .bg-white h2,
+  .section-blue-dark .bg-white h3,
+  .section-blue-light .bg-white h3,
+  .section-blue-dark .bg-white h4,
+  .section-blue-light .bg-white h4,
+  .section-blue-dark .bg-white h5,
+  .section-blue-light .bg-white h5,
+  .section-blue-dark .bg-white h6,
+  .section-blue-light .bg-white h6,
+  .section-blue-dark .bg-background h1,
+  .section-blue-light .bg-background h1,
+  .section-blue-dark .bg-background h2,
+  .section-blue-light .bg-background h2,
+  .section-blue-dark .bg-background h3,
+  .section-blue-light .bg-background h3,
+  .section-blue-dark .bg-background h4,
+  .section-blue-light .bg-background h4,
+  .section-blue-dark .bg-background h5,
+  .section-blue-light .bg-background h5,
+  .section-blue-dark .bg-background h6,
+  .section-blue-light .bg-background h6,
+  .hero-blue .bg-white h1,
+  .hero-blue .bg-white h2,
+  .hero-blue .bg-white h3,
+  .hero-blue .bg-white h4,
+  .hero-blue .bg-white h5,
+  .hero-blue .bg-white h6,
+  .hero-blue .bg-background h1,
+  .hero-blue .bg-background h2,
+  .hero-blue .bg-background h3,
+  .hero-blue .bg-background h4,
+  .hero-blue .bg-background h5,
+  .hero-blue .bg-background h6 {
+    color: hsl(222 47% 10%);
+  }
+  .section-blue-dark .bg-white p,
+  .section-blue-light .bg-white p,
+  .section-blue-dark .bg-white li,
+  .section-blue-light .bg-white li,
+  .section-blue-dark .bg-background p,
+  .section-blue-light .bg-background p,
+  .section-blue-dark .bg-background li,
+  .section-blue-light .bg-background li,
+  .hero-blue .bg-white p,
+  .hero-blue .bg-white li,
+  .hero-blue .bg-background p,
+  .hero-blue .bg-background li {
+    color: hsl(215 16% 45%);
+  }
+
+  /* Ensure high-contrast link color on light surfaces inside dark sections */
+  .section-blue-dark .bg-white a,
+  .section-blue-light .bg-white a,
+  .section-blue-dark .bg-background a,
+  .section-blue-light .bg-background a,
+  .hero-blue .bg-white a,
+  .hero-blue .bg-background a {
+    color: hsl(var(--primary));
+  }
+
+  /* Utility-layer reinforcement so it applies after text-* utilities */
+  @layer utilities {
+    .section-blue-dark .bg-card,
+    .section-blue-light .bg-card,
+    .hero-blue .bg-card,
+    .section-blue-dark .bg-white,
+    .section-blue-light .bg-white,
+    .hero-blue .bg-white,
+    .section-blue-dark .bg-background,
+    .section-blue-light .bg-background,
+    .hero-blue .bg-background,
+    .section-blue-dark .bg-secondary,
+    .section-blue-light .bg-secondary,
+    .hero-blue .bg-secondary,
+    .section-blue-dark .bg-accent,
+    .section-blue-light .bg-accent,
+    .hero-blue .bg-accent,
+    .section-blue-dark .bg-muted,
+    .section-blue-light .bg-muted,
+    .hero-blue .bg-muted {
+      --foreground: 222 47% 10%;
+      --muted-foreground: 215 16% 45%;
+      --card-foreground: 222 47% 10%;
+      --accent-foreground: 222 47% 10%;
+      color: hsl(var(--foreground)) !important;
+    }
+    /* Force readable text on light panels inside dark sections, after utilities */
+    .section-blue-dark .bg-card :where(h1,h2,h3,h4,h5,h6),
+    .section-blue-light .bg-card :where(h1,h2,h3,h4,h5,h6),
+    .section-blue-dark .bg-white :where(h1,h2,h3,h4,h5,h6),
+    .section-blue-light .bg-white :where(h1,h2,h3,h4,h5,h6),
+    .section-blue-dark .bg-background :where(h1,h2,h3,h4,h5,h6),
+    .section-blue-light .bg-background :where(h1,h2,h3,h4,h5,h6),
+    .hero-blue .bg-card :where(h1,h2,h3,h4,h5,h6),
+    .hero-blue .bg-white :where(h1,h2,h3,h4,h5,h6),
+    .hero-blue .bg-background :where(h1,h2,h3,h4,h5,h6) {
+      color: hsl(222 47% 10%) !important;
+    }
+    .section-blue-dark .bg-card :where(p,li,small),
+    .section-blue-light .bg-card :where(p,li,small),
+    .section-blue-dark .bg-white :where(p,li,small),
+    .section-blue-light .bg-white :where(p,li,small),
+    .section-blue-dark .bg-background :where(p,li,small),
+    .section-blue-light .bg-background :where(p,li,small),
+    .hero-blue .bg-card :where(p,li,small),
+    .hero-blue .bg-white :where(p,li,small),
+    .hero-blue .bg-background :where(p,li,small) {
+      color: hsl(215 16% 45%) !important;
+    }
+  }
+  .section-blue-dark .card h1,
+  .section-blue-dark .card h2,
+  .section-blue-dark .card h3,
+  .section-blue-dark .card h4,
+  .section-blue-dark .card h5,
+  .section-blue-dark .card h6,
+  .hero-blue .card h1,
+  .hero-blue .card h2,
+  .hero-blue .card h3,
+  .hero-blue .card h4,
+  .hero-blue .card h5,
+  .hero-blue .card h6 {
+    color: hsl(222 47% 10%);
+  }
+  .section-blue-dark .card p,
+  .section-blue-dark .card li,
+  .hero-blue .card p,
+  .hero-blue .card li {
+    color: hsl(215 16% 45%);
+  }
+
+  /* Inputs on dark sections (only when not inside a white card) */
+  .section-blue-dark input:not(.bg-white):not(.bg-card),
+  .section-blue-light input:not(.bg-white):not(.bg-card),
+  .section-blue-dark textarea:not(.bg-white):not(.bg-card),
+  .section-blue-light textarea:not(.bg-white):not(.bg-card),
+  .section-blue-dark select:not(.bg-white):not(.bg-card),
+  .section-blue-light select:not(.bg-white):not(.bg-card),
+  .hero-blue input:not(.bg-white):not(.bg-card),
+  .hero-blue textarea:not(.bg-white):not(.bg-card),
+  .hero-blue select:not(.bg-white):not(.bg-card) {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  .section-blue-dark input::placeholder,
+  .section-blue-light input::placeholder,
+  .section-blue-dark textarea::placeholder,
+  .section-blue-light textarea::placeholder,
+  .hero-blue input::placeholder,
+  .hero-blue textarea::placeholder {
+    color: rgba(245, 247, 250, 0.75);
+  }
+
+  /* Buttons on dark sections: ensure readable text */
+  .section-blue-dark .btn-secondary,
+  .section-blue-light .btn-secondary,
+  .hero-blue .btn-secondary {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  /* Utility classes for shadows so @apply works */
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  /* Updated SaaS Component Styles */
+  .card {
+    @apply rounded-xl border border-border/50 bg-card shadow-soft hover:shadow-elegant hover:-translate-y-0.5 transition-smooth;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground px-6 py-2.5 font-medium shadow-sm hover:bg-primary/95 hover:shadow-glow transition-smooth active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-border/70 bg-background text-foreground px-6 py-2.5 font-medium shadow-sm hover:bg-accent hover:border-accent transition-smooth active:scale-[0.98];
+  }
+
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/40;
+  }
+
+  .glass-card {
+    @apply shadow-soft rounded-2xl hover:shadow-elegant transition-smooth overflow-hidden;
+    background: var(--gradient-glass);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+  }
+
+  .btn-premium {
+    @apply relative overflow-hidden px-8 py-3.5 rounded-xl font-semibold transition-all duration-300 active:scale-95 shadow-glow;
+    background: var(--gradient-primary);
+    color: white;
+  }
+
+  .btn-premium::after {
+    content: '';
+    @apply absolute inset-0 bg-white/20 translate-y-full transition-transform duration-300;
+  }
+
+  .btn-premium:hover::after {
+    @apply translate-y-0;
+  }
+
+  .section-navy {
+    background-color: hsl(var(--navy-deep));
+    color: white;
+  }
+
+  .glass-dark {
+    @apply backdrop-blur-xl border border-white/10 shadow-elegant;
+    background: rgba(15, 23, 42, 0.3);
+  }
+
+  /* Tags */
+  .tag {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-medium border border-border/70 bg-accent text-foreground;
+  }
+
+  .tag-active {
+    @apply bg-primary text-primary-foreground border-transparent;
+  }
+
+  /* Search bars */
+  .search-shell {
+    @apply flex items-center gap-2 px-4 py-3 rounded-2xl border border-border/70 shadow-soft bg-white;
+  }
+
+  /* Inputs */
+  input[type="text"],
+  input[type="email"],
+  input[type="search"],
+  input[type="password"],
+  select,
+  textarea {
+    @apply rounded-xl border border-border/70 bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-smooth;
+  }
+
+  /* Skeletons */
+  .skeleton {
+    @apply animate-pulse rounded-lg bg-muted;
+    background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted)/0.8) 37%, hsl(var(--muted)) 63%);
+    background-size: 400% 100%;
+  }
+
+  /* Glassmorphism Utilities */
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .glass-dark {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .glass-card {
+    @apply glass rounded-xl shadow-soft hover:shadow-elegant transition-smooth border border-white/50;
+  }
+
+  .glass-button {
+    @apply glass px-6 py-2.5 rounded-lg font-medium hover:bg-white/90 transition-smooth active:scale-95 text-foreground shadow-sm;
+  }
+
+  /* Container utility for consistent max-width */
+  .container-width {
+    @apply container mx-auto px-4 max-w-7xl;
+  }
+
+  /* Animations */
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes pulse-subtle {
+
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  .animate-pulse-subtle {
+    animation: pulse-subtle 3s ease-in-out infinite;
+  }
+}
+@layer utilities {
+  /* Ensure bright text on dark wrappers unless inside light panels */
+  .hero-blue :where(h1,h2,h3,h4,h5,h6,p,li,small,span),
+  .section-blue-dark :where(h1,h2,h3,h4,h5,h6,p,li,small,span),
+  .section-blue-light :where(h1,h2,h3,h4,h5,h6,p,li,small,span) {
+    color: #f5f7fa !important;
+  }
+  .hero-blue :where(strong,em,b,i,mark),
+  .section-blue-dark :where(strong,em,b,i,mark),
+  .section-blue-light :where(strong,em,b,i,mark) {
+    color: #ffffff !important;
+  }
+  .hero-blue :where(a),
+  .section-blue-dark :where(a),
+  .section-blue-light :where(a) {
+    color: #ffffff !important;
+  }
+  /* Neutralize low-opacity foreground utilities on dark wrappers */
+  .hero-blue :where([class*="text-foreground/"], .text-muted-foreground),
+  .section-blue-dark :where([class*="text-foreground/"], .text-muted-foreground),
+  .section-blue-light :where([class*="text-foreground/"], .text-muted-foreground) {
+    color: #f5f7fa !important;
+  }
+  /* FINAL OVERRIDE: ensure dark text on light panels inside dark wrappers (wins by source order) */
+  .hero-blue .bg-card :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
+  .hero-blue .bg-white :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
+  .hero-blue .bg-background :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
+  .section-blue-dark .bg-card :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
+  .section-blue-dark .bg-white :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
+  .section-blue-dark .bg-background :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
+  .section-blue-light .bg-card :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
+  .section-blue-light .bg-white :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
+  .section-blue-light .bg-background :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark) {
+    color: hsl(222 47% 10%) !important;
+  }
+  :where(.bg-white,.bg-card,.bg-background) :where(h1,h2,h3,h4,h5,h6) {
+    color: hsl(222 47% 10%) !important;
+  }
+  :where(.bg-white,.bg-card,.bg-background) :where(p,li,small,span) {
+    color: hsl(222 47% 10%) !important;
+  }
+  :where(.bg-white,.bg-card,.bg-background) :where(a) {
+    color: hsl(var(--primary)) !important;
+  }
+  :where(.bg-white,.bg-card,.bg-background) :where([class*="text-foreground/"],[class*="text-background"],[class*="text-muted-foreground"]) {
+    color: hsl(222 47% 10%) !important;
+  }
+  .section-pad {
+    padding-top: 6rem;
+    padding-bottom: 5rem;
+  }
+  @media (min-width: 768px) {
+    .section-pad {
+      padding-top: 7rem;
+      padding-bottom: 6rem;
+    }
+  }
+  .media-rounded {
+    border-radius: 1.25rem;
+    overflow: hidden;
+  }
+  .media-shadow {
+    box-shadow: 0 20px 35px -5px rgba(0,0,0,0.25), 0 8px 10px -6px rgba(0,0,0,0.2);
+  }
+  :where(a,button,[role="button"],input,select,textarea):focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
+}

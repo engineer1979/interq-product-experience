@@ -1,0 +1,230 @@
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+
+const Navigation = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  const navLinks = [
+    { label: "Product", href: "/product" },
+    { label: "Assessments", href: "/assessments" },
+    { label: "Solution Analysis", href: "/solutions" },
+    { label: "Pricing", href: "/pricing" },
+  ];
+
+  // Check if user is admin
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (user) {
+        const { data } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id)
+          .eq("role", "admin")
+          .single();
+        setIsAdmin(!!data);
+      } else {
+        setIsAdmin(false);
+      }
+    };
+    checkAdmin();
+  }, [user]);
+
+  return (
+    <>
+      {/* Top Bar with Logo + Auth */}
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-background/98 backdrop-blur-md shadow-sm"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="container mx-auto px-4 lg:px-8">
+          {/* Row 1: Logo + Auth */}
+          <div className="flex items-center justify-between py-3">
+            <Link to="/" className="flex items-center gap-3 group transition-smooth" onClick={() => setIsMobileMenuOpen(false)}>
+              <div className="bg-transparent rounded-md p-1">
+                <img src="/interq-logo.png" alt="InterQ Logo" className="h-10 sm:h-12 w-auto max-w-full" loading="lazy" decoding="async" />
+              </div>
+              <span className="text-2xl font-bold text-gradient group-hover:opacity-80 transition-smooth">
+                InterQ
+              </span>
+            </Link>
+
+            {/* Desktop Auth */}
+            <div className="hidden lg:flex items-center space-x-4">
+              {user ? (
+                <>
+                  <span className="text-sm text-muted-foreground">Welcome back!</span>
+                  <Button variant="ghost" size="sm" onClick={signOut}>Sign Out</Button>
+                </>
+              ) : (
+                <>
+                  <Link to="/auth">
+                    <Button variant="ghost" className="text-sm font-medium hover:text-primary hover:bg-primary/5">Sign In</Button>
+                  </Link>
+                  <Link to="/auth">
+                    <Button variant="default" className="gradient-primary text-sm shadow-soft hover:shadow-glow transition-all duration-300">Book a Demo</Button>
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2.5 rounded-lg border border-border bg-background/80 text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground transition-colors"
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+
+          {/* Row 2: Vertical-style nav links displayed as a refined horizontal strip */}
+          <nav className="hidden lg:flex items-center justify-center gap-1 pb-3 border-t border-border/40 pt-3">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                to={link.href}
+                className={`relative px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isScrolled
+                    ? (location.pathname === link.href
+                        ? "bg-primary/10 text-primary shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/60")
+                    : (location.pathname === link.href
+                        ? "bg-white/10 text-white shadow-sm"
+                        : "text-white/90 hover:text-white bg-transparent hover:bg-white/10")
+                }`}
+              >
+                {link.label}
+                {location.pathname === link.href && (
+                  <motion.span
+                    layoutId="nav-indicator"
+                    className={`absolute bottom-0 left-2 right-2 h-0.5 rounded-full ${isScrolled ? "bg-primary" : "bg-white/70"}`}
+                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                  />
+                )}
+              </Link>
+            ))}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isScrolled
+                    ? (location.pathname.startsWith("/admin")
+                        ? "bg-primary/10 text-primary shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/60")
+                    : (location.pathname.startsWith("/admin")
+                        ? "bg-white/10 text-white shadow-sm"
+                        : "text-white/90 hover:text-white bg-transparent hover:bg-white/10")
+                }`}
+              >
+                Admin
+              </Link>
+            )}
+            {isAdmin && (
+              <Link
+                to="/settings"
+                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isScrolled
+                    ? (location.pathname === "/settings"
+                        ? "bg-primary/10 text-primary shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/60")
+                    : (location.pathname === "/settings"
+                        ? "bg-white/10 text-white shadow-sm"
+                        : "text-white/90 hover:text-white bg-transparent hover:bg-white/10")
+                }`}
+              >
+                Settings
+              </Link>
+            )}
+          </nav>
+        </div>
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[40] lg:hidden"
+                style={{ top: "72px" }}
+              />
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="lg:hidden bg-background border-b border-border shadow-soft overflow-hidden fixed left-0 right-0 z-50"
+                style={{ top: "72px" }}
+              >
+                <div className="container mx-auto px-4 py-6 space-y-2 max-h-[80vh] overflow-y-auto">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.label}
+                      to={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`block text-lg font-medium p-3 rounded-lg transition-colors ${
+                        location.pathname === link.href
+                          ? "bg-primary/10 text-primary"
+                          : "text-foreground/80 hover:bg-muted hover:text-primary"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                  <div className="h-px bg-border my-4" />
+                  <div className="space-y-3">
+                    {user ? (
+                      <Button variant="ghost" size="lg" className="w-full justify-start text-destructive" onClick={() => { signOut(); setIsMobileMenuOpen(false); }}>
+                        Sign Out
+                      </Button>
+                    ) : (
+                      <div className="grid gap-3">
+                        <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
+                          <Button variant="outline" size="lg" className="w-full justify-center">Sign In</Button>
+                        </Link>
+                        <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
+                          <Button variant="default" size="lg" className="w-full justify-center gradient-primary shadow-lg">Start Free Trial</Button>
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </motion.header>
+    </>
+  );
+};
+
+export default Navigation;
