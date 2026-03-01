@@ -37,7 +37,7 @@ This workflow guides you through deploying the application to Vercel.
 
 ## Alternative: Git Integration
 1.  Push your code to a GitHub repository.
-2.  Go to the [Vercel Dashboard](https://vercel.com/new).
+2.  Go to the [Vercel Dashboard](https://vercel.com/imrans-projects-faf1daf5).
 3.  Import your GitHub repository.
 4.  Vercel will automatically detect Vite and configure the build settings.
 5.  Click **Deploy**.

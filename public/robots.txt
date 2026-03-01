@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://interq-product-experience-main.vercel.app/sitemap.xml
+Sitemap: https://interq-product-experience-imrans-projects-faf1daf5.vercel.app/sitemap.xml
