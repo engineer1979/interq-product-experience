@@ -2,71 +2,69 @@ import { motion } from "framer-motion";
 
 const CeoMessage = () => {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="w-full max-w-sm mx-auto group shadow-2xl rounded-3xl overflow-hidden border border-white/10 relative"
-        >
-            {/* Deep Midnight Blue Solid Background */}
-            <div className="absolute inset-0 bg-[#0F172A]" />
+        <section className="py-16 px-4 flex justify-center">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                viewport={{ once: true }}
+                className="relative w-full max-w-[700px] overflow-hidden rounded-[2rem] border border-white/10 shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)]"
+            >
+                {/* Background Layer (Deep Navy with Glassmorphism) */}
+                <div className="absolute inset-0 bg-[#0A192F]/95 backdrop-blur-xl" />
+                <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
 
-            {/* Subtle Metallic Shine Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
+                {/* Shine Glow Effect */}
+                <div className="absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.03)_0%,transparent_50%)] pointer-events-none" />
 
-            <div className="relative z-10 p-8 flex flex-col items-center text-center">
-                {/* Compact CEO Portrait */}
-                <div className="relative mb-6">
-                    <div className="w-24 h-24 rounded-2xl border-2 border-white/20 overflow-hidden shadow-xl transform group-hover:scale-105 transition-transform duration-500">
-                        <img
-                            src="/saima-huma-ceo.png"
-                            alt="Saima Huma, CEO"
-                            className="w-full h-full object-cover grayscale-[0.1] group-hover:grayscale-0 transition-all duration-500"
-                        />
+                <div className="relative z-10 p-10 md:p-12 flex flex-col items-center text-center">
+                    {/* CEO Portrait (Top-Center) */}
+                    <div className="relative mb-8">
+                        <div className="w-24 h-24 rounded-full border-2 border-white/20 p-1 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                            <img
+                                src="/saima-huma-ceo.png"
+                                alt="Saima Huma, CEO"
+                                className="w-full h-full rounded-full object-cover bg-white/5"
+                            />
+                        </div>
+                        {/* Decorative accent */}
+                        <div className="absolute -bottom-1 right-2 w-4 h-4 bg-sky-400 rounded-full border-2 border-[#0A192F] shadow-[0_0_10px_rgba(56,189,248,0.5)]" />
                     </div>
-                    {/* Status light or subtle accent */}
-                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-primary rounded-full border-2 border-[#0F172A] shadow-glow" />
-                </div>
 
-                {/* Message Content */}
-                <div className="space-y-4">
+                    {/* Header with Shine Effect */}
                     <h3
-                        className="text-white text-xs font-bold tracking-[0.2em] uppercase mb-2"
+                        className="text-white text-sm font-bold tracking-[0.25em] uppercase mb-8"
                         style={{
-                            textShadow: '0 0 8px rgba(255,255,255,0.4)',
-                            background: 'linear-gradient(to right, #fff, #cbd5e1, #fff)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            color: '#FFFFFF !important'
+                            textShadow: '0 0 15px rgba(255,255,255,0.5), 0 0 2px rgba(255,255,255,0.8)',
+                            fontFamily: "'Outfit', sans-serif"
                         }}
                     >
                         Message from the CEO
                     </h3>
 
-                    <p
-                        className="text-white text-base leading-relaxed font-normal italic"
-                        style={{ color: '#FFFFFF !important' }}
-                    >
+                    {/* Body Content (Off-White for Legibility) */}
+                    <p className="text-[#F8F9FA] text-lg md:text-xl leading-relaxed italic font-light max-w-[600px]">
                         "At InterQ, our mission has always been to create meaningful technology that drives real impact. We believe in building long-term partnerships, staying curious, and pushing boundaries to help our clients succeed in a rapidly evolving digital world. Thank you for trusting InterQ as your technology partner—we look forward to building the future together."
                     </p>
 
-                    <div className="pt-4 border-t border-white/5">
+                    {/* Signature Section */}
+                    <div className="mt-10 pt-8 border-t border-white/10 w-full flex flex-col items-center">
                         <div
-                            className="text-white font-bold text-lg tracking-tight"
-                            style={{ textShadow: '0 0 5px rgba(255,255,255,0.2)', color: '#FFFFFF !important' }}
+                            className="text-white font-bold text-xl tracking-tight mb-1"
+                            style={{ textShadow: '0 0 10px rgba(255,255,255,0.3)' }}
                         >
                             Saima Huma
                         </div>
-                        <div
-                            className="text-primary/90 font-semibold tracking-wide text-[10px] uppercase"
-                            style={{ color: 'hsl(var(--primary)) !important' }}
-                        >
+                        <div className="text-sky-400/90 font-semibold tracking-widest text-[11px] uppercase">
                             CEO, InterQ Technologies Inc.
                         </div>
                     </div>
                 </div>
-            </div>
-        </motion.div>
+
+                {/* Subtle card-border shine line at bottom */}
+                <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-sky-400/30 to-transparent" />
+            </motion.div>
+        </section>
     );
 };
 
