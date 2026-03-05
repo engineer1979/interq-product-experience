@@ -8,19 +8,15 @@ const CeoMessage = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 viewport={{ once: true }}
-                className="relative w-full max-w-[700px] overflow-hidden rounded-[2rem] border border-white/10 shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)]"
+                className="relative w-full max-w-[700px] overflow-hidden rounded-[2rem] border border-sky-400/20 shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] bg-[#0A192F]"
             >
-                {/* Background Layer (Deep Navy with Glassmorphism) */}
-                <div className="absolute inset-0 bg-[#0A192F]/95 backdrop-blur-xl" />
-                <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
-
-                {/* Shine Glow Effect */}
-                <div className="absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.03)_0%,transparent_50%)] pointer-events-none" />
+                {/* Glassmorphism Overlay */}
+                <div className="absolute inset-0 backdrop-blur-xl bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
 
                 <div className="relative z-10 p-10 md:p-12 flex flex-col items-center text-center">
                     {/* CEO Portrait (Top-Center) */}
                     <div className="relative mb-8">
-                        <div className="w-24 h-24 rounded-full border-2 border-white/20 p-1 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                        <div className="w-24 h-24 rounded-full border-2 border-white/20 p-1 shadow-[0_0_20px_rgba(56,189,248,0.2)]">
                             <img
                                 src="/saima-huma-ceo.png"
                                 alt="Saima Huma, CEO"
@@ -33,9 +29,9 @@ const CeoMessage = () => {
 
                     {/* Header with Shine Effect */}
                     <h3
-                        className="text-white text-sm font-bold tracking-[0.25em] uppercase mb-8"
+                        className="text-[#FFFFFF] text-sm font-bold tracking-[0.25em] uppercase mb-8"
                         style={{
-                            textShadow: '0 0 15px rgba(255,255,255,0.5), 0 0 2px rgba(255,255,255,0.8)',
+                            textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 2px rgba(255,255,255,0.9)',
                             fontFamily: "'Outfit', sans-serif"
                         }}
                     >
@@ -50,19 +46,19 @@ const CeoMessage = () => {
                     {/* Signature Section */}
                     <div className="mt-10 pt-8 border-t border-white/10 w-full flex flex-col items-center">
                         <div
-                            className="text-white font-bold text-xl tracking-tight mb-1"
+                            className="text-[#FFFFFF] font-bold text-xl tracking-tight mb-1"
                             style={{ textShadow: '0 0 10px rgba(255,255,255,0.3)' }}
                         >
                             Saima Huma
                         </div>
-                        <div className="text-sky-400/90 font-semibold tracking-widest text-[11px] uppercase">
+                        <div className="text-sky-400 font-semibold tracking-widest text-[11px] uppercase">
                             CEO, InterQ Technologies Inc.
                         </div>
                     </div>
                 </div>
 
-                {/* Subtle card-border shine line at bottom */}
-                <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-sky-400/30 to-transparent" />
+                {/* Subtle border reflection line at top */}
+                <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
             </motion.div>
         </section>
     );
