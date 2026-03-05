@@ -29,29 +29,36 @@ const CeoMessage = () => {
 
                     {/* Header with Shine Effect */}
                     <h3
-                        className="text-[#FFFFFF] text-sm font-bold tracking-[0.25em] uppercase mb-8"
+                        className="text-white text-sm font-bold tracking-[0.25em] uppercase mb-8"
                         style={{
                             textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 2px rgba(255,255,255,0.9)',
-                            fontFamily: "'Outfit', sans-serif"
+                            fontFamily: "'Outfit', sans-serif",
+                            color: '#FFFFFF !important'
                         }}
                     >
                         Message from the CEO
                     </h3>
 
-                    {/* Body Content (Off-White for Legibility) */}
-                    <p className="text-[#F8F9FA] text-lg md:text-xl leading-relaxed italic font-light max-w-[600px]">
+                    {/* Body Content (Pure White and Medium weight for maximum visibility) */}
+                    <p
+                        className="text-white text-lg md:text-xl leading-relaxed italic font-medium max-w-[600px]"
+                        style={{ color: '#FFFFFF !important' }}
+                    >
                         "At InterQ, our mission has always been to create meaningful technology that drives real impact. We believe in building long-term partnerships, staying curious, and pushing boundaries to help our clients succeed in a rapidly evolving digital world. Thank you for trusting InterQ as your technology partner—we look forward to building the future together."
                     </p>
 
                     {/* Signature Section */}
                     <div className="mt-10 pt-8 border-t border-white/10 w-full flex flex-col items-center">
                         <div
-                            className="text-[#FFFFFF] font-bold text-xl tracking-tight mb-1"
-                            style={{ textShadow: '0 0 10px rgba(255,255,255,0.3)' }}
+                            className="text-white font-bold text-xl tracking-tight mb-1"
+                            style={{ textShadow: '0 0 10px rgba(255,255,255,0.3)', color: '#FFFFFF !important' }}
                         >
                             Saima Huma
                         </div>
-                        <div className="text-sky-400 font-semibold tracking-widest text-[11px] uppercase">
+                        <div
+                            className="text-sky-300 font-semibold tracking-widest text-[11px] uppercase"
+                            style={{ color: '#7dd3fc !important' }}
+                        >
                             CEO, InterQ Technologies Inc.
                         </div>
                     </div>
