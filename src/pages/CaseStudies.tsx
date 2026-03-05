@@ -21,7 +21,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
- 
+
 
 const cases = [
   {
@@ -39,7 +39,7 @@ const cases = [
     ],
     stats: [
       { label: "Efficiency", value: "+40%" },
-      { label: "Cost Savings", value: "$250k+" }
+      { label: "Cost Savings", value: "Substantial" }
     ]
   },
   {

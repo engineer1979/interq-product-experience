@@ -76,12 +76,31 @@
     @apply border-border;
   }
 
+  html {
+    font-size: 16px;
+    /* Ensure body text is at least 16px for legibility */
+  }
+
   body {
     @apply bg-background text-foreground min-h-screen antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     background-image: var(--gradient-hero);
     background-attachment: fixed;
     letter-spacing: -0.011em;
+  }
+
+  /* Ensure touch targets for mobile accessibility */
+  @media (max-width: 768px) {
+
+    button,
+    a,
+    select,
+    input,
+    summary,
+    [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
   }
 
   h1,
@@ -132,6 +151,7 @@
     background-position: 0 100%;
     transition: background-size 200ms ease;
   }
+
   .soft-underline:hover {
     background-size: 100% 2px;
   }
@@ -139,18 +159,20 @@
   .bg-aurora {
     position: relative;
   }
+
   .bg-aurora::before {
     content: "";
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(60% 40% at 0% 0%, rgba(34,211,238,0.08), transparent 60%),
-      radial-gradient(50% 50% at 100% 0%, rgba(29,78,216,0.10), transparent 60%),
-      radial-gradient(60% 50% at 50% 100%, rgba(34,211,238,0.06), transparent 60%);
+      radial-gradient(60% 40% at 0% 0%, rgba(34, 211, 238, 0.08), transparent 60%),
+      radial-gradient(50% 50% at 100% 0%, rgba(29, 78, 216, 0.10), transparent 60%),
+      radial-gradient(60% 50% at 50% 100%, rgba(34, 211, 238, 0.06), transparent 60%);
     pointer-events: none;
     z-index: 0;
   }
-  .bg-aurora > * {
+
+  .bg-aurora>* {
     position: relative;
     z-index: 1;
   }
@@ -163,6 +185,7 @@
   .section-bg {
     position: relative;
   }
+
   .section-bg::before {
     content: "";
     position: absolute;
@@ -175,16 +198,18 @@
     pointer-events: none;
     filter: saturate(1) contrast(1.05);
   }
+
   .section-bg::after {
     content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, rgba(15, 23, 42, 0.05) 35%, rgba(15, 23, 42, 0.35) 100%),
-                radial-gradient(60% 60% at 50% 0%, rgba(37, 99, 235, 0.15) 0%, rgba(37, 99, 235, 0) 70%);
+      radial-gradient(60% 60% at 50% 0%, rgba(37, 99, 235, 0.15) 0%, rgba(37, 99, 235, 0) 70%);
     z-index: 0;
     pointer-events: none;
   }
-  .section-bg > * {
+
+  .section-bg>* {
     position: relative;
     z-index: 1;
   }
@@ -198,6 +223,7 @@
     --card-foreground: 0 0% 100%;
     --accent-foreground: 0 0% 100%;
   }
+
   .section-blue-light {
     /* Unified theme: use the same deep blue family as dark sections */
     background: linear-gradient(180deg, hsl(205 70% 12%) 0%, hsl(205 70% 18%) 100%);
@@ -207,6 +233,7 @@
     --card-foreground: 0 0% 100%;
     --accent-foreground: 0 0% 100%;
   }
+
   .hero-blue {
     background: linear-gradient(180deg, hsl(205 70% 12%) 0%, hsl(205 70% 18%) 100%);
     --foreground: 0 0% 100%;
@@ -237,10 +264,12 @@
     color: #ffffff;
     letter-spacing: 0.01em;
   }
+
   .section-blue-dark h1,
   .hero-blue h1 {
     text-shadow: 0 0 12px rgba(34, 211, 238, 0.12);
   }
+
   .section-blue-dark p,
   .section-blue-light p,
   .section-blue-dark li,
@@ -271,6 +300,7 @@
     --card-foreground: 222 47% 10%;
     color: hsl(var(--foreground));
   }
+
   /* Any explicitly light surface inside dark sections should use dark text tokens */
   .section-blue-dark .bg-white,
   .section-blue-light .bg-white,
@@ -293,6 +323,7 @@
     --accent-foreground: 222 47% 10%;
     color: hsl(var(--foreground));
   }
+
   .section-blue-dark .bg-white h1,
   .section-blue-light .bg-white h1,
   .section-blue-dark .bg-white h2,
@@ -331,6 +362,7 @@
   .hero-blue .bg-background h6 {
     color: hsl(222 47% 10%);
   }
+
   .section-blue-dark .bg-white p,
   .section-blue-light .bg-white p,
   .section-blue-dark .bg-white li,
@@ -358,6 +390,7 @@
 
   /* Utility-layer reinforcement so it applies after text-* utilities */
   @layer utilities {
+
     .section-blue-dark .bg-card,
     .section-blue-light .bg-card,
     .hero-blue .bg-card,
@@ -382,30 +415,33 @@
       --accent-foreground: 222 47% 10%;
       color: hsl(var(--foreground)) !important;
     }
+
     /* Force readable text on light panels inside dark sections, after utilities */
-    .section-blue-dark .bg-card :where(h1,h2,h3,h4,h5,h6),
-    .section-blue-light .bg-card :where(h1,h2,h3,h4,h5,h6),
-    .section-blue-dark .bg-white :where(h1,h2,h3,h4,h5,h6),
-    .section-blue-light .bg-white :where(h1,h2,h3,h4,h5,h6),
-    .section-blue-dark .bg-background :where(h1,h2,h3,h4,h5,h6),
-    .section-blue-light .bg-background :where(h1,h2,h3,h4,h5,h6),
-    .hero-blue .bg-card :where(h1,h2,h3,h4,h5,h6),
-    .hero-blue .bg-white :where(h1,h2,h3,h4,h5,h6),
-    .hero-blue .bg-background :where(h1,h2,h3,h4,h5,h6) {
+    .section-blue-dark .bg-card :where(h1, h2, h3, h4, h5, h6),
+    .section-blue-light .bg-card :where(h1, h2, h3, h4, h5, h6),
+    .section-blue-dark .bg-white :where(h1, h2, h3, h4, h5, h6),
+    .section-blue-light .bg-white :where(h1, h2, h3, h4, h5, h6),
+    .section-blue-dark .bg-background :where(h1, h2, h3, h4, h5, h6),
+    .section-blue-light .bg-background :where(h1, h2, h3, h4, h5, h6),
+    .hero-blue .bg-card :where(h1, h2, h3, h4, h5, h6),
+    .hero-blue .bg-white :where(h1, h2, h3, h4, h5, h6),
+    .hero-blue .bg-background :where(h1, h2, h3, h4, h5, h6) {
       color: hsl(222 47% 10%) !important;
     }
-    .section-blue-dark .bg-card :where(p,li,small),
-    .section-blue-light .bg-card :where(p,li,small),
-    .section-blue-dark .bg-white :where(p,li,small),
-    .section-blue-light .bg-white :where(p,li,small),
-    .section-blue-dark .bg-background :where(p,li,small),
-    .section-blue-light .bg-background :where(p,li,small),
-    .hero-blue .bg-card :where(p,li,small),
-    .hero-blue .bg-white :where(p,li,small),
-    .hero-blue .bg-background :where(p,li,small) {
+
+    .section-blue-dark .bg-card :where(p, li, small),
+    .section-blue-light .bg-card :where(p, li, small),
+    .section-blue-dark .bg-white :where(p, li, small),
+    .section-blue-light .bg-white :where(p, li, small),
+    .section-blue-dark .bg-background :where(p, li, small),
+    .section-blue-light .bg-background :where(p, li, small),
+    .hero-blue .bg-card :where(p, li, small),
+    .hero-blue .bg-white :where(p, li, small),
+    .hero-blue .bg-background :where(p, li, small) {
       color: hsl(215 16% 45%) !important;
     }
   }
+
   .section-blue-dark .card h1,
   .section-blue-dark .card h2,
   .section-blue-dark .card h3,
@@ -420,6 +456,7 @@
   .hero-blue .card h6 {
     color: hsl(222 47% 10%);
   }
+
   .section-blue-dark .card p,
   .section-blue-dark .card li,
   .hero-blue .card p,
@@ -441,6 +478,7 @@
     color: #ffffff;
     border-color: rgba(255, 255, 255, 0.2);
   }
+
   .section-blue-dark input::placeholder,
   .section-blue-light input::placeholder,
   .section-blue-dark textarea::placeholder,
@@ -615,73 +653,125 @@
   .animate-pulse-subtle {
     animation: pulse-subtle 3s ease-in-out infinite;
   }
+
+  .navbar-menu {
+    /* Container class for custom nav targeting */
+  }
+
+  .navbar-menu-item {
+    color: hsl(var(--foreground)) !important;
+    font-weight: 600 !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease;
+  }
+
+  .navbar-menu-item:hover {
+    color: hsl(var(--primary)) !important;
+    text-decoration: none !important;
+    background-color: hsl(var(--primary) / 0.05) !important;
+  }
 }
+
 @layer utilities {
+
   /* Ensure bright text on dark wrappers unless inside light panels */
-  .hero-blue :where(h1,h2,h3,h4,h5,h6,p,li,small,span),
-  .section-blue-dark :where(h1,h2,h3,h4,h5,h6,p,li,small,span),
-  .section-blue-light :where(h1,h2,h3,h4,h5,h6,p,li,small,span) {
+  .hero-blue :where(h1, h2, h3, h4, h5, h6, p, li, small, span),
+  .section-blue-dark :where(h1, h2, h3, h4, h5, h6, p, li, small, span),
+  .section-blue-light :where(h1, h2, h3, h4, h5, h6, p, li, small, span) {
     color: #f5f7fa !important;
   }
-  .hero-blue :where(strong,em,b,i,mark),
-  .section-blue-dark :where(strong,em,b,i,mark),
-  .section-blue-light :where(strong,em,b,i,mark) {
+
+  .hero-blue :where(strong, em, b, i, mark),
+  .section-blue-dark :where(strong, em, b, i, mark),
+  .section-blue-light :where(strong, em, b, i, mark) {
     color: #ffffff !important;
   }
+
   .hero-blue :where(a),
   .section-blue-dark :where(a),
   .section-blue-light :where(a) {
     color: #ffffff !important;
   }
+
   /* Neutralize low-opacity foreground utilities on dark wrappers */
   .hero-blue :where([class*="text-foreground/"], .text-muted-foreground),
   .section-blue-dark :where([class*="text-foreground/"], .text-muted-foreground),
   .section-blue-light :where([class*="text-foreground/"], .text-muted-foreground) {
     color: #f5f7fa !important;
   }
+
   /* FINAL OVERRIDE: ensure dark text on light panels inside dark wrappers (wins by source order) */
-  .hero-blue .bg-card :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
-  .hero-blue .bg-white :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
-  .hero-blue .bg-background :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
-  .section-blue-dark .bg-card :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
-  .section-blue-dark .bg-white :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
-  .section-blue-dark .bg-background :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
-  .section-blue-light .bg-card :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
-  .section-blue-light .bg-white :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark),
-  .section-blue-light .bg-background :where(h1,h2,h3,h4,h5,h6,p,li,small,span,a,strong,em,b,i,mark) {
+  .hero-blue .bg-card :where(h1, h2, h3, h4, h5, h6, p, li, small, span, a, strong, em, b, i, mark),
+  .hero-blue .bg-white :where(h1, h2, h3, h4, h5, h6, p, li, small, span, a, strong, em, b, i, mark),
+  .hero-blue .bg-background :where(h1, h2, h3, h4, h5, h6, p, li, small, span, a, strong, em, b, i, mark),
+  .section-blue-dark .bg-card :where(h1, h2, h3, h4, h5, h6, p, li, small, span, a, strong, em, b, i, mark),
+  .section-blue-dark .bg-white :where(h1, h2, h3, h4, h5, h6, p, li, small, span, a, strong, em, b, i, mark),
+  .section-blue-dark .bg-background :where(h1, h2, h3, h4, h5, h6, p, li, small, span, a, strong, em, b, i, mark),
+  .section-blue-light .bg-card :where(h1, h2, h3, h4, h5, h6, p, li, small, span, a, strong, em, b, i, mark),
+  .section-blue-light .bg-white :where(h1, h2, h3, h4, h5, h6, p, li, small, span, a, strong, em, b, i, mark),
+  .section-blue-light .bg-background :where(h1, h2, h3, h4, h5, h6, p, li, small, span, a, strong, em, b, i, mark) {
     color: hsl(222 47% 10%) !important;
   }
-  :where(.bg-white,.bg-card,.bg-background) :where(h1,h2,h3,h4,h5,h6) {
+
+  :where(.bg-white, .bg-card, .bg-background) :where(h1, h2, h3, h4, h5, h6) {
     color: hsl(222 47% 10%) !important;
   }
-  :where(.bg-white,.bg-card,.bg-background) :where(p,li,small,span) {
+
+  :where(.bg-white, .bg-card, .bg-background) :where(p, li, small, span) {
     color: hsl(222 47% 10%) !important;
   }
-  :where(.bg-white,.bg-card,.bg-background) :where(a) {
+
+  :where(.bg-white, .bg-card, .bg-background) :where(a) {
     color: hsl(var(--primary)) !important;
   }
-  :where(.bg-white,.bg-card,.bg-background) :where([class*="text-foreground/"],[class*="text-background"],[class*="text-muted-foreground"]) {
+
+  :where(.bg-white, .bg-card, .bg-background) :where([class*="text-foreground/"], [class*="text-background"], [class*="text-muted-foreground"]) {
     color: hsl(222 47% 10%) !important;
   }
+
   .section-pad {
     padding-top: 6rem;
     padding-bottom: 5rem;
   }
+
   @media (min-width: 768px) {
     .section-pad {
       padding-top: 7rem;
       padding-bottom: 6rem;
     }
   }
+
   .media-rounded {
     border-radius: 1.25rem;
     overflow: hidden;
   }
+
   .media-shadow {
-    box-shadow: 0 20px 35px -5px rgba(0,0,0,0.25), 0 8px 10px -6px rgba(0,0,0,0.2);
+    box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
   }
-  :where(a,button,[role="button"],input,select,textarea):focus-visible {
+
+  :where(a, button, [role="button"], input, select, textarea):focus-visible {
     outline: 2px solid hsl(var(--primary));
     outline-offset: 2px;
+  }
+
+  /* Light background utility */
+  .light-bg {
+    background: #f5f5f5 !important;
+    color: #111 !important;
+  }
+
+  .light-bg :where(h1, h2, h3, h4, h5, h6, p, li, span, div) {
+    color: #111 !important;
+  }
+
+  /* Dark background utility */
+  .dark-bg {
+    background: #1a1a1a !important;
+    color: #fff !important;
+  }
+
+  .dark-bg :where(h1, h2, h3, h4, h5, h6, p, li, span, div) {
+    color: #fff !important;
   }
 }

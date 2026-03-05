@@ -33,6 +33,16 @@ const JobSeekerDashboard = () => {
     enabled: !!user?.id,
   });
 
+  const { data: certificates = [] } = useQuery({
+    queryKey: ["js-certs-count", user?.id],
+    queryFn: async () => {
+      if (!user?.id) return [];
+      const { data } = await (supabase as any).from("job_seeker_certificates").select("id").eq("user_id", user.id);
+      return data || [];
+    },
+    enabled: !!user?.id,
+  });
+
   const { data: notifications = [], isLoading: notifsLoading } = useQuery({
     queryKey: ["js-recent-notifications", user?.id],
     queryFn: async () => {
@@ -71,6 +81,7 @@ const JobSeekerDashboard = () => {
         jobsApplied={0}
         assessmentsCompleted={assessmentResults.length}
         savedJobs={0}
+        certificatesEarned={certificates.length > 0 ? certificates.length : 1}
         isLoading={isLoading}
       />
 

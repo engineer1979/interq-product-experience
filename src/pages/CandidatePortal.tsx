@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,20 +8,32 @@ import { Progress } from "@/components/ui/progress";
 import {
   LayoutDashboard, FileText, Calendar, Clock, CheckCircle, AlertCircle,
   Video, LogOut, Settings, Bell, ChevronRight, Eye, BookOpen,
-  TrendingUp, Briefcase, Star
+  TrendingUp, Briefcase, Star, Award, X
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
+import CandidateCertificate from "@/components/CandidateCertificate";
 
 const sidebarItems = [
   { icon: LayoutDashboard, label: "Overview", key: "overview" },
   { icon: FileText, label: "Assessments", key: "assessments" },
+  { icon: Award, label: "Certificates", key: "certificates" },
   { icon: Calendar, label: "Interviews", key: "interviews" },
   { icon: TrendingUp, label: "Status", key: "status" },
   { icon: BookOpen, label: "Guidelines", key: "guidelines" },
   { icon: Bell, label: "Notifications", key: "notifications" },
   { icon: Settings, label: "Settings", key: "settings" },
+];
+
+const mockCertificates = [
+  {
+    id: "CERT-2026-8842",
+    assessmentName: "System Design Challenge",
+    skills: "React, System Design, Scalability",
+    score: 85,
+    date: "Feb 15, 2026"
+  },
 ];
 
 const mockAssessments = [
@@ -44,6 +56,7 @@ const pipelineStages = [
 const CandidatePortal = () => {
   const [activeSection, setActiveSection] = useState("overview");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [selectedCert, setSelectedCert] = useState<typeof mockCertificates[0] | null>(null);
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const userName = user?.email?.split("@")[0] || "Job Seeker";
@@ -111,8 +124,8 @@ const CandidatePortal = () => {
                         <div className={cn(
                           "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold",
                           stage.completed ? "bg-green-500 text-white" :
-                          stage.active ? "bg-primary text-primary-foreground" :
-                          "bg-muted text-muted-foreground"
+                            stage.active ? "bg-primary text-primary-foreground" :
+                              "bg-muted text-muted-foreground"
                         )}>
                           {stage.completed ? <CheckCircle className="w-4 h-4" /> : i + 1}
                         </div>
@@ -151,13 +164,13 @@ const CandidatePortal = () => {
                     <p className="text-sm text-muted-foreground">Best Assessment Score</p>
                   </CardContent>
                 </Card>
-                <Card className="shadow-soft">
+                <Card className="shadow-soft cursor-pointer hover:shadow-md transition-all" onClick={() => setActiveSection("certificates")}>
                   <CardContent className="p-5">
-                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center mb-3">
-                      <Calendar className="w-5 h-5 text-amber-600" />
+                    <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center mb-3">
+                      <Award className="w-5 h-5 text-indigo-600" />
                     </div>
-                    <p className="text-2xl font-bold">1</p>
-                    <p className="text-sm text-muted-foreground">Upcoming Interview</p>
+                    <p className="text-2xl font-bold">{mockCertificates.length}</p>
+                    <p className="text-sm text-muted-foreground">Verified Certificates</p>
                   </CardContent>
                 </Card>
               </div>
@@ -283,8 +296,8 @@ const CandidatePortal = () => {
                           <div className={cn(
                             "w-3 h-3 rounded-full flex-shrink-0",
                             event.status === "completed" ? "bg-green-500" :
-                            event.status === "active" ? "bg-primary" :
-                            "bg-muted"
+                              event.status === "active" ? "bg-primary" :
+                                "bg-muted"
                           )} />
                           {i < 4 && <div className={cn("w-0.5 flex-1 mt-1", event.status === "completed" ? "bg-green-500" : "bg-muted")} />}
                         </div>
@@ -326,6 +339,99 @@ const CandidatePortal = () => {
               ))}
             </motion.div>
           )}
+
+          {/* Certificates */}
+          {activeSection === "certificates" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold">Your Certificates</h2>
+                <Badge variant="outline" className="text-xs">{mockCertificates.length} Earned</Badge>
+              </div>
+
+              {mockCertificates.length > 0 ? (
+                <div className="grid md:grid-cols-2 gap-6">
+                  {mockCertificates.map(cert => (
+                    <Card key={cert.id} className="shadow-soft border-border hover:border-primary/50 transition-all group overflow-hidden">
+                      <div className="aspect-[1.414/1] bg-slate-50 relative overflow-hidden flex items-center justify-center border-b border-border">
+                        {/* Shrunken Preview */}
+                        <div className="scale-[0.35] origin-center opacity-80 group-hover:opacity-100 transition-opacity">
+                          <CandidateCertificate
+                            candidateName={userName}
+                            assessmentName={cert.assessmentName}
+                            skills={cert.skills}
+                            score={cert.score}
+                            date={cert.date}
+                            certificateId={cert.id}
+                          />
+                        </div>
+                        <div className="absolute inset-0 bg-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button onClick={() => setSelectedCert(cert)} className="shadow-xl">
+                            <Eye className="w-4 h-4 mr-2" /> View Full Certificate
+                          </Button>
+                        </div>
+                      </div>
+                      <CardContent className="p-4">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="font-bold text-[#0F172A]">{cert.assessmentName}</p>
+                            <p className="text-xs text-muted-foreground mt-1">ID: {cert.id} • Issued {cert.date}</p>
+                          </div>
+                          <div className="bg-primary/5 p-2 rounded-lg">
+                            <Award className="w-5 h-5 text-primary" />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-20 bg-muted/20 rounded-3xl border-2 border-dashed border-border">
+                  <div className="w-16 h-16 bg-muted/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Award className="w-8 h-8 text-muted-foreground opacity-50" />
+                  </div>
+                  <h3 className="text-lg font-bold">No certificates yet</h3>
+                  <p className="text-muted-foreground max-w-sm mx-auto mt-2">
+                    Complete assessments and interviews to earn InterQ professional certificates.
+                  </p>
+                  <Button variant="outline" className="mt-6" onClick={() => setActiveSection("assessments")}>
+                    View Assessments
+                  </Button>
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* Certificate Modal Overlay */}
+          <AnimatePresence>
+            {selectedCert && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[100] bg-slate-900/90 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
+              >
+                <div className="max-w-[850px] w-full mt-auto mb-auto bg-white rounded-2xl shadow-2xl relative">
+                  <button
+                    onClick={() => setSelectedCert(null)}
+                    className="absolute -top-12 right-0 p-2 text-white hover:text-primary transition-colors flex items-center gap-2 font-bold"
+                  >
+                    <X className="w-6 h-6" /> Close
+                  </button>
+                  <div className="p-8">
+                    <CandidateCertificate
+                      candidateName={userName}
+                      assessmentName={selectedCert.assessmentName}
+                      skills={selectedCert.skills}
+                      score={selectedCert.score}
+                      date={selectedCert.date}
+                      certificateId={selectedCert.id}
+                      onClose={() => setSelectedCert(null)}
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Notifications */}
           {activeSection === "notifications" && (

@@ -469,7 +469,7 @@ export default function CollaborativeScoring() {
               </div>
               <div>
                 <Label>Salary Band Fit</Label>
-                <Input value={form.salary_band_fit} onChange={e => setForm(p => ({ ...p, salary_band_fit: e.target.value }))} placeholder="e.g. $80K–$100K" />
+                <Input value={form.salary_band_fit} onChange={e => setForm(p => ({ ...p, salary_band_fit: e.target.value }))} placeholder="e.g. 80K–100K" />
               </div>
             </div>
 

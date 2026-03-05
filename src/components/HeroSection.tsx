@@ -56,7 +56,7 @@ const HeroSection = () => {
               variants={itemVariants}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-[4.25rem] fancy-heading leading-[1.1] tracking-tight text-white"
             >
-              Technical Interview Platform{" "}
+              The Premier Technical Hiring Platform{" "}
               <span className="gradient-text-brand">
                 Powered by Experts
               </span>
@@ -118,7 +118,7 @@ const HeroSection = () => {
             {/* CTA microcopy */}
             <motion.p
               variants={itemVariants}
-              className="text-xs text-muted-foreground"
+              className="text-xs text-slate-300 font-medium"
             >
               No sales call required • 5-minute walkthrough of InterQ's hiring platform
             </motion.p>
@@ -136,7 +136,7 @@ const HeroSection = () => {
                 ].map((badge, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/60 border border-border/60 text-xs font-medium text-foreground"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-bold text-white"
                   >
                     <badge.icon className="h-3.5 w-3.5 text-primary" />
                     {badge.text}

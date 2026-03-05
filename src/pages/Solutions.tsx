@@ -123,7 +123,7 @@ const Solutions = () => {
                 decoding="async"
               />
             </div>
-            
+
             {/* Text Content Below Image */}
             <div className="max-w-4xl mx-auto">
               <Badge variant="outline" className="bg-primary/20 text-primary border-primary/40 mb-6 uppercase tracking-[0.2em] font-semibold text-xs">
@@ -209,17 +209,17 @@ const Solutions = () => {
 
               {/* Call to Action */}
               <div className="flex flex-col sm:flex-row gap-4 justify-start items-stretch pt-4">
-                <Button 
-                  onClick={() => navigate('/get-started')} 
-                  size="lg" 
+                <Button
+                  onClick={() => navigate('/get-started')}
+                  size="lg"
                   className="w-full sm:w-auto h-14 px-8 text-lg bg-primary hover:bg-primary/90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   Book Demo
                 </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="w-full sm:w-auto h-14 px-8 text-lg border-white/30 text-white hover:bg-white/10" 
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full sm:w-auto h-14 px-8 text-lg border-white/30 text-white hover:bg-white/10"
                   onClick={() => navigate('/product')}
                 >
                   Learn More
@@ -254,10 +254,10 @@ const Solutions = () => {
                 <p className="text-base text-white/80 mb-4">
                   Our team specializes in creating tailored packages that meet your specific organizational requirements.
                 </p>
-                <Button 
-                  variant="outline" 
-                  size="lg" 
-                  className="w-full border-white/40 text-white hover:bg-white/20" 
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full border-white/40 text-white hover:bg-white/20"
                   onClick={() => navigate('/get-started')}
                 >
                   Contact Enterprise Sales
@@ -291,8 +291,8 @@ const Solutions = () => {
                   whileHover={{ scale: 1.05 }}
                   className="bg-card rounded-xl p-5 md:p-6 shadow-soft"
                 >
-                  <div className="text-3xl md:text-4xl font-bold text-primary mb-2">$50K+</div>
-                  <div className="text-xs md:text-sm text-white/80">Annual Savings</div>
+                  <div className="text-3xl md:text-4xl font-bold text-primary mb-2">Significant</div>
+                  <div className="text-muted-foreground font-medium">Cost Savings</div>
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.05 }}

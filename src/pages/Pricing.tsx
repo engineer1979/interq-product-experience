@@ -17,7 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
- 
+
 
 const Pricing = () => {
   const plans = [
@@ -154,8 +154,8 @@ const Pricing = () => {
                   onClick={() => window.location.href = '/get-started'}
                   variant={plan.popular ? "premium" : "outline"}
                   className={`w-full h-14 text-sm font-black uppercase tracking-widest shadow-sm rounded-2xl ${plan.popular
-                      ? "border-0 hover:shadow-glow-sm transition-all"
-                      : "border-primary/20 hover:bg-primary/5 text-primary"
+                    ? "border-0 hover:shadow-glow-sm transition-all"
+                    : "border-primary/20 hover:bg-primary/5 text-primary"
                     }`}
                 >
                   <Mail className="mr-2 h-4 w-4" />
@@ -221,20 +221,28 @@ const Pricing = () => {
             <div className="grid md:grid-cols-2 gap-6">
               {[
                 {
-                  question: "How do custom enterprise quotas work?",
-                  answer: "We analyze your historical hiring volume and growth projections to normalize a custom quota that prevents overages and stabilizes costs.",
+                  question: "How do we get started with a pilot or demo?",
+                  answer: "You can begin by clicking the 'Book a Demo' or 'Get Started' call-to-action found in our hero section or navigation menu.",
                 },
                 {
-                  question: "What constitutes a 'Cognitive Assessment'?",
-                  answer: "A single interaction where a candidate engages with our AI expert or technical rubric. We provide detailed multi-modal feedback for every session.",
+                  question: "How quickly can we receive an interview report?",
+                  answer: "We prioritize efficiency, typically delivering detailed evaluation reports and feedback within 24 hours of the session.",
                 },
                 {
-                  question: "Is platform white-labeling supported?",
-                  answer: "Yes, our Enterprise tier supports full aesthetic customization, allowing you to wrap the candidate experience in your organizational brand system.",
+                  question: "Can the interviews be tailored to our specific tech stack?",
+                  answer: "Yes, our experts and AI modules can be calibrated to focus on your specific technology requirements and internal standards.",
                 },
                 {
-                  question: "Security and Data Sovereignty?",
-                  answer: "We utilize multi-region encryption protocols. Custom data residency configurations are available for our Tier-3 Organizational partners.",
+                  question: "How do you ensure the quality of your expert interviewer pool?",
+                  answer: "All interviewers undergo a rigorous vetting process to confirm their technical authority and professional assessment capabilities.",
+                },
+                {
+                  question: "Is InterQ compliant with data protection laws?",
+                  answer: "We aim for compliance with international standards, including global data protection regulations, regarding the collection and storage of user data.",
+                },
+                {
+                  question: "What metrics are included in the final hiring report?",
+                  answer: "Reports provide a breakdown of technical proficiency, problem-solving approaches, and overall fit for the role.",
                 },
               ].map((faq, i) => (
                 <motion.div
@@ -245,11 +253,11 @@ const Pricing = () => {
                   transition={{ delay: i * 0.1 }}
                   className="bg-card/40 backdrop-blur-md border border-border/40 rounded-3xl p-8 hover:border-primary/30 transition-all shadow-sm group"
                 >
-                  <h3 className="text-sm font-black mb-3 flex items-center gap-3 tracking-tight">
+                  <h3 className="text-sm font-black mb-3 flex items-center gap-3 tracking-tight text-slate-900">
                     <div className="w-2 h-2 bg-primary rounded-full group-hover:animate-pulse" />
                     {faq.question}
                   </h3>
-                  <p className="text-white/80 text-xs font-medium leading-relaxed">{faq.answer}</p>
+                  <p className="text-slate-800 text-xs font-bold leading-relaxed">{faq.answer}</p>
                 </motion.div>
               ))}
             </div>

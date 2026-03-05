@@ -16,8 +16,8 @@ const InfoSection: React.FC<InfoSectionProps> = ({ title, description, icon: Ico
                     <Icon className="w-8 h-8" />
                 </div>
             )}
-            <h3 className="text-xl font-semibold mb-2">{title}</h3>
-            <p className="text-muted-foreground">{description}</p>
+            <h3 className="text-xl font-bold mb-2 text-slate-900">{title}</h3>
+            <p className="text-slate-700 font-medium leading-relaxed">{description}</p>
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown, Briefcase, Code, FileText, HelpCircle, Users, Building, Zap, BarChart3, BookOpen, Phone, Mail, MapPin, Star, Settings } from "lucide-react";
+import { Menu, X, ChevronDown, Briefcase, Code, FileText, HelpCircle, Users, Building, Zap, BarChart3, BookOpen, Phone, Mail, MapPin, Star, Settings, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -131,11 +131,10 @@ const EnhancedNavigation = () => {
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "bg-background/95 backdrop-blur-md shadow-sm"
-            : "bg-background/80 backdrop-blur-md"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+          ? "bg-background/95 backdrop-blur-md shadow-sm"
+          : "bg-background/80 backdrop-blur-md"
+          }`}
       >
         <div className="container mx-auto px-4 lg:px-8">
           {/* Row 1: Logo + Auth */}
@@ -153,6 +152,11 @@ const EnhancedNavigation = () => {
             <div className="hidden lg:flex items-center space-x-3">
               {user ? (
                 <div className="flex items-center space-x-3">
+                  <Link to="/candidate-portal">
+                    <Button variant="ghost" size="sm" className="hover:bg-muted/50 text-primary font-bold">
+                      <LayoutDashboard size={16} className="mr-1" /> Dashboard
+                    </Button>
+                  </Link>
                   <Link to="/settings">
                     <Button variant="ghost" size="sm" className="hover:bg-muted/50">
                       <Settings size={16} className="mr-1" /> Settings
@@ -190,11 +194,10 @@ const EnhancedNavigation = () => {
               <div key={item.label} className="relative">
                 <button
                   onClick={() => handleNavItemClick(item)}
-                  className={`flex items-center gap-1 px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    isActive(item.href) || item.children?.some(child => isActive(child.href))
-                      ? "bg-primary/10 text-primary shadow-sm"
-                      : "text-white hover:text-primary hover:bg-muted/60"
-                  }`}
+                  className={`flex items-center gap-1 px-5 py-2 rounded-lg text-sm transition-all duration-200 navbar-menu-item ${isActive(item.href) || item.children?.some(child => isActive(child.href))
+                    ? "bg-white/10 underline"
+                    : ""
+                    }`}
                   aria-expanded={activeDropdown === item.label}
                   aria-haspopup={item.children ? "true" : "false"}
                 >
@@ -217,16 +220,15 @@ const EnhancedNavigation = () => {
                         <div className="p-2">
                           {item.children.map((child) => (
                             <button
-                          key={child.label}
-                          onClick={() => trackNavigation(child.label, child.href)}
-                          className={`w-full flex items-center gap-3 p-3 text-left rounded-md transition-all duration-200 hover:bg-muted/50 ${
-                            isActive(child.href) ? "text-primary bg-primary/10" : "text-foreground hover:text-primary"
-                          }`}
-                        >
+                              key={child.label}
+                              onClick={() => trackNavigation(child.label, child.href)}
+                              className={`w-full flex items-center gap-3 p-3 text-left rounded-md transition-all duration-200 hover:bg-muted/50 ${isActive(child.href) ? "text-primary bg-primary/10" : "text-foreground hover:text-primary"
+                                }`}
+                            >
                               {child.icon && <child.icon size={18} className="text-primary" />}
                               <div>
                                 <div className="font-medium text-sm">{child.label}</div>
-                                {child.description && <div className="text-xs text-white/80 mt-0.5">{child.description}</div>}
+                                {child.description && <div className="text-xs text-muted-foreground mt-0.5">{child.description}</div>}
                               </div>
                             </button>
                           ))}
@@ -241,9 +243,8 @@ const EnhancedNavigation = () => {
             {isAdmin && (
               <Link
                 to="/admin"
-                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActive("/admin") ? "bg-primary/10 text-primary shadow-sm" : "text-foreground/90 hover:text-primary hover:bg-muted/60"
-                }`}
+                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive("/admin") ? "bg-primary/10 text-primary shadow-sm" : "text-foreground/90 hover:text-primary hover:bg-muted/60"
+                  }`}
               >
                 Admin
               </Link>
@@ -291,7 +292,7 @@ const EnhancedNavigation = () => {
                               {child.icon && <child.icon size={16} className="text-primary" />}
                               <div>
                                 <div className="font-medium text-sm">{child.label}</div>
-                                {child.description && <div className="text-xs text-white/80 mt-0.5">{child.description}</div>}
+                                {child.description && <div className="text-xs text-muted-foreground mt-0.5">{child.description}</div>}
                               </div>
                             </button>
                           ))}

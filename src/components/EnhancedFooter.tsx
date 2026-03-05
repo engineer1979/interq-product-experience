@@ -59,7 +59,7 @@ const EnhancedFooter = () => {
     { label: "Privacy Policy", href: "/privacy-policy" },
     { label: "Terms of Service", href: "/terms-of-service" },
     { label: "Cookie Policy", href: "/cookie-policy" },
-    { label: "GDPR Compliance", href: "/gdpr" },
+    { label: "Data Compliance", href: "/gdpr" },
   ];
 
   return (
@@ -73,8 +73,8 @@ const EnhancedFooter = () => {
               Inter<span className="text-primary">Q</span>
             </div>
             <p className="text-background/60 mb-6 text-sm leading-relaxed max-w-sm">
-              Redefining recruitment with AI-driven interviews and assessments across North America,
-              Middle East and beyond. Empowering organizations to build exceptional teams through
+              Redefining recruitment with AI-driven interviews and assessments globally.
+              Empowering organizations to build exceptional teams through
               intelligent hiring solutions.
             </p>
 
@@ -211,7 +211,7 @@ const EnhancedFooter = () => {
 
           {/* Trust Badges */}
           <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
-            {["SOC 2 Certified", "ISO 27001", "GDPR Compliant", "AES-256 Encryption"].map((badge) => (
+            {["SOC 2 Certified", "ISO 27001", "Global Data Compliance", "AES-256 Encryption"].map((badge) => (
               <div key={badge} className="px-3.5 py-2 rounded-lg border border-background/12 text-xs text-background/55 bg-background/5 font-medium">
                 {badge}
               </div>

@@ -9,7 +9,7 @@ import { Target, Eye, Heart, Zap, Users, Globe } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import TeamSection from "@/components/TeamSection";
- 
+
 
 const About = () => {
   const { toast } = useToast();
@@ -34,7 +34,7 @@ const About = () => {
     { icon: Heart, title: "Integrity", description: "Transparent, unbiased evaluation for all" },
     { icon: Users, title: "Excellence", description: "Delivering world-class recruitment solutions" },
     { icon: Eye, title: "Transparency", description: "Clear processes and honest communication" },
-    { icon: Globe, title: "Global Reach", description: "Serving clients across North America, Middle East and beyond" },
+    { icon: Globe, title: "Global Reach", description: "Serving clients across the globe" },
   ];
 
   const timeline = [
@@ -42,7 +42,7 @@ const About = () => {
     { year: "2023 Q3", event: "MCQ Platform Launch", description: "Launched comprehensive assessment library" },
     { year: "2024 Q1", event: "AI Interviews", description: "Introduced AI-powered video interviewing" },
     { year: "2024 Q2", event: "3,400+ Skills", description: "Reached 3,400+ skills across 2,500+ job roles" },
-    { year: "2024 Q4", event: "Global Expansion", description: "Expanding to Middle East and beyond" },
+    { year: "2024 Q4", event: "Global Expansion", description: "Expanding to international markets" },
     { year: "2025", event: "Future Ready", description: "White-labeling and advanced AI features coming" },
   ];
 
@@ -63,7 +63,7 @@ const About = () => {
               Hire Smarter. Get hired faster.
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
-              InterQ is an AI-powered assessment platform built to fix what traditional hiring gets wrong. We replace resumes, biased interviews, and gut decisions with objective, skill-based evaluations — so companies identify real talent, faster and fairer. 
+              InterQ is an AI-powered assessment platform built to fix what traditional hiring gets wrong. We replace resumes, biased interviews, and gut decisions with objective, skill-based evaluations — so companies identify real talent, faster and fairer.
               <br /><br />
               InterQ is an AI-powered assessment platform built to fix what traditional hiring gets wrong. We replace resumes, biased interviews, and gut decisions with objective, skill-based evaluations so companies identify real talent, faster and fairer.
             </p>
@@ -104,7 +104,7 @@ const About = () => {
           >
             <h2 className="text-4xl font-bold mb-6">Our Vision</h2>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              To become the leading AI recruitment platform across North America, Middle East and beyond, transforming how organizations identify and hire talent through objective, skill-based evaluations.
+              To become the leading AI recruitment platform globally, transforming how organizations identify and hire talent through objective, skill-based evaluations.
             </p>
           </motion.div>
         </div>

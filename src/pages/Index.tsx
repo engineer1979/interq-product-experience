@@ -14,6 +14,7 @@ import FAQSection from "@/components/FAQSection";
 import FinalCTA from "@/components/FinalCTA";
 import EnhancedFooter from "@/components/EnhancedFooter";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import PricingSection from "@/components/PricingSection";
 
 const Index = () => {
   return (
@@ -23,19 +24,18 @@ const Index = () => {
       <div className="animate-fade-in hero-blue bg-aurora">
         <HeroSection />
       </div>
-      {/* Clients section removed per request */}
+
+      {/* 2. Social Proof */}
       <div className="animate-fade-in section-blue-dark">
-        <TeamStorySection />
+        <TestimonialsSection />
       </div>
+
+      {/* 3. How It Works */}
       <div className="animate-fade-in section-blue-light">
-        <CompanyOverview />
+        <HowItWorks />
       </div>
-      <div className="animate-fade-in section-blue-dark">
-        <TeamSection />
-      </div>
-      <div className="animate-fade-in section-blue-light">
-        <WhoWeServe />
-      </div>
+
+      {/* 4. Features & Overviews */}
       <div className="animate-fade-in section-blue-dark">
         <ServiceOverview />
       </div>
@@ -43,21 +43,38 @@ const Index = () => {
         <AIAdvantage />
       </div>
       <div className="animate-fade-in section-blue-dark">
-        <FutureExpansion />
-      </div>
-      <div className="animate-fade-in section-blue-light">
-        <HowItWorks />
-      </div>
-      <div className="animate-fade-in section-blue-dark">
-        <TestimonialsSection />
+        <WhoWeServe />
       </div>
       <div className="animate-fade-in section-blue-light">
         <DataPrivacySection />
       </div>
+
+      {/* 5. Pricing */}
       <div className="animate-fade-in section-blue-dark">
-        <FAQSection />
+        <PricingSection />
+      </div>
+
+      {/* Additional Company Info */}
+      <div className="animate-fade-in section-blue-light">
+        <TeamStorySection />
+      </div>
+      <div className="animate-fade-in section-blue-dark">
+        <CompanyOverview />
       </div>
       <div className="animate-fade-in section-blue-light">
+        <TeamSection />
+      </div>
+      <div className="animate-fade-in section-blue-dark">
+        <FutureExpansion />
+      </div>
+
+      {/* 6. FAQ */}
+      <div className="animate-fade-in section-blue-light">
+        <FAQSection />
+      </div>
+
+      {/* 7. Final CTA */}
+      <div className="animate-fade-in section-blue-dark">
         <FinalCTA />
       </div>
       <EnhancedFooter />

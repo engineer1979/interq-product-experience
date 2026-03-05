@@ -37,7 +37,7 @@ const ServiceOverview: React.FC = () => {
             Our Products
           </span>
           <h2 className="text-3xl md:text-5xl fancy-heading mb-5 text-foreground">InterQ Products</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-slate-700 text-lg max-w-2xl mx-auto leading-relaxed font-medium">
             Comprehensive tools designed to cover every aspect of the technical hiring process.
           </p>
         </motion.div>
@@ -59,7 +59,7 @@ const ServiceOverview: React.FC = () => {
                   <CardTitle className="text-xl font-bold">{p.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground mb-6 leading-relaxed">{p.description}</p>
+                  <p className="text-slate-800 mb-6 leading-relaxed font-medium">{p.description}</p>
                   <div className="flex items-center text-sm font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     Learn more <ArrowRight className="ml-2 w-4 h-4" />
                   </div>

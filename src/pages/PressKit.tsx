@@ -63,7 +63,7 @@ const PressKit = () => {
     {
       date: "2024-01-15",
       title: "InterQ Raises Series A Funding to Transform AI-Powered Recruitment",
-      summary: "Company secures $15M to expand platform capabilities and global reach.",
+      summary: "Company secures Series A funding to expand platform capabilities and global reach.",
       category: "Funding"
     },
     {
@@ -80,7 +80,7 @@ const PressKit = () => {
     },
     {
       date: "2023-12-01",
-      title: "InterQ Expands to Middle East Market",
+      title: "InterQ Expands to International Market",
       summary: "Company launches operations in UAE and Saudi Arabia.",
       category: "Expansion"
     }

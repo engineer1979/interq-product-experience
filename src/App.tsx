@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
+import { CookieBanner } from "@/components/CookieBanner";
 
 // Auto-deployment test - Deployment system verified
 const Index = lazy(() => import("./pages/Index"));
@@ -28,6 +29,8 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const Blog = lazy(() => import("./pages/Blog"));
 const Documentation = lazy(() => import("./pages/Documentation"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const CaseStudies = lazy(() => import("./pages/CaseStudies"));
 const HelpCenter = lazy(() => import("./pages/HelpCenter"));
 const AdminJobs = lazy(() => import("./pages/admin/Jobs"));
@@ -57,6 +60,7 @@ const ProfessionalEvaluationReport = lazy(() => import("./pages/ProfessionalEval
 const Guidelines = lazy(() => import("./pages/Guidelines"));
 const ExpertPortal = lazy(() => import("./pages/ExpertPortal"));
 const CandidatePortal = lazy(() => import("./pages/CandidatePortal"));
+const VerifyCertificate = lazy(() => import("./pages/VerifyCertificate"));
 const CompanySignup = lazy(() => import("./pages/company/CompanySignup"));
 const CompanyLayout = lazy(() => import("./components/company/CompanyLayout").then(m => ({ default: m.CompanyLayout })));
 const CompanyDashboard = lazy(() => import("./pages/company/CompanyDashboard"));
@@ -129,6 +133,7 @@ const App = () => (
               <Route path="/guidelines" element={<Guidelines />} />
               <Route path="/expert-portal" element={<ExpertPortal />} />
               <Route path="/candidate-portal" element={<CandidatePortal />} />
+              <Route path="/verify/:id" element={<VerifyCertificate />} />
               <Route path="/company-signup" element={<CompanySignup />} />
               <Route path="/company" element={<CompanyLayout />}>
                 <Route index element={<CompanyDashboard />} />
@@ -153,8 +158,8 @@ const App = () => (
                 <Route path="notifications" element={<JobSeekerNotifications />} />
                 <Route path="settings" element={<JobSeekerSettings />} />
               </Route>
-              <Route path="/privacy-policy" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Privacy Policy</h1><p className="text-muted-foreground">Privacy policy content coming soon.</p></div></div>} />
-              <Route path="/terms-of-service" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Terms of Service</h1><p className="text-muted-foreground">Terms of service content coming soon.</p></div></div>} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/cookie-policy" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Cookie Policy</h1><p className="text-muted-foreground">Cookie policy content coming soon.</p></div></div>} />
               <Route path="/gdpr" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">GDPR Compliance</h1><p className="text-muted-foreground">GDPR compliance information coming soon.</p></div></div>} />
               <Route path="/api-docs" element={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">API Documentation</h1><p className="text-muted-foreground">API documentation coming soon.</p></div></div>} />
@@ -181,6 +186,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
             <ChatbotWidget />
+            <CookieBanner />
           </Suspense>
         </AuthProvider>
       </BrowserRouter>
@@ -189,7 +195,4 @@ const App = () => (
 );
 
 export default App;
-<<<<<<< HEAD
-=======
 // Auto-deployment test - Deployment system verified
->>>>>>> b8d5e6c22c07c377fc50b43c50c8d365dcb9eaea
