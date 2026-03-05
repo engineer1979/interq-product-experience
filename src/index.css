@@ -775,3 +775,27 @@
     color: #fff !important;
   }
 }
+
+/* 
+  CEO MESSAGE OVERRIDES 
+  Ensures absolute visibility on dark merchant-blue backgrounds.
+*/
+.ceo-message-header,
+.ceo-message-body,
+.ceo-message-name {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+.ceo-message-title {
+  color: #7dd3fc !important;
+}
+
+.ceo-message-header {
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.4) !important;
+}
+
+.ceo-message-body {
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
