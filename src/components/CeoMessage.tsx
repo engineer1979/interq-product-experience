@@ -36,24 +36,31 @@ const CeoMessage = () => {
                             textShadow: '0 0 8px rgba(255,255,255,0.4)',
                             background: 'linear-gradient(to right, #fff, #cbd5e1, #fff)',
                             WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent'
+                            WebkitTextFillColor: 'transparent',
+                            color: '#FFFFFF !important'
                         }}
                     >
                         Message from the CEO
                     </h3>
 
-                    <p className="text-slate-100 text-base leading-relaxed font-normal italic opacity-95">
+                    <p
+                        className="text-white text-base leading-relaxed font-normal italic"
+                        style={{ color: '#FFFFFF !important' }}
+                    >
                         "At InterQ, our mission has always been to create meaningful technology that drives real impact. We believe in building long-term partnerships, staying curious, and pushing boundaries to help our clients succeed in a rapidly evolving digital world. Thank you for trusting InterQ as your technology partner—we look forward to building the future together."
                     </p>
 
                     <div className="pt-4 border-t border-white/5">
                         <div
                             className="text-white font-bold text-lg tracking-tight"
-                            style={{ textShadow: '0 0 5px rgba(255,255,255,0.2)' }}
+                            style={{ textShadow: '0 0 5px rgba(255,255,255,0.2)', color: '#FFFFFF !important' }}
                         >
                             Saima Huma
                         </div>
-                        <div className="text-primary/70 font-semibold tracking-wide text-[10px] uppercase">
+                        <div
+                            className="text-primary/90 font-semibold tracking-wide text-[10px] uppercase"
+                            style={{ color: 'hsl(var(--primary)) !important' }}
+                        >
                             CEO, InterQ Technologies Inc.
                         </div>
                     </div>
