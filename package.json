@@ -7,11 +7,12 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
-    "lint": "eslint .",
-    "preview": "vite preview"
+  "dev": "vite",
+  "build": "vite build",
+  "build:dev": "vite build --mode development",
+  "lint": "eslint .",
+  "preview": "vite preview",
+  "ship": "git add . && git commit -m \"chore: ship\" && git push origin master"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
