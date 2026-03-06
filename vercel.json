@@ -1,12 +1,5 @@
 {
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "https://www.interq.online",
-      "permanent": true
-    }
   ]
 }
